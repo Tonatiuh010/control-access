@@ -1,6 +1,6 @@
 # Control Access
 
-Basic control access project using real time tech stuff
+Basic control access project using real time tech stuff.
 
 ## Team Members
 
