@@ -5,7 +5,7 @@ header {
     padding-left: 60px;
     align-items: center;
     display: flex;
-    position: fixed;
+    flex-direction: row;
 }
 
 div {
@@ -13,11 +13,13 @@ div {
 }
 
 .sidebar {
-    position: fixed;
+    position: absolute;
     width: 50px;
     height: 100vh;
     background-color: #0090FD;
     z-index: 2;
+    top: 0;
+    left: 0;
 }
 
 .icon {
@@ -29,7 +31,8 @@ div {
     justify-content: center;
 }
 
-.icon:hover:not(:first-child) {
+.icon:hover:not(:first-child),
+.active {
     color: #0090FD;
     background-color: white;
     cursor: pointer;
