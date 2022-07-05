@@ -5,14 +5,14 @@
       // Use IntelliSense to find out which attributes exist for C# debugging
       // Use hover for the description of the existing attributes
       // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-      "name": ".NET Core Launch (web)",
+      "name": "Control Access API",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       // If you have changed target frameworks, make sure to update the program path.
-      "program": "${workspaceFolder}/source/bin/Debug/net6.0/ControlAccess.dll",
+      "program": "${workspaceFolder}/ControlAccessAPI/bin/Debug/net6.0/ControlAccess.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/source",
+      "cwd": "${workspaceFolder}/ControlAccessAPI",
       "stopAtEntry": false,
       // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {
@@ -25,6 +25,21 @@
       "sourceFileMap": {
         "/Views": "${workspaceFolder}/Views"
       }
+    },
+    {      
+      "name": "Data Service Test",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build DS",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/DataService/bin/Debug/net6.0/DataService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/DataService",
+      "stopAtEntry": false,
+      // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser      
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },     
     },
     {
       "name": ".NET Core Attach",

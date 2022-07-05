@@ -7,7 +7,19 @@
       "type": "process",
       "args": [
         "build",
-        "${workspaceFolder}/source/ControlAccess.csproj",
+        "${workspaceFolder}/ControlAccessAPI/ControlAccess.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "build DS",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/DataService/DataService.csproj",
         "/property:GenerateFullPaths=true",
         "/consoleloggerparameters:NoSummary"
       ],
