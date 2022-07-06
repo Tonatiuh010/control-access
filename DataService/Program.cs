@@ -27,21 +27,20 @@ namespace DataService
 
             MySqlDataBase.TransactionBlock(dal.Connection, txn => {
                 var cmd = dal.CreateCommand("SELECT * FROM SHIFT", txn, CommandType.Text);
+
                 /*WHERE NAME = :IN_NAME*/
                 // cmd.Parameters.Add(MySqlDataBase.CreateParameter(
                 //     "IN_NAME", 
                 //     "MATUTINE", 
-                //     ParameterDirection.In,
-                //     MySqlDbType.String
+                //     ParameterDirection.Input,
+                //     MySqlDbType.VarChar
                 // ));
 
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
                         string name = reader["NAME"].ToString();
-                        string id = reader["SHIFT_ID"].ToString();
-                        
+                        string id = reader["SHIFT_ID"].ToString();                        
                         Console.WriteLine(name);
-
                     }
                 }
 

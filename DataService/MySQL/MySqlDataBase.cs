@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataService.MySQL
 {    
-    class MySqlDataBase {
+    public class MySqlDataBase {
         /*
         Pending to add 
             Reconnect Feature, sets a timer to reconnect
