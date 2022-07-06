@@ -1,6 +1,38 @@
-.test {
-    height: 500px;
-    width: 500px;
-    margin: 10px;
+.content {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-gap: 5px;
+    margin: 10px 0px 0px 60px;
+    height: calc(100vh - 20px);
+    width: calc(100vw - 70px);
+    padding: 1px;
+}
+
+.shadow {
     padding: 10px;
+    background-color: #fff;
+    max-width: 100%;
+    min-height: 200px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    /* box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.3); */
+}
+
+.chart-small-left {
+    padding-top: 50px;
+    grid-area: 1 / 1 / 4 / 4;
+}
+
+.chart-small-right {
+    padding-top: 50px;
+    grid-area: 1 / 4 / 4 / 7;
+}
+
+.chart-large {
+    padding-top: 20px;
+    grid-area: 4 / 1 / 7 / 7;
 }

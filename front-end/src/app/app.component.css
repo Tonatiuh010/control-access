@@ -19,7 +19,6 @@ header {
     background-color: #0090FD;
     top: 0;
     left: 0;
-    margin-top: -50px;
 }
 
 .icon {
@@ -36,4 +35,9 @@ header {
     color: #0090FD;
     background-color: white;
     cursor: pointer;
+}
+
+.fa-solid {
+    font-size: 18px;
+    padding: 10px;
 }

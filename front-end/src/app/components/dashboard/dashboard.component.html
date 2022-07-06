@@ -1,4 +1,15 @@
-<div class="test">
-    <mat-card>Simple card</mat-card>
-
+<div class="content">
+    <div class="chart-small-left shadow">
+        <div echarts [options]="chartOption"></div>
+    </div>
+    <div class="chart-small-right shadow">
+        <div echarts [options]="chartOption2"></div>
+    </div>
+    <div class="chart-large shadow">
+        <div echarts [options]="chartOption3"></div>
+    </div>
 </div>
+
+<!-- <div class="test">
+        <div echarts [options]="chartOption"></div>
+    </div> -->

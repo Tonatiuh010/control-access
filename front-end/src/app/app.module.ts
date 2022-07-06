@@ -8,7 +8,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MapComponent } from './components/map/map.component';
 import { CardsEmployeeComponent } from './components/cards-employee/cards-employee.component';
 import { MatCardModule } from '@angular/material/card';
-
+import { NgxEchartsModule } from 'ngx-echarts';
+import * as echarts from 'echarts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,10 @@ import { MatCardModule } from '@angular/material/card';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatCardModule
+    MatCardModule,
+    NgxEchartsModule.forRoot({
+      echarts
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
