@@ -10,27 +10,28 @@ import {  EChartsOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
   chartOption: EChartsOption = {
+    devicePixelRatio: 100,
     title: {
       text: 'Daily Attendence',
-      subtext: 'Including Tardees',
-      left: 'center'
+      textStyle: {
+        fontFamily: 'sans-serif'
+      },
     },
     tooltip: {
       trigger: 'item'
     },
     legend: {
-      orient: 'vertical',
-      left: 'left'
+      orient: 'horizontal',
     },
     series: [
       {
-        name: 'Access From',
+        name: 'Time Of Arrival',
         type: 'pie',
         radius: '50%',
         data: [
-          { value: 20, name: 'Absent', itemStyle: {color: '#FF8B83'}},
-          { value: 66, name: 'On-Time', itemStyle: {color: '#ADFF83'}},
-          { value: 12, name: 'Tardies', itemStyle: {color: '#FFE583'} }
+          { value: 20, name: 'Absent', itemStyle: {color: '#ee6666'}},
+          { value: 66, name: 'On-Time', itemStyle: {color: '#91cc75'}},
+          { value: 12, name: 'Tardies', itemStyle: {color: '#fac858'} }
         ],
         emphasis: {
           itemStyle: {

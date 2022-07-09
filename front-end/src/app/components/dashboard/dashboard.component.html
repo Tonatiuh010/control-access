@@ -1,15 +1,25 @@
 <div class="content">
-    <div class="chart-small-left shadow">
-        <div echarts [options]="chartOption"></div>
+    <div class="cards-small-left">
+        <div class="top-left cards-small">
+            <div class="title">Total De Empleados o Algo</div>
+            <div class="body">222</div>
+        </div>
+        <div class="top-right cards-small">
+            <div class="title">Total De Empleados o Algo</div>
+            <div class="body">222</div>
+        </div>
+        <div class="bottom-left cards-small">
+            <div class="title">Total De Empleados o Algo</div>
+            <div class="body">222</div>
+        </div>
+        <div class="bottom-right cards-small">
+            <div echarts [options]="chartOption"></div>
+        </div>
     </div>
-    <div class="chart-small-right shadow">
+    <div class="chart-small-right cards-big">
         <div echarts [options]="chartOption2"></div>
     </div>
-    <div class="chart-large shadow">
+    <div class="chart-large cards-big">
         <div echarts [options]="chartOption3"></div>
     </div>
 </div>
-
-<!-- <div class="test">
-        <div echarts [options]="chartOption"></div>
-    </div> -->

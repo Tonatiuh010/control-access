@@ -7,9 +7,20 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MapComponent } from './components/map/map.component';
 import { CardsEmployeeComponent } from './components/cards-employee/cards-employee.component';
+
+//Material Imports
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
+import { MatNativeDateModule } from '@angular/material/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import { MaterialModule } from './material.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,7 +32,11 @@ import * as echarts from 'echarts';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatCardModule,
+    FormsModule,
+    HttpClientModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MaterialModule,
     NgxEchartsModule.forRoot({
       echarts
     }),
