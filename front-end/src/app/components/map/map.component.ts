@@ -40,7 +40,7 @@ const employees: any[] = [
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-
+  employeesArray = employees;
   constructor() { }
 
   ngOnInit(): void {
