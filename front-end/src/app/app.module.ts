@@ -18,9 +18,10 @@ import { MatInputModule } from '@angular/material/input';
 import { NgxEchartsModule } from 'ngx-echarts';
 import * as echarts from 'echarts';
 import { MatNativeDateModule } from '@angular/material/core';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material.module';
+import { PrimeNgModule } from './prime-ng.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +38,7 @@ import { MaterialModule } from './material.module';
     MatNativeDateModule,
     ReactiveFormsModule,
     MaterialModule,
+    PrimeNgModule,
     NgxEchartsModule.forRoot({
       echarts
     }),

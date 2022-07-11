@@ -1,11 +1,11 @@
 * {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    overflow-y: hidden;
-    overflow-x: hidden;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 body {
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: rgb(230, 230, 230);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f1f0f0;
 }
