@@ -2,29 +2,33 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    grid-gap: 5px;
-    margin: 10px 0px 0px 60px;
+    grid-gap: 10px;
     height: calc(100vh - 20px);
-    width: calc(100vw - 70px);
-    padding: 1px;
+    width: calc(100vw - 78px);
+    padding: 10px;
+}
+
+.cards-big {
+    padding: 0;
+    background-color: #fff;
 }
 
 .cards-big {
     background-color: #fff;
 }
 
-.div1 {
+.employee-table {
     grid-area: 1 / 1 / 2 / 3;
 }
 
-.div2 {
+.employee-edit {
     grid-area: 1 / 3 / 2 / 4;
 }
 
-.div3 {
+.access-cards-table {
     grid-area: 2 / 1 / 3 / 3;
 }
 
-.div4 {
+.access-cards-edit {
     grid-area: 2 / 3 / 3 / 4;
 }

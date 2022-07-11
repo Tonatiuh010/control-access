@@ -40,7 +40,6 @@ const employees: any[] = [
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
-  employeesArray = employees
 
   constructor() { }
 
@@ -49,7 +48,5 @@ export class MapComponent implements OnInit {
 
 
   }
-
-
 
 }

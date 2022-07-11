@@ -1,12 +1,5 @@
 <div class="cardDiv flex">
-  <svg
-    class="col-7 ml-3"
-    xmlns="http://www.w3.org/2000/svg"
-    width="658"
-    height="550"
-    fill="none"
-    viewBox="0 0 6085 3687"
-  >
+    <svg class="col-7 ml-3" xmlns="http://www.w3.org/2000/svg" width="658" height="550" fill="none" viewBox="0 0 6085 3687">
     <g id="Floor Plan" class="Floor Plan">
       <path fill="#f1f0f0" d="M0 0h6281v3655H0z" transform="translate(4)" />
       <g id="Walls &amp; Built-Ins" class="Walls &amp; Built-Ins">
@@ -605,34 +598,25 @@
       </clipPath>
     </defs>
   </svg>
-  <div class="flex-column">
-    <h2 class="title ml-3">Recent Employee Access</h2>
-    <div class="card col-4 ml-3 h-31rem w-30rem">
-      <div class="card-container blue-container ml-3">
-        <div
-          *ngFor="let item of employeesArray"
-          class="shadow-1 mt-1 surface-card p-3 border-round-sm h-11rem w-27rem grid align-items-center justify-content-left"
-        >
-          <img
-            class="photo ml-2 col-3 mt-2"
-            src="{{ item.photo }}"
-            width="100px"
-            height="100px"
-            alt=""
-          />
+    <div class="flex-column">
+        <h2 class="title ml-3">Recent Employee Access</h2>
+        <div class="card col-4 ml-3 h-31rem w-30rem">
+            <div class="card-container blue-container ml-3">
+                <div *ngFor="let item of employeesArray" class="shadow-1 mt-1 surface-card p-3 border-round-sm h-11rem w-27rem grid align-items-center justify-content-left">
+                    <img class="photo ml-2 col-3 mt-2" src="{{ item.photo }}" width="100px" height="100px" alt="" />
 
-          <div class="labels flex flex-column col-8 w-16rem text-base">
-            <label>Employee: {{ item.name }} </label>
+                    <div class="labels flex flex-column col-8 w-16rem text-base">
+                        <label>Employee: {{ item.name }} </label>
 
-            <label for="">Time: {{ item.time }}</label>
+                        <label for="">Time: {{ item.time }}</label>
 
-            <label for>Department: {{ item.position }}</label>
+                        <label for>Department: {{ item.position }}</label>
 
-            <label for="">Entry: {{ item.access[0] }}</label>
-          </div>
-          <mat-icon class="icon">person</mat-icon>
+                        <label for="">Entry: {{ item.access[0] }}</label>
+                    </div>
+                    <mat-icon class="icon">person</mat-icon>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>

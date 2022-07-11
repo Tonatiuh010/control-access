@@ -1,0 +1,77 @@
+<div *ngIf="!expectedEmployee" class="placeholder">Select an Employee from the table</div>
+
+<div *ngIf="expectedEmployee" class="form">
+    <div class="title">
+        Employee Details
+    </div>
+    <div class="photo-name">
+        <div class="image-name-container">
+            <img class="pfp" [src]="expectedEmployee.photo" (error)="onImgError($event)" alt="Employee">
+        </div>
+        <div class="name-container">
+            <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-label>Employee Name</mat-label>
+                <input matInput placeholder="Juan Caballero" [(ngModel)]="expectedEmployee.name" [formControl]="name" required>
+                <mat-error *ngIf="name.invalid">{{getErrorMessage('name')}}</mat-error>
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="selects">
+        <mat-grid-list cols="2" rowHeight="3:1" [gutterSize]="'10px'">
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Access</mat-label>
+                    <mat-select [formControl]="access" [(ngModel)]="expectedEmployee.access" multiple required>
+                        <mat-select-trigger>
+                            {{access.value?.[0] || ''}}
+                            <span *ngIf="(access.value?.length || 0) > 1" class="example-additional-selection">
+                    (+{{(access.value?.length || 0) - 1}} {{access.value?.length === 2 ? 'other' : 'others'}})
+                  </span>
+                        </mat-select-trigger>
+                        <mat-option *ngFor="let acc of accessList" [value]="acc">{{acc}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="access.invalid">{{getErrorMessage('access')}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="outline">
+                    <mat-label>Position</mat-label>
+                    <mat-select [formControl]="position" [(ngModel)]="expectedEmployee.position" required>
+                        <mat-option *ngFor="let pos of positionList" [value]="pos">{{pos}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="position.invalid">{{getErrorMessage('position')}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="remove-padding">
+                <mat-form-field appearance="outline">
+                    <mat-label>Shift</mat-label>
+                    <mat-select [formControl]="shift" [(ngModel)]="expectedEmployee.shift" required>
+                        <mat-option *ngFor="let sh of shiftList" [value]="sh">{{sh}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="shift.invalid">{{getErrorMessage('shift')}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile class="remove-padding">
+                <mat-form-field appearance="outline">
+                    <mat-label>Card Assigned</mat-label>
+                    <mat-select [formControl]="card" [(ngModel)]="expectedEmployee.card_number" required>
+                        <mat-option *ngFor="let card of cardList" [value]="card">{{card}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="card.invalid">{{getErrorMessage('card')}}</mat-error>
+                </mat-form-field>
+            </mat-grid-tile>
+        </mat-grid-list>
+        <mat-grid-list cols="2" rowHeight="60px" [gutterSize]="'10px'">
+            <mat-grid-tile>
+                <button mat-raised-button class="full-width" color="red">Cancel</button>
+
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <button *ngIf="!employeeInitial" mat-raised-button class="full-width" color="green">Update Employee</button>
+                <button *ngIf="employeeInitial" mat-raised-button class="full-width" color="green">Add Employee</button>
+            </mat-grid-tile>
+
+        </mat-grid-list>
+
+    </div>
+</div>

@@ -21,7 +21,7 @@ const routes: Routes = [
     component: CardsEmployeeComponent,
     data: { title: 'Cards & Employees'}
   },
-  { path: '**', component: CardsEmployeeComponent }
+  { path: '**', component: DashboardComponent }
 ];
 
 @NgModule({

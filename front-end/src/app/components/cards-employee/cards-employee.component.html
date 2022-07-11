@@ -1,7 +1,17 @@
 <div class="parent">
-    <div class="div1 cards-big">
-    </div>
-    <div class="div2 cards-big"> </div>
-    <div class="div3 cards-big"> </div>
-    <div class="div4 cards-big"> </div>
+    <mat-card class="employee-table cards-big">
+        <app-employee-table (employeeSelected)=onEmployeeSelect($event) (employeeCreate)=onEmployeeCreate($event)></app-employee-table>
+    </mat-card>
+
+    <mat-card class="employee-edit cards-small">
+        <app-employee-edit [expectedEmployee]="employee" [employeeInitial]="initial"></app-employee-edit>
+    </mat-card>
+
+    <mat-card class="access-cards-table cards-big">
+        <app-access-cards-table></app-access-cards-table>
+    </mat-card>
+
+    <mat-card class="access-cards-edit cards-small">
+        <app-access-cards-edit></app-access-cards-edit>
+    </mat-card>
 </div>

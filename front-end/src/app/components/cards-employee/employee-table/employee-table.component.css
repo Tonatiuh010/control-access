@@ -1,0 +1,63 @@
+.example-container {
+    overflow: auto;
+    max-height: calc(50vh - 30px);
+}
+
+table {
+    width: 100%;
+}
+
+.mat-paginator-sticky {
+    bottom: 0;
+    position: sticky;
+    z-index: 10;
+}
+
+.pfp {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.image-name-container {
+    margin: 10px 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.mat-blue {
+    background-color: #0090FD;
+    color: #fff;
+}
+
+.mat-green {
+    background-color: #8FE597;
+    color: #fff;
+    justify-content: center;
+    width: 100px;
+}
+
+.mat-red {
+    background-color: #e58f8f;
+    color: #fff;
+    justify-content: center;
+    width: 100px;
+}
+
+.mat-violet {
+    background-color: #AB8FE5;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.options {
+    cursor: pointer;
+}
+
+.hover-row:hover {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}

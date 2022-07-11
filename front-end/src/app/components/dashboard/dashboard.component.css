@@ -2,11 +2,10 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(6, 1fr);
-    grid-gap: 5px;
-    margin: 10px 0px 0px 60px;
+    grid-gap: 10px;
     height: calc(100vh - 20px);
-    width: calc(100vw - 70px);
-    padding: 1px;
+    width: calc(100vw - 78px);
+    padding: 10px;
 }
 
 .cards-big {
@@ -38,8 +37,11 @@
     grid-area: 4 / 1 / 7 / 7;
 }
 
-.cards-small {
+.chart-small-left {
     background-color: #fff;
+}
+
+.cards-small {
     padding: 30px 15px;
 }
 
@@ -61,14 +63,18 @@
 
 .title {
     width: 100%;
-    padding: 5px;
-    height: 30%;
-    font-size: 32px;
+    height: 35%;
+    font-size: 24px;
+    font-weight: bold;
+    color: #464646;
+    text-align: center;
 }
 
 .body {
-    padding: 20px 0;
-    height: 70%;
-    font-size: 64px;
-    font-weight: bold;
+    padding: 20px 0px;
+    height: 65%;
+    font-size: 52px;
+    font-weight: lighter;
+    color: #464646;
+    text-align: center;
 }

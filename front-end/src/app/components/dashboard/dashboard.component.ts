@@ -10,7 +10,8 @@ import {  EChartsOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
   chartOption: EChartsOption = {
-    devicePixelRatio: 100,
+    width: 225,
+    height: 200,
     title: {
       text: 'Daily Attendence',
       textStyle: {
@@ -21,7 +22,12 @@ export class DashboardComponent implements OnInit {
       trigger: 'item'
     },
     legend: {
-      orient: 'horizontal',
+      orient: 'vertical',
+      align: 'left',
+      top: 50,
+      right: 100,
+      itemHeight: 10,
+      itemWidth: 10,
     },
     series: [
       {
