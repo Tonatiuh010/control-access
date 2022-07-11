@@ -7,10 +7,9 @@ namespace Engine.BO {
         public int Id {get; set;}
         public string Name {get; set;}
         public string LastName {get; set;}
-
-        public Job Job {get; set;}
-        public AccessLevel Level {get; set;}
-        
+        public Position Job {get; set;}
+        public List<AccessLevel> AccessLevels {get; set;}
+        public Shift Shift {get; set;}        
     }
 
     public class Job {        
@@ -21,9 +20,21 @@ namespace Engine.BO {
         public Departament Departament {get; set;}
     }
 
+    public class Position : Job {
+        public int PositionId {get; set;}
+        public string Code { get; set;}
+        public string Alias {get; set;}
+
+    }
+
     public class AccessLevel {
         public int Id {get; set;}
-        public string Name {get; set;}        
+        public string Name {get; set;}
+        public string Status {get; set;}
+    }
+
+    public class EmployeeAccessLevel : AccessLevel {
+        public int EmployeeId {get; set;}
     }
 
     public class Departament {
@@ -34,7 +45,7 @@ namespace Engine.BO {
 
     public class Card {
         public int Id {get; set;}
-        public decimal Serial {get; set;}
+        public string Key {get; set;}
         public Employee Employee {get; set;}
     }
 
@@ -43,6 +54,16 @@ namespace Engine.BO {
         public DateTime CheckDt {get; set;}
         public string Type {get; set;}
         public Card Card {get; set;}
+    }
+
+    public class Shift { 
+        public int Id {get; set;}
+        public string Name {get; set;}
+        public DateTime InTime {get; set;}
+        public DateTime OutTime {get; set;}
+        public DateTime LunchTime {get; set;}
+        public int DayCount {get; set;}
+
     }
 
 }

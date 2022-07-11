@@ -56,3 +56,6 @@ C:\Users\alumnotic\Documents\control-access\Engine\obj\Debug\net6.0\refint\Engin
 C:\Users\alumnotic\Documents\control-access\Engine\obj\Debug\net6.0\Engine.pdb
 C:\Users\alumnotic\Documents\control-access\Engine\obj\Debug\net6.0\Engine.genruntimeconfig.cache
 C:\Users\alumnotic\Documents\control-access\Engine\obj\Debug\net6.0\ref\Engine.dll
+C:\Users\kimot\control-access\Engine\obj\Debug\net6.0\Engine.dll
+C:\Users\kimot\control-access\Engine\obj\Debug\net6.0\refint\Engine.dll
+C:\Users\kimot\control-access\Engine\obj\Debug\net6.0\Engine.pdb

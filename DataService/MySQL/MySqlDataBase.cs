@@ -69,13 +69,17 @@ namespace DataService.MySQL
             CommandType = type
         };
 
-        public static IDataParameter CreateParameter(string name, object value, ParameterDirection direction, MySqlDbType type, bool isNullable = true) {
-            MySqlParameter parameter = new MySqlParameter(name, value);
-            parameter.Direction = direction;
-            parameter.MySqlDbType = type;
-            parameter.IsNullable = isNullable;
-            return parameter;
-        }
+        public static IDataParameter CreateParameter(string name, object value, MySqlDbType type, bool isNullable = true)  => new MySqlParameter(name, value) {
+            Direction = ParameterDirection.Input,
+            MySqlDbType = type,
+            IsNullable = isNullable
+        };
+                
+        public static IDataParameter CreateParameterOut(string name, MySqlDbType type) => new MySqlParameter() {
+            ParameterName = name, 
+            Direction = ParameterDirection.Output,
+            MySqlDbType = type
+        };
 
         public static void TransactionBlock(MySqlConnection conn, TransactionCallback action, DataException onException) {
             MySqlTransaction txn = null;

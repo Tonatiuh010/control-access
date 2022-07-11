@@ -1,25 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj": {}
+    "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj": {
+    "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj",
+        "projectUniqueName": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
         "projectName": "DataService",
-        "projectPath": "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj",
-        "packagesPath": "C:\\Users\\alumnotic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\obj\\",
+        "projectPath": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
+        "packagesPath": "C:\\Users\\kimot\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kimot\\control-access\\DataService\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\alumnotic\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\kimot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -48,7 +53,7 @@
             },
             "MySqlConnector": {
               "target": "Package",
-              "version": "[2.1.8, )"
+              "version": "[2.1.10, )"
             }
           },
           "imports": [
@@ -66,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
         }
       }
     }

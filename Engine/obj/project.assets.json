@@ -319,7 +319,7 @@
           "lib/netstandard2.1/MySql.Data.EntityFrameworkCore.dll": {}
         }
       },
-      "MySqlConnector/2.1.8": {
+      "MySqlConnector/2.1.10": {
         "type": "package",
         "compile": {
           "lib/net6.0/MySqlConnector.dll": {}
@@ -525,7 +525,7 @@
         "dependencies": {
           "MySql.Data": "8.0.29",
           "MySql.Data.EntityFrameworkCore": "8.0.22",
-          "MySqlConnector": "2.1.8"
+          "MySqlConnector": "2.1.10"
         },
         "compile": {
           "bin/placeholder/DataService.dll": {}
@@ -1023,10 +1023,10 @@
         "mysql.data.entityframeworkcore.nuspec"
       ]
     },
-    "MySqlConnector/2.1.8": {
-      "sha512": "CVJ0w9PbUnBS3lfOII1J15DshAnJgKqkrvKfkTSiUerPjJpSAfv7LJR5aJNnzj+LdFw2grekguVe1kedp6LMyA==",
+    "MySqlConnector/2.1.10": {
+      "sha512": "aVvetx5uRWlfnxXlbybf4t6plnH5IGrXSue8R2ZsBOAH8VfS1GuNYqQ4KREVAzN7JexPbhf41btg8pv34eBTrA==",
       "type": "package",
-      "path": "mysqlconnector/2.1.8",
+      "path": "mysqlconnector/2.1.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1048,7 +1048,7 @@
         "lib/netstandard2.1/MySqlConnector.dll",
         "lib/netstandard2.1/MySqlConnector.xml",
         "logo.png",
-        "mysqlconnector.2.1.8.nupkg.sha512",
+        "mysqlconnector.2.1.10.nupkg.sha512",
         "mysqlconnector.nuspec"
       ]
     },
@@ -1584,32 +1584,38 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alumnotic\\.nuget\\packages\\": {}
+    "C:\\Users\\kimot\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alumnotic\\Documents\\control-access\\Engine\\Engine.csproj",
+      "projectUniqueName": "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
       "projectName": "Engine",
-      "projectPath": "C:\\Users\\alumnotic\\Documents\\control-access\\Engine\\Engine.csproj",
-      "packagesPath": "C:\\Users\\alumnotic\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alumnotic\\Documents\\control-access\\Engine\\obj\\",
+      "projectPath": "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
+      "packagesPath": "C:\\Users\\kimot\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kimot\\control-access\\Engine\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\alumnotic\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\kimot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj": {
-              "projectPath": "C:\\Users\\alumnotic\\Documents\\control-access\\DataService\\DataService.csproj"
+            "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
+              "projectPath": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj"
             }
           }
         }
@@ -1638,7 +1644,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }
