@@ -5,10 +5,10 @@ using Engine.Constants;
 
 namespace ControlAccess.Controllers;
 
-[ApiController]
 [Route("[controller]")]
+[ApiController]
 public class LevelController : ControllerBase
-{          
+{
     private EmployeeBL bl {get; set;} = new EmployeeBL();
 
     [HttpGet]

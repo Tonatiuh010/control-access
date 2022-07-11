@@ -17,8 +17,8 @@ namespace DataService.MySQL
         public delegate void DataException(Exception e, string customMsg = "");
 
         // Properties
-        public MySqlConnection Connection { get;  set; }
-        public DataException OnException {get; set;}
+        public static DataException OnException {get; set;}
+        public MySqlConnection Connection { get;  set; }        
         
         // Constructor
         public MySqlDataBase(string connString) {

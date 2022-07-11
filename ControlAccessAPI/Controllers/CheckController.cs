@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControlAccess.Controllers;
 
-[ApiController]
 [Route("[controller]")]
+[ApiController]
 public class CheckController : ControllerBase
 {          
     [HttpGet]

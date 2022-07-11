@@ -297,11 +297,11 @@
           }
         }
       },
-      "MySqlConnector/2.1.8": {
+      "MySqlConnector/2.1.10": {
         "runtime": {
           "lib/net6.0/MySqlConnector.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.1.8.0"
+            "fileVersion": "2.1.10.0"
           }
         }
       },
@@ -411,7 +411,7 @@
         "dependencies": {
           "MySql.Data": "8.0.29",
           "MySql.Data.EntityFrameworkCore": "8.0.22",
-          "MySqlConnector": "2.1.8"
+          "MySqlConnector": "2.1.10"
         },
         "runtime": {
           "DataService.dll": {}
@@ -607,12 +607,12 @@
       "path": "mysql.data.entityframeworkcore/8.0.22",
       "hashPath": "mysql.data.entityframeworkcore.8.0.22.nupkg.sha512"
     },
-    "MySqlConnector/2.1.8": {
+    "MySqlConnector/2.1.10": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-CVJ0w9PbUnBS3lfOII1J15DshAnJgKqkrvKfkTSiUerPjJpSAfv7LJR5aJNnzj+LdFw2grekguVe1kedp6LMyA==",
-      "path": "mysqlconnector/2.1.8",
-      "hashPath": "mysqlconnector.2.1.8.nupkg.sha512"
+      "sha512": "sha512-aVvetx5uRWlfnxXlbybf4t6plnH5IGrXSue8R2ZsBOAH8VfS1GuNYqQ4KREVAzN7JexPbhf41btg8pv34eBTrA==",
+      "path": "mysqlconnector/2.1.10",
+      "hashPath": "mysqlconnector.2.1.10.nupkg.sha512"
     },
     "System.Buffers/4.5.1": {
       "type": "package",

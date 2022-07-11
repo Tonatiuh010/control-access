@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj": {}
+    "c:\\Users\\kimot\\control-access\\Engine\\Engine.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
+    "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
+        "projectUniqueName": "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
         "projectName": "DataService",
-        "projectPath": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
+        "projectPath": "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
         "packagesPath": "C:\\Users\\kimot\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kimot\\control-access\\DataService\\obj\\",
+        "outputPath": "c:\\Users\\kimot\\control-access\\DataService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -75,14 +75,14 @@
         }
       }
     },
-    "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj": {
+    "c:\\Users\\kimot\\control-access\\Engine\\Engine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
+        "projectUniqueName": "c:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
         "projectName": "Engine",
-        "projectPath": "C:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
+        "projectPath": "c:\\Users\\kimot\\control-access\\Engine\\Engine.csproj",
         "packagesPath": "C:\\Users\\kimot\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kimot\\control-access\\Engine\\obj\\",
+        "outputPath": "c:\\Users\\kimot\\control-access\\Engine\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -102,8 +102,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
-                "projectPath": "C:\\Users\\kimot\\control-access\\DataService\\DataService.csproj"
+              "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj": {
+                "projectPath": "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj"
               }
             }
           }

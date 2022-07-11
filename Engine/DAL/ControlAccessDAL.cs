@@ -57,7 +57,7 @@ namespace Engine.DAL {
             List<Employee> model = new List<Employee>();
 
             MySqlDataBase.TransactionBlock(Connection, txn => {
-                var cmd = CreateCommand(SQL.GET_EMPLOYEE_ACCESS_LEVEL, txn, CommandType.Text);
+                var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
                 cmd.Parameters.Add(CreateParameter("IN_EMPLOYEE", employeeId, MySqlDbType.Int32));
@@ -306,6 +306,8 @@ namespace Engine.DAL {
         public static void DataAccessBlock(Action action, ControlAccessDAL dal) {
 
         }
+
+        public static void SetOnConnectionException(DataException onException) => MySqlDataBase.OnException = onException;        
 
     }
 }

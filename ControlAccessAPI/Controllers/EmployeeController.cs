@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using Newtonsoft.Json.Linq;
 using Engine.BL;
 using Engine.BO;
 using Engine.Constants;
 
 namespace ControlAccess.Controllers;
 
+[Route("api/[controller]")]
 [ApiController]
-[Route("[controller]")]
 public class EmployeeController : ControllerBase
 {
     private EmployeeBL bl {get; set;} = new EmployeeBL();
@@ -17,9 +18,9 @@ public class EmployeeController : ControllerBase
         return bl.GetEmployees(null);
     }    
     
-    [HttpGet]
-    public Employee GetEmployee(int employeeId) {
-        var emps = bl.GetEmployees(employeeId);
+    [HttpGet("{id:int}")]
+    public Employee GetEmployee(int id) {
+        var emps = bl.GetEmployees(id);
 
         if(emps != null && emps.Count > 0) {
             return emps[0];
@@ -30,13 +31,24 @@ public class EmployeeController : ControllerBase
 
     [HttpPost]
     public Result SetEmployee(dynamic obj) {
-        return bl.SetEmployee(null, C.GLOBAL_USER);        
-    }
+        Result result = new Result();
+        Employee employee = new Employee();
 
+        if(obj != null ) {
+            JObject jObj = JObject.Parse(obj.ToString());            
+        }        
+
+        return bl.SetEmployee(null, C.GLOBAL_USER);        
+    }    
 
     [HttpPost]
     [Route("SetLevel")]
     public Result SetEmployeeAccessLevel(int employeeId, int accessLevel) {
         return bl.SetEmployeeAccessLevel(employeeId, accessLevel, C.GLOBAL_USER);
     }
+
+    public static void PropertyFinder(IDictionary props, JObject obj){
+
+    }    
+
 }
