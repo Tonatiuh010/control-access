@@ -600,7 +600,7 @@
   </svg>
     <div class="flex-column">
         <h2 class="title ml-3">Recent Employee Access</h2>
-        <div class="card col-4 ml-3 h-31rem w-30rem">
+        <mat-card class="card col-4 ml-3 h-31rem w-30rem">
             <div class="card-container blue-container ml-3">
                 <div *ngFor="let item of employeesArray" class="shadow-1 mt-1 surface-card p-3 border-round-sm h-11rem w-27rem grid align-items-center justify-content-left">
                     <img class="photo ml-2 col-3 mt-2" src="{{ item.photo }}" width="100px" height="100px" alt="" />
@@ -617,6 +617,6 @@
                     <mat-icon class="icon">person</mat-icon>
                 </div>
             </div>
-        </div>
+        </mat-card>
     </div>
 </div>
