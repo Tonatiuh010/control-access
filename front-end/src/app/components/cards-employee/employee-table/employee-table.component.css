@@ -1,6 +1,11 @@
 .example-container {
     overflow: auto;
     max-height: calc(50vh - 30px);
+    z-index: 1;
+}
+
+::ng-deep .mat-card {
+    z-index: -1 !important;
 }
 
 table {
