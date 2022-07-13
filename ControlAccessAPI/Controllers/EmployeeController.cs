@@ -3,6 +3,7 @@ using System.Collections;
 using Newtonsoft.Json.Linq;
 using Engine.BL;
 using Engine.BO;
+using Classes;
 using Engine.Constants;
 
 namespace ControlAccess.Controllers;
@@ -35,8 +36,10 @@ public class EmployeeController : ControllerBase
         Employee employee = new Employee();
 
         if(obj != null ) {
-            JObject jObj = JObject.Parse(obj.ToString());            
-        }        
+            JObject jObj = JObject.Parse(obj.ToString());
+
+            var employeeNumber = new JsonProperty<string>("employee", jObj);
+        }
 
         return bl.SetEmployee(null, C.GLOBAL_USER);        
     }    
@@ -46,9 +49,4 @@ public class EmployeeController : ControllerBase
     public Result SetEmployeeAccessLevel(int employeeId, int accessLevel) {
         return bl.SetEmployeeAccessLevel(employeeId, accessLevel, C.GLOBAL_USER);
     }
-
-    public static void PropertyFinder(IDictionary props, JObject obj){
-
-    }    
-
 }
