@@ -15,7 +15,6 @@ body {
 }
 
 svg {
-    z-index: -10;
     margin-top: 160px;
 }
 
@@ -48,6 +47,8 @@ label {
 
 .icon:hover {
     color: #0090FD;
+    cursor: pointer;
+    margin-top: 90px;
     cursor: pointer;
 }
 

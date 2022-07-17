@@ -79,7 +79,3 @@
     color: #464646;
     text-align: center;
 }
-
-::ng-deep .mat-card {
-    z-index: -1 !important;
-}

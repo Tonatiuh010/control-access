@@ -21,45 +21,23 @@ header {
     left: 0;
 }
 
+.icon {
+    color: white;
+    height: 50px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon:hover:not(:first-child),
+.active {
+    color: #0090FD;
+    background-color: white;
+    cursor: pointer;
+}
+
 .fa-solid {
     font-size: 18px;
     padding: 10px;
-}
-
-.button {
-    background-color: #0090FD;
-    color: white;
-    text-decoration: none;
-    height: 50px;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
-    width: auto;
-    max-width: 50px;
-    /** I'm animating max-width because width needs to be auto, and auto can't be animated **/
-    -webkit-transition: max-width 0.5s;
-    transition: max-width 0.5s;
-    z-index: 1;
-    border-radius: 0 25px 25px 0;
-}
-
-.button:hover:not(:first-child) {
-    background-color: #fff;
-    color: #0090FD;
-    max-width: 300px;
-    cursor: pointer;
-    outline: #0090FD solid 3px;
-}
-
-.icon {
-    font-size: 16px;
-    margin: 0 15px 0 6px;
-    padding: 0px 0px;
-    display: flex;
-    align-items: center;
-}
-
-.text {
-    white-space: nowrap;
-    padding-right: 15px;
 }
