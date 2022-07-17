@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MapComponent } from './components/map/map.component';
 import { CardsEmployeeComponent } from './components/cards-employee/cards-employee.component';
+import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
     path: 'cards-employee',
     component: CardsEmployeeComponent,
     data: { title: 'Cards & Employees'}
+  },{
+    path: 'entrances-devices',
+    component: EntrancesDevicesComponent,
+    data: { title: 'Entrances & Devices'}
   },
   { path: '**', component: DashboardComponent }
 ];

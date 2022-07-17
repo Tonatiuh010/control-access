@@ -18,6 +18,7 @@ import { EmployeeTableComponent } from './components/cards-employee/employee-tab
 import { AccessCardsTableComponent } from './components/cards-employee/access-cards-table/access-cards-table.component';
 import { EmployeeEditComponent } from './components/cards-employee/employee-edit/employee-edit.component';
 import { AccessCardsEditComponent } from './components/cards-employee/access-cards-edit/access-cards-edit.component';
+import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { AccessCardsEditComponent } from './components/cards-employee/access-car
     EmployeeTableComponent,
     EmployeeEditComponent,
     AccessCardsTableComponent,
-    AccessCardsEditComponent
+    AccessCardsEditComponent,
+    EntrancesDevicesComponent
   ],
   imports: [
     BrowserModule,
