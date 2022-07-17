@@ -9,62 +9,21 @@ import {  EChartsOption } from 'echarts';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  chartOption: EChartsOption = {
-    width: 225,
-    height: 200,
-    title: {
-      text: 'Daily Attendence',
-      textStyle: {
-        fontFamily: 'sans-serif'
-      },
-    },
-    tooltip: {
-      trigger: 'item'
-    },
-    legend: {
-      orient: 'vertical',
-      align: 'left',
-      top: 50,
-      right: 100,
-      itemHeight: 10,
-      itemWidth: 10,
-    },
-    series: [
-      {
-        name: 'Time Of Arrival',
-        type: 'pie',
-        radius: '50%',
-        data: [
-          { value: 20, name: 'Absent', itemStyle: {color: '#ee6666'}},
-          { value: 66, name: 'On-Time', itemStyle: {color: '#91cc75'}},
-          { value: 12, name: 'Tardies', itemStyle: {color: '#fac858'} }
-        ],
-        emphasis: {
-          itemStyle: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)'
-          }
-        }
-      }
-    ]
-  };
-
 
   chartOption2: EChartsOption = {
     title: {
-      text: 'Monthly Total Attendance'
+      text: 'Hourly Attendance'
     },
     legend: {},
     tooltip: {},
     dataset: {
       source: [
-        ['Month', 'June', 'July', 'August'],
-        ['Security', 43, 85, 93],
-        ['RH', 43, 23, 25],
-        ['Production', 12, 45, 83],
-        ['Sales ', 72, 53, 39],
-        ['Warehouse', 23, 23, 32]
+        ['7:00 AM', '10:00 AM', '2:00 PM', '5:00 PM'],
+        ['Security', 43, 85, 93, 10],
+        ['RH', 43, 23, 25, 10],
+        ['Production', 12, 45, 83, 10],
+        ['Sales ', 72, 53, 39, 10],
+        ['Warehouse', 23, 23, 32, 10]
       ]
     },
     xAxis: { type: 'category' },

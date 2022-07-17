@@ -41,3 +41,9 @@ header {
     font-size: 18px;
     padding: 10px;
 }
+
+.tooltip {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #0090FD;
+}
