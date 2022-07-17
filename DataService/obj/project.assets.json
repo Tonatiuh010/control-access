@@ -1566,24 +1566,30 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\alumnodev\\.nuget\\packages\\": {}
+    "C:\\Users\\kimot\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alumnodev\\Documents\\control-access\\DataService\\DataService.csproj",
+      "projectUniqueName": "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
       "projectName": "DataService",
-      "projectPath": "C:\\Users\\alumnodev\\Documents\\control-access\\DataService\\DataService.csproj",
-      "packagesPath": "C:\\Users\\alumnodev\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alumnodev\\Documents\\control-access\\DataService\\obj\\",
+      "projectPath": "c:\\Users\\kimot\\control-access\\DataService\\DataService.csproj",
+      "packagesPath": "C:\\Users\\kimot\\.nuget\\packages\\",
+      "outputPath": "c:\\Users\\kimot\\control-access\\DataService\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\alumnodev\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\kimot\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1630,7 +1636,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.301\\RuntimeIdentifierGraph.json"
       }
     }
   }
