@@ -24,7 +24,7 @@ SELECT * FROM SHIFT;
 
 	SET @RESULT = '';
 	CALL SET_DEPARTAMENT(
-		1,
+		NULL,
 		'DEPTO 1',
 		'D1',
 		'API_TEST',
@@ -34,7 +34,7 @@ SELECT * FROM SHIFT;
     
     SET @RESULT = '';
 	CALL SET_JOB(
-		1,
+		NULL,
 		'JOB',
 		'TEST JOB',
 		'API_TEST',
@@ -44,7 +44,7 @@ SELECT * FROM SHIFT;
 
 	SET @RESULT = '';
     CALL SET_ACCESS_LEVEL(
-		1,
+		NULL,
         'G1',
         'API_TEST',
         @RESULT
@@ -53,8 +53,8 @@ SELECT * FROM SHIFT;
 	
     SET @RESULT = '';
     CALL SET_SHIFT(
-		1,
-        'Matutino',
+		NULL,
+        '4 X 3',
         maketime(8, 00, 00), 
         maketime(18, 00, 00),         
         maketime(12, 00, 00),
@@ -66,7 +66,7 @@ SELECT * FROM SHIFT;
     
     SET @RESULT = '';
     CALL SET_POSITION(
-		1,
+		NULL,
         'BASE PLANT',        
 		1,
 		1,
@@ -81,7 +81,7 @@ SELECT * FROM SHIFT;
 			'TONATIUH',
 			'LOPEZ RAMIREZ',
 			NULL,
-			NULL,
+			1,
 			'API_TEST',
 			@RESULT
 	);

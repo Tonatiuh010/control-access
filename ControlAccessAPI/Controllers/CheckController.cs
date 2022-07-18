@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControlAccess.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class CheckController : ControllerBase
 {          

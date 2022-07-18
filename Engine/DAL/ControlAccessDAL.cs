@@ -10,7 +10,7 @@ using Engine.BO;
 
 namespace Engine.DAL {
     public class ControlAccessDAL : MySqlDataBase {
-        private static ControlAccessDAL _DAL {get; set;} = null;
+        private static ControlAccessDAL _DAL {get; set;} = null;        
         public static string? ConnString {get; set;}
         public static ControlAccessDAL Instance {
             get 
@@ -22,10 +22,9 @@ namespace Engine.DAL {
                 return _DAL;
             } 
         }
-        
-        private ControlAccessDAL() : base(ConnString) {
 
-        }
+        private Validate Validate = null;                
+        private ControlAccessDAL() : base(ConnString) => Validate = Validate.Instance;
 
         public List<Check> GetChecks() {
             List<Check> model = new List<Check>();
@@ -37,11 +36,11 @@ namespace Engine.DAL {
                     while(reader.Read()) {
                         model.Add(new () {
                             Card = new(),
-                            CheckDt = reader.GetDateTime("CHECK_DT"),                            
+                            CheckDt = reader.GetDateTime("CHECK_DT"),
                         });
 
                         string name = reader["NAME"].ToString();
-                        string id = reader["SHIFT_ID"].ToString();                        
+                        string id = reader["SHIFT_ID"].ToString();
                         Console.WriteLine(name);
                     }
                 }
@@ -63,23 +62,30 @@ namespace Engine.DAL {
                 cmd.Parameters.Add(CreateParameter("IN_EMPLOYEE", employeeId, MySqlDbType.Int32));
                 cmd.Parameters.Add(pResult);
 
-                /*EMPLOYEE_ID, FIRST_NAME, LAST_NAME, POSITION_ID, SHIFT_ID, EMPLOYEE_STATUS, POSITION_ID, POSITION_NAME, DEPARTAMENT_ID, JOB_ID, DEPARTAMENT, DEPTO_CODE, JOB, JOB_DETAIL, SHIFT_CODE, IN_SHIFT, OUT_SHIFT, LUNCH, SHIFT_INTERVAL, CARD_ID, CARD_NUMBER, CARD_STATUS*/
-
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
                         model.Add(new () {
-                            Id = int.Parse(reader["EMPLOYEE_ID"].ToString()),
-                            Name = reader["FIRST_NAME"].ToString(),
-                            LastName = reader["LAST_NAME"].ToString(),
+                            Id = Validate.getDefaultIntIfDBNull(reader["EMPLOYEE_ID"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["FIRST_NAME"]),
+                            LastName = Validate.getDefaultStringIfDBNull(reader["LAST_NAME"]),
                             Job = new Position() {
-                                // Id = int.Parse(reader["POSITION_ID"].ToString()),
-                                // Alias = reader["POSITION_NAME"].ToString(),
-                                // Departament = new Departament() {
-                                //     Code = reader["DEPARTAMENT"]
-                                // }
+                                Id = Validate.getDefaultIntIfDBNull(reader["JOB_ID"]),
+                                Alias = Validate.getDefaultStringIfDBNull(reader["POSITION_NAME"]),
+                                PositionId = Validate.getDefaultIntIfDBNull(reader["POSITION_ID"]),
+                                Description = Validate.getDefaultStringIfDBNull(reader["JOB_DETAIL"]),
+                                Departament = new Departament() {
+                                    Id = Validate.getDefaultIntIfDBNull(reader["DEPARTAMENT_ID"]),
+                                    Code = Validate.getDefaultStringIfDBNull(reader["DEPTO_CODE"]),
+                                    Name = Validate.getDefaultStringIfDBNull(reader["DEPARTAMENT"])
+                                }
                             },
                             Shift = new Shift() {
-
+                                Id = Validate.getDefaultIntIfDBNull(reader["SHIFT_ID"]),
+                                Name = Validate.getDefaultStringIfDBNull(reader["SHIFT_CODE"]),
+                                DayCount = Validate.getDefaultIntIfDBNull(reader["SHIFT_INTERVAL"]),
+                                InTime = Validate.getDefaultDateIfDBNull(reader["IN_SHIFT"]),
+                                OutTime = Validate.getDefaultDateIfDBNull(reader["OUT_SHIFT"]),
+                                LunchTime = Validate.getDefaultDateIfDBNull(reader["LUNCH"])
                             },
                             AccessLevels = new List<AccessLevel>()                            
 
@@ -145,11 +151,161 @@ namespace Engine.DAL {
             return model;
         }
 
+        public Result SetCheck(string cardSerial, string txnUser) {
+            Result result = new Result();
+            string sSp = SQL.SET_CARD_CHECK;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                cmd.Parameters.Add(CreateParameter("IN_NUMBER", cardSerial, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetCheck", msg, ex, result));
+
+            return result;
+        }
+
+        public Result SetDepartament(Departament departament, string txnUser) {
+            Result result = new Result();
+            string sSp = SQL.SET_DEPARTAMENT;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {                
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                
+                cmd.Parameters.Add(CreateParameter("IN_DEPTO", departament.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_NAME", departament.Name, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_CODE", departament.Code, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDepartament", msg, ex, result));
+
+            return result;
+        }
+
+        public Result SetJob(Job job, string txnUser) {
+            Result result = new Result();
+            string sSp = SQL.SET_JOB;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+
+                cmd.Parameters.Add(CreateParameter("IN_EMPLOYEE", job.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_NAME", job.Name, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_DESCRIPTION", job.Description, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetJob", msg, ex, result));
+
+            return result;
+        }
+
+        public Result SetAccessLevel(AccessLevel level, string txnUser){ 
+            Result result = new Result();
+            string sSp = SQL.SET_ACCESS_LEVEL;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+
+                cmd.Parameters.Add(CreateParameter("IN_ACCESS_ID", level.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_NAME", level.Name, MySqlDbType.String));                
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetAccessLevel", msg, ex, result));
+
+            return result;
+        }
+
+        public Result SetShift(Shift shift, string txnUser) {
+            Result result = new Result();
+            string sSp = SQL.SET_SHIFT;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                
+                cmd.Parameters.Add(CreateParameter("IN_SHIFT", shift.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_NAME", shift.Name, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_CLOCK_IN", shift.InTime, MySqlDbType.Time));
+                cmd.Parameters.Add(CreateParameter("IN_CLOCK_OUT", shift.OutTime, MySqlDbType.Time));
+                cmd.Parameters.Add(CreateParameter("IN_LUNCH", shift.LunchTime, MySqlDbType.Time));
+                cmd.Parameters.Add(CreateParameter("IN_DAY", shift.DayCount, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetShift", msg, ex, result));
+
+            return result;
+        }
+
+        public Result SetPosition(Position position, string txnUser) {  
+            Result result = new Result();
+            string sSp = SQL.SET_POSITION;
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                
+                cmd.Parameters.Add(CreateParameter("IN_POSITION", position.PositionId, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_NAME", position.Alias, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_DEPTO", position.Departament.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_JOB", position.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(pResult);
+                
+                using(var reader = cmd.ExecuteReader()) 
+                {
+                    result = GetResult(pResult, sSp);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetPosition", msg, ex, result));
+
+            return result;
+        }
+
         public Result SetEmployee(Employee employee, string txnUser) {
             Result result = new Result();
             string sSp = SQL.SET_EMPLOYEE;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {                
+            MySqlDataBase.TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -267,7 +423,7 @@ namespace Engine.DAL {
             }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDownCard", msg, ex, result));
 
             return result;
-        }
+        }        
 
         public static Result GetResult(IDataParameter pResult, string sSp) {  
             Result result = new Result();
@@ -279,15 +435,13 @@ namespace Engine.DAL {
                     if(string.IsNullOrEmpty(res))  {
                         result.Status = C.ERROR;
                         result.Message = $"Procedure {sSp} did not return response value";
-                    }
-
-                    if (res != C.OK) {
+                    } else if (res != C.OK) {
                         result.Status = C.ERROR;
                         result.Message = res;
+                    } else {
+                        result.Status = res;
+                        result.Message = C.COMPLETE;
                     }
-
-                    result.Status = res;
-                    result.Message = C.COMPLETE;
                 }
             } catch (Exception ex) {
                 result.Status = C.ERROR;

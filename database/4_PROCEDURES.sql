@@ -31,7 +31,7 @@ CREATE PROCEDURE SET_ACCESS_LEVEL (
             CREATED_ON,
             CREATED_BY
         ) VALUES (
-			IN_ACCESS_ID,
+			IN_ACCESS_ID,-- IFNULL(IN_ACCESS_ID, GET_NEXT_VAL('CTL_ACCESS', 'ACCESS_LEVEL')),
             IN_NAME,
             'ENABLED',
             NOW(),
@@ -97,7 +97,7 @@ CREATE PROCEDURE SET_SHIFT(
             CREATED_ON,
             CREATED_BY
         ) VALUES (
-			IN_SHIFT,
+			IN_SHIFT,-- IFNULL(IN_SHIFT, GET_NEXT_VAL('CTL_ACCESS', 'SHIFT')),
             IN_NAME,
             IN_CLOCK_IN,
             IN_CLOCK_OUT,
@@ -165,7 +165,7 @@ CREATE PROCEDURE SET_POSITION (
             CREATED_ON,
             CREATED_BY
         ) VALUES (
-			IN_POSITION,
+			IN_POSITION,-- IFNULL(IN_POSITION, GET_NEXT_VAL('CTL_ACCESS', 'POSITION')),
             IN_NAME,
             IN_DEPTO,
             IN_JOB,

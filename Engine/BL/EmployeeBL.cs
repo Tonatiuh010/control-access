@@ -11,7 +11,7 @@ namespace Engine.BL {
         private ControlAccessDAL DAL => ControlAccessDAL.Instance;
 
 
-        public List<Employee> GetEmployees(int? employeeId) {
+        public List<Employee> GetEmployees(int? employeeId = null) {
             return DAL.GetEmployees(employeeId);
         }
 
