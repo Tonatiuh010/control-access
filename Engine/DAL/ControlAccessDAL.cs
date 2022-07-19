@@ -83,9 +83,9 @@ namespace Engine.DAL {
                                 Id = Validate.getDefaultIntIfDBNull(reader["SHIFT_ID"]),
                                 Name = Validate.getDefaultStringIfDBNull(reader["SHIFT_CODE"]),
                                 DayCount = Validate.getDefaultIntIfDBNull(reader["SHIFT_INTERVAL"]),
-                                InTime = Validate.getDefaultDateIfDBNull(reader["IN_SHIFT"]),
-                                OutTime = Validate.getDefaultDateIfDBNull(reader["OUT_SHIFT"]),
-                                LunchTime = Validate.getDefaultDateIfDBNull(reader["LUNCH"])
+                                InTime = Validate.getDefaultTimeSpanIfDBNull(reader["IN_SHIFT"]),
+                                OutTime = Validate.getDefaultTimeSpanIfDBNull(reader["OUT_SHIFT"]),
+                                LunchTime = Validate.getDefaultTimeSpanIfDBNull(reader["LUNCH"])
                             },
                             AccessLevels = new List<AccessLevel>()                            
 
@@ -113,10 +113,10 @@ namespace Engine.DAL {
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
                         model.Add(new () {
-                            Id = int.Parse(reader["ACCESS_LEVEL_ID"].ToString()),
-                            Name = reader["NAME"].ToString(),
-                            Status = reader["STATUS"].ToString(),
-                            EmployeeId = int.Parse(reader["EMPLOYEE_ID"].ToString())
+                            Id = Validate.getDefaultIntIfDBNull(reader["ACCESS_LEVEL_ID"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["NAME"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["STATUS"]),
+                            EmployeeId = Validate.getDefaultIntIfDBNull(reader["EMPLOYEE_ID"])
                         });
                     }
                 }
@@ -137,9 +137,9 @@ namespace Engine.DAL {
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
                         model.Add(new () {
-                            Id = int.Parse(reader["ACCESS_LEVEL_ID"].ToString()),
-                            Name = reader["NAME"].ToString(),
-                            Status = reader["STATUS"].ToString()
+                            Id = Validate.getDefaultIntIfDBNull(reader["ACCESS_LEVEL_ID"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["NAME"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["STATUS"].ToString())
                         });
                     }
                 }
@@ -455,10 +455,6 @@ namespace Engine.DAL {
             result.Status = C.ERROR;
             result.Message = $"Exception on ({actionName}) - Details({msg}) - {ex.Message}";
             result.Data = ex.GetType().ToString();            
-        }
-
-        public static void DataAccessBlock(Action action, ControlAccessDAL dal) {
-
         }
 
         public static void SetOnConnectionException(DataException onException) => MySqlDataBase.OnException = onException;        

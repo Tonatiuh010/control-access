@@ -17,16 +17,17 @@ namespace DataService.MySQL
         public delegate void DataException(Exception e, string customMsg = "");
 
         // Properties
-        public static DataException OnException {get; set;}
+        public static DataException? OnException {get; set;}
         public MySqlConnection Connection { get;  set; }        
         
         // Constructor
         public MySqlDataBase(string connString) {
             try {
                 OpenConnection(connString);             
-            } catch (Exception ex) {
-                if (ex.GetType() == typeof(MySqlException) ) {
-                    MySqlException e = (MySqlException)ex;
+            } catch (Exception ex) {                
+                if(OnException != null) {
+                    if (ex.GetType() == typeof(MySqlException) ) {
+                    MySqlException e = (MySqlException)ex;                    
                     switch (e.Number) {
                         case 0:                            
                             OnException(ex, "Cannot connect to server.  Contact administrator");
@@ -35,9 +36,10 @@ namespace DataService.MySQL
                             OnException(ex, "Invalid username/password, please try again");
                             break;
                     }
-                } else {
+                } else {                    
                     OnException(ex, "Exception creating connection...");
                 }
+                }                
             }
         }
 

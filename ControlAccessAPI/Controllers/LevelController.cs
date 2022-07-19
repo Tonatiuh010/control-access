@@ -1,21 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Engine.BO;
+using System.Collections;
+using Newtonsoft.Json.Linq;
 using Engine.BL;
+using Engine.BL.Delegates;
+using Engine.BO;
+using Classes;
 using Engine.Constants;
 
 namespace ControlAccess.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class LevelController : ControllerBase
+public class LevelController : CustomContoller
 {
-    private EmployeeBL bl {get; set;} = new EmployeeBL();
+    private ControlAccessBL bl {get; set;} = new ControlAccessBL();
 
     [HttpGet]
-    public List<AccessLevel> GetAccessLevels() => bl.GetAccessLevels();
+    public Result GetAccessLevels() => RequestResponse(() => bl.GetAccessLevels());
 
     [HttpGet]
-    public List<EmployeeAccessLevel> GetEmployeeAccessLevel(int id) => bl.GetEmployeeAccessLevels(id);
+    public Result GetEmployeeAccessLevel(int id) => RequestResponse(() => bl.GetEmployeeAccessLevels(id));
+
+
 
        
 }

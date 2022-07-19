@@ -93,7 +93,7 @@ namespace Engine.BO
                         break;
                     case TypeCode.Int64:
                         obj = 0;
-                        break;
+                        break;                    
                     default:
                         break;
                 }
@@ -123,6 +123,15 @@ namespace Engine.BO
         public DateTime getDefaultDateIfDBNull(object obj)
         {
             return Convert.ToDateTime(getDefaultIfDBNull(obj, TypeCode.DateTime));
+        }
+
+        public TimeSpan getDefaultTimeSpanIfDBNull(object obj) 
+        {
+            if (obj != null && obj.GetType() == typeof(TimeSpan)) {                
+                return (TimeSpan)obj;
+            } else {
+                return new TimeSpan();
+            }            
         }
 
         public long getDefaultLongIfDBNull(object obj)

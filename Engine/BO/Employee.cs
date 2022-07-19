@@ -59,9 +59,9 @@ namespace Engine.BO {
     public class Shift { 
         public int? Id {get; set;}
         public string? Name {get; set;}
-        public DateTime? InTime {get; set;}
-        public DateTime? OutTime {get; set;}
-        public DateTime? LunchTime {get; set;}
+        public TimeSpan? InTime {get; set;}
+        public TimeSpan? OutTime {get; set;}
+        public TimeSpan? LunchTime {get; set;}
         public int? DayCount {get; set;}
 
     }

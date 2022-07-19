@@ -12,8 +12,8 @@ namespace ControlAccess.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class EmployeeController : CustomContoller
-{    
-    private EmployeeBL bl {get; set;} = new EmployeeBL();    
+{
+    private ControlAccessBL bl {get; set;} = new ControlAccessBL();    
 
     [HttpGet]
     public Result GetEmployees() => RequestResponse(() => bl.GetEmployees());
@@ -32,21 +32,19 @@ public class EmployeeController : CustomContoller
     [HttpPost]
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {
         Employee employee;
-
-        if(obj != null ) {
-            JObject jObj = JObject.Parse(obj.ToString());
-            employee = new Employee() {
-                Id = JsonProperty<int?>.GetValue("id", jObj),
-                Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
-                LastName = JsonProperty<string>.GetValue("lastName", jObj, OnMissingProperty),
-                Job = new Position() {                    
-                    PositionId = JsonProperty<int?>.GetValue("position", jObj),
-                },
-                Shift = new Shift() {
-                    Id = JsonProperty<int?>.GetValue("shift", jObj),
-                }                
-            };
-        } else throw new Exception($"Parametros no validos se recibio: {obj}");
+        
+        JObject jObj = JObject.Parse(obj.ToString());
+        employee = new Employee() {
+            Id = JsonProperty<int?>.GetValue("id", jObj),
+            Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
+            LastName = JsonProperty<string>.GetValue("lastName", jObj, OnMissingProperty),
+            Job = new Position() {                    
+                PositionId = JsonProperty<int?>.GetValue("position", jObj),
+            },
+            Shift = new Shift() {
+                Id = JsonProperty<int?>.GetValue("shift", jObj),
+            }
+        };
 
         return bl.SetEmployee(employee, C.GLOBAL_USER);
     });
