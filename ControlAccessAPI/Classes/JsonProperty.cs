@@ -5,11 +5,14 @@ using Engine.BL.Delegates;
 
 namespace Classes {
     public static class JsonProperty<T> {
-        public static T GetValue(string name, JObject jObj, Delegates.CallbackExceptionMsg onMissingProperty = null) {
-            T result;
+        public static T? GetValue(string name, JObject jObj, Delegates.CallbackExceptionMsg? onMissingProperty = null) {
+            T? result = default(T);
 
             try {
-                result = jObj[name].Value<T>();
+                var jKey = jObj[name];
+                if(jKey != null) {
+                    result = jKey.Value<T?>();
+                }
             } catch (Exception ex){
                 result = default(T);
                 if(onMissingProperty != null) {
@@ -24,7 +27,7 @@ namespace Classes {
     public class RequestError {
         public string? Info {get; set;}
         public Exception? Exception {get; set;}
-
+    
         public string FormatError {get { 
             string format = $"Error -> {Info}";
 
@@ -37,6 +40,7 @@ namespace Classes {
 
         public static string FormatErrors(List<RequestError> errors) {
             string result  = string.Empty;
+
 
             if(errors != null && errors.Count() > 0 ) {
                 foreach(var err in errors) {

@@ -18,7 +18,7 @@ namespace DataService.MySQL
 
         // Properties
         public static DataException? OnException {get; set;}
-        public MySqlConnection Connection { get;  set; }        
+        public MySqlConnection Connection { get;  set; } = new MySqlConnection();   
         
         // Constructor
         public MySqlDataBase(string connString) {
@@ -84,13 +84,14 @@ namespace DataService.MySQL
         };
 
         public static void TransactionBlock(MySqlConnection conn, TransactionCallback action, DataException onException) {
-            MySqlTransaction txn = null;
+            MySqlTransaction? txn = null;
             try {
                 txn = conn.BeginTransaction();                
                 action(txn);
                 txn.Commit();
             } catch (Exception e) {
-                txn.Rollback();
+                if(txn != null)
+                    txn.Rollback();
                 onException(e);
             }
         }

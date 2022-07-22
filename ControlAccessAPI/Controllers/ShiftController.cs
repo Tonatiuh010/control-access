@@ -23,7 +23,10 @@ public class ShiftController : CustomContoller
         Shift shift;
         
         JObject jObj = JObject.Parse(obj.ToString());        
-        shift = new Shift() {
+        shift = new Shift(
+            JsonProperty<string>.GetValue("inTime", jObj, OnMissingProperty), 
+            JsonProperty<string>.GetValue("outTime", jObj, OnMissingProperty) 
+        ) {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
             DayCount = JsonProperty<int?>.GetValue("dayCount", jObj),            

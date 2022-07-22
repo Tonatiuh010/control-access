@@ -18,16 +18,19 @@ public class CheckController : CustomContoller
     [HttpGet]
     public Result Get() => RequestResponse(() => "Empty For now...");
 
+    [HttpGet("employee/{id:int?}")]
+    public Result GetWeeklyChecks(int? id) => RequestResponse(() => $"Getting checks of employee ({id})");
+
     [HttpPost]
     public Result Set(dynamic obj) => RequestResponse(
         () => bl.SetCheck(
             JsonProperty<string>.GetValue(
-                "cardSerial", 
+                "serial", 
                 JObject.Parse(obj.ToString()), 
                 OnMissingProperty
             ), 
             C.GLOBAL_USER
         )
     );
-       
+
 }

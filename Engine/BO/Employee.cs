@@ -17,14 +17,13 @@ namespace Engine.BO {
         public string? Name {get; set;}
         public string? Specialist {get; set;}
         public string? Description {get; set;}
-        public Departament? Departament {get; set;}
     }
 
     public class Position : Job {
         public int? PositionId {get; set;}
         public string? Code { get; set;}
         public string? Alias {get; set;}
-
+        public Departament? Departament {get; set;}
     }
 
     public class AccessLevel {
@@ -64,6 +63,32 @@ namespace Engine.BO {
         public TimeSpan? LunchTime {get; set;}
         public int? DayCount {get; set;}
 
+        public Shift() {
+            Id = null;
+            Name = null;
+            InTime = null;
+            OutTime = null;
+            LunchTime = null;
+            DayCount = null;
+        }
+
+
+        public Shift(string? inTime, string? outTime) {
+            InTime = ConvertTime(inTime);
+            OutTime = ConvertTime(outTime);
+        }
+
+        private static TimeSpan ConvertTime(string? timeExpression) {
+            try {
+                if(timeExpression != null) {
+                    return TimeSpan.Parse(timeExpression);
+                } else {
+                    return new TimeSpan();
+                }
+            } catch {
+                return new TimeSpan();
+            }
+        }
     }
 
 }

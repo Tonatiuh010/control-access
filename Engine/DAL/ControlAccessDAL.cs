@@ -10,7 +10,7 @@ using Engine.BO;
 
 namespace Engine.DAL {
     public class ControlAccessDAL : MySqlDataBase {
-        private static ControlAccessDAL _DAL {get; set;} = null;        
+        private static ControlAccessDAL? _DAL {get; set;} = null;        
         public static string? ConnString {get; set;}
         public static ControlAccessDAL Instance {
             get 

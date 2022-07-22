@@ -30,7 +30,7 @@ namespace Engine.BL {
 
         public Result SetDepartament(Departament departament, string txnUser) => DAL.SetDepartament(departament, txnUser);
 
-        public Result SetEmployee(Job job, string txnUser) => DAL.SetJob(job, txnUser);
+        public Result SetJob(Job job, string txnUser) => DAL.SetJob(job, txnUser);
 
         public Result SetAccessLevel(AccessLevel level, string txnUser) => DAL.SetAccessLevel(level, txnUser);
 

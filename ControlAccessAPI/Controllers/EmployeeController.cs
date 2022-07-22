@@ -26,15 +26,13 @@ public class EmployeeController : CustomContoller
             return emps[0];
         }
         
-        return null;
+        return new Employee();
     });
 
     [HttpPost]
-    public Result SetEmployee(dynamic obj) => RequestResponse(() => {
-        Employee employee;
-        
+    public Result SetEmployee(dynamic obj) => RequestResponse(() => {       
         JObject jObj = JObject.Parse(obj.ToString());
-        employee = new Employee() {
+        Employee employee = new Employee() {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
             LastName = JsonProperty<string>.GetValue("lastName", jObj, OnMissingProperty),
@@ -48,6 +46,19 @@ public class EmployeeController : CustomContoller
 
         return bl.SetEmployee(employee, C.GLOBAL_USER);
     });
+
+    [HttpPost]
+    [Route("DownEmployee")]
+    public Result SetDownEmployee(dynamic obj) => RequestResponse(
+        () => bl.SetDownEmployee(
+            JsonProperty<int>.GetValue(
+                "id", 
+                JObject.Parse(obj.ToString()), 
+                OnMissingProperty
+            ),
+            C.GLOBAL_USER
+        )
+    );
 
     [HttpPost]
     [Route("SetLevel")]

@@ -11,7 +11,7 @@ namespace Engine.BO
     /// </summary>
     public class Validate
     {
-        private static Validate _instance = null;
+        private static Validate? _instance = null;
         private Validate() { }
         //Singleton initiation
         public static Validate Instance
@@ -101,10 +101,9 @@ namespace Engine.BO
             return obj;
         }
 
-        public string getDefaultStringIfDBNull(object obj)
-        {
-            return Convert.ToString(getDefaultIfDBNull(obj, TypeCode.String));
-        }
+        public string? getDefaultStringIfDBNull(object obj) => 
+        Convert.ToString(getDefaultIfDBNull(obj, TypeCode.String));
+        
         public int getDefaultIntIfDBNull(object obj)
         {
             return Convert.ToInt32(getDefaultIfDBNull(obj, TypeCode.Int32));

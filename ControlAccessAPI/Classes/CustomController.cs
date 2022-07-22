@@ -12,7 +12,7 @@ namespace Classes;
 public abstract class CustomContoller : ControllerBase
 {
     protected Delegates.CallbackExceptionMsg OnMissingProperty => SetErrorOnRequest;
-    protected List<RequestError> ErrorsRequest {get;set;} = new List<RequestError>();    
+    protected List<RequestError> ErrorsRequest {get; set;} = new List<RequestError>();    
 
     protected void SetErrorOnRequest(Exception ex, string msg) => ErrorsRequest.Add(
         new RequestError() {
