@@ -14,8 +14,6 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class CardController : CustomContoller 
 {
-    private readonly ControlAccessBL bl = new ControlAccessBL();
-
     [HttpGet]
     public Result GetCards() => RequestResponse(() => "This is my basic response.");
 

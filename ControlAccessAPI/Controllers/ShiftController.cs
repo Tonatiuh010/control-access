@@ -12,9 +12,7 @@ namespace ControlAccess.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class ShiftController : CustomContoller
-{
-    private ControlAccessBL bl {get; set;} = new ControlAccessBL();
-    
+{    
     [HttpGet]
     public Result GetShift() => RequestResponse(() => "Working on it...");
 

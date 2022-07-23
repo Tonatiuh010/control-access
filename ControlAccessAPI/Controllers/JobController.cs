@@ -11,9 +11,8 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class JobController : CustomContoller {
-    private readonly ControlAccessBL bl = new ControlAccessBL();
-
+public class JobController : CustomContoller 
+{
     [HttpGet]
     public Result GetJobs() => RequestResponse(() => "Is empty for now.");
 

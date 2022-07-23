@@ -13,8 +13,7 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class LevelController : CustomContoller
 {
-    private ControlAccessBL bl {get; set;} = new ControlAccessBL();
-
+    
     [HttpGet]
     public Result GetAccessLevels() => RequestResponse(() => bl.GetAccessLevels());
 

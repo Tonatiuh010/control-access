@@ -9,7 +9,7 @@ public static class Delegates {
     public delegate void CallbackExceptionMsg(Exception ex, string msg);
 
     // Callbacks
-    public delegate object ActionResult();
-    public delegate Result ActionResult_R();
-    public delegate void CallbackResult(Result result);
+    public delegate object? ActionResult();
+    public delegate Result? ActionResult_R();
+    public delegate void CallbackResult(Result?  result);
 }

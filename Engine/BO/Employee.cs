@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Engine.BO {
-    public class Employee {
+
+    public abstract class BaseBO {
         public int? Id {get; set;}
+        public bool IsValid() => Id != null && Id != 0;
+    }
+
+    public class Employee  : BaseBO{
         public string? Name {get; set;}
         public string? LastName {get; set;}
         public Position? Job {get; set;}
         public List<AccessLevel>? AccessLevels {get; set;}
-        public Shift? Shift {get; set;}        
+        public Shift? Shift {get; set;}
     }
 
-    public class Job {        
-        public int? Id {get; set;}
+    public class Job : BaseBO {
         public string? Name {get; set;}
         public string? Specialist {get; set;}
         public string? Description {get; set;}
@@ -24,39 +28,37 @@ namespace Engine.BO {
         public string? Code { get; set;}
         public string? Alias {get; set;}
         public Departament? Departament {get; set;}
+
+        public bool IsValidPosition() => IsValid() && PositionId != null && PositionId != 0;
     }
 
-    public class AccessLevel {
-        public int? Id {get; set;}
+    public class AccessLevel : BaseBO {        
         public string? Name {get; set;}
-        public string? Status {get; set;}
+        public string? Status {get; set;}                                   
     }
 
     public class EmployeeAccessLevel : AccessLevel {
         public int? EmployeeId {get; set;}
+        public bool IsValidEmployeeAccessLevel() => IsValid() && EmployeeId != null && EmployeeId != 0;
     }
 
-    public class Departament {
-        public int? Id {get; set;}
+    public class Departament : BaseBO {
         public string? Name {get; set;}
         public string? Code {get; set;}
     }
 
-    public class Card {
-        public int? Id {get; set;}
+    public class Card : BaseBO {
         public string? Key {get; set;}
         public Employee? Employee {get; set;}
     }
 
-    public class Check {
-        public int? Id {get; set;}
+    public class Check : BaseBO {
         public DateTime? CheckDt {get; set;}
         public string? Type {get; set;}
         public Card? Card {get; set;}
     }
 
-    public class Shift { 
-        public int? Id {get; set;}
+    public class Shift : BaseBO {
         public string? Name {get; set;}
         public TimeSpan? InTime {get; set;}
         public TimeSpan? OutTime {get; set;}

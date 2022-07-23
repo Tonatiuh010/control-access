@@ -13,8 +13,6 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class EmployeeController : CustomContoller
 {
-    private ControlAccessBL bl {get; set;} = new ControlAccessBL();    
-
     [HttpGet]
     public Result GetEmployees() => RequestResponse(() => bl.GetEmployees());
     
@@ -26,7 +24,7 @@ public class EmployeeController : CustomContoller
             return emps[0];
         }
         
-        return new Employee();
+        return "Empleado no encontrado";
     });
 
     [HttpPost]

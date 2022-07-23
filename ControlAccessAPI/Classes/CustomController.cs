@@ -11,8 +11,14 @@ namespace Classes;
 
 public abstract class CustomContoller : ControllerBase
 {
+    public ControlAccessBL bl {get;}
+
     protected Delegates.CallbackExceptionMsg OnMissingProperty => SetErrorOnRequest;
     protected List<RequestError> ErrorsRequest {get; set;} = new List<RequestError>();    
+
+    public CustomContoller() {
+        bl = new ControlAccessBL(SetErrorOnRequest);
+    }
 
     protected void SetErrorOnRequest(Exception ex, string msg) => ErrorsRequest.Add(
         new RequestError() {
@@ -26,17 +32,22 @@ public abstract class CustomContoller : ControllerBase
         Delegates.ActionResult? action2 = null, 
         Delegates.ActionResult? action3 = null
     ) => RequestBlock(result => {
-        result.Data = action();
+        if (result != null) {
+            result.Data = action();
 
-        if(action2 != null)
-            result.Data2 = action2();
+            if(action2 != null)
+                result.Data2 = action2();
 
-        if(action3 != null)
-            result.Data3 = action3();        
+            if(action3 != null)
+                result.Data3 = action3();
+        }        
     });
 
-    protected Result RequestResponse(Delegates.ActionResult_R action) => RequestBlock(
-        result => result = action()
+    protected Result RequestResponse(Delegates.ActionResult_R action) => RequestBlock( 
+        result => {
+            if (action != null)
+                result = action();
+        }
     );
 
     private Result RequestBlock(Delegates.CallbackResult action) {

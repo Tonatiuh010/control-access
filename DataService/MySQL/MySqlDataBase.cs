@@ -21,8 +21,11 @@ namespace DataService.MySQL
         public MySqlConnection Connection { get;  set; } = new MySqlConnection();   
         
         // Constructor
-        public MySqlDataBase(string connString) {
+        public MySqlDataBase(string? connString) {
             try {
+                if(string.IsNullOrEmpty(connString)) {
+                    throw new Exception("MySQL Connection string is empty");
+                }
                 OpenConnection(connString);             
             } catch (Exception ex) {                
                 if(OnException != null) {

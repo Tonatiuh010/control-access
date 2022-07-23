@@ -7,13 +7,14 @@ using MySql.Data.MySqlClient;
 using DataService.MySQL;
 using Engine.Constants;
 using Engine.BO;
+using Engine.BL.Delegates;
 
 namespace Engine.DAL {
     public class ControlAccessDAL : MySqlDataBase {
         private static ControlAccessDAL? _DAL {get; set;} = null;        
         public static string? ConnString {get; set;}
         public static ControlAccessDAL Instance {
-            get 
+            get
             {
                 if(_DAL == null) {
                     _DAL = new ControlAccessDAL(); 
@@ -23,8 +24,12 @@ namespace Engine.DAL {
             } 
         }
 
-        private Validate Validate = null;                
-        private ControlAccessDAL() : base(ConnString) => Validate = Validate.Instance;
+        public Delegates.CallbackExceptionMsg? OnDALError {get; set;}
+        private Validate Validate;
+        private ControlAccessDAL() : base(ConnString){
+            Validate = Validate.Instance;
+            OnDALError = null;
+        }
 
         public List<Check> GetChecks() {
             List<Check> model = new List<Check>();
@@ -45,9 +50,7 @@ namespace Engine.DAL {
                     }
                 }
 
-            }, (ex, msg) => {
-
-            });
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetChecks", msg, ex));
 
             return model;
         }
@@ -64,38 +67,39 @@ namespace Engine.DAL {
 
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
+                        var position = new Position(){
+                            Id = Validate.getDefaultIntIfDBNull(reader["JOB_ID"]),
+                            Alias = Validate.getDefaultStringIfDBNull(reader["POSITION_NAME"]),
+                            PositionId = Validate.getDefaultIntIfDBNull(reader["POSITION_ID"]),
+                            Description = Validate.getDefaultStringIfDBNull(reader["JOB_DETAIL"]),
+                            Departament = new Departament() {
+                                Id = Validate.getDefaultIntIfDBNull(reader["DEPARTAMENT_ID"]),
+                                Code = Validate.getDefaultStringIfDBNull(reader["DEPTO_CODE"]),
+                                Name = Validate.getDefaultStringIfDBNull(reader["DEPARTAMENT"])
+                            }
+                        };
+
+                        var shift = new Shift(){
+                            Id = Validate.getDefaultIntIfDBNull(reader["SHIFT_ID"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["SHIFT_CODE"]),
+                            DayCount = Validate.getDefaultIntIfDBNull(reader["SHIFT_INTERVAL"]),
+                            InTime = Validate.getDefaultTimeSpanIfDBNull(reader["IN_SHIFT"]),
+                            OutTime = Validate.getDefaultTimeSpanIfDBNull(reader["OUT_SHIFT"]),
+                            LunchTime = Validate.getDefaultTimeSpanIfDBNull(reader["LUNCH"])
+                        };
+
                         model.Add(new () {
                             Id = Validate.getDefaultIntIfDBNull(reader["EMPLOYEE_ID"]),
                             Name = Validate.getDefaultStringIfDBNull(reader["FIRST_NAME"]),
                             LastName = Validate.getDefaultStringIfDBNull(reader["LAST_NAME"]),
-                            Job = new Position() {
-                                Id = Validate.getDefaultIntIfDBNull(reader["JOB_ID"]),
-                                Alias = Validate.getDefaultStringIfDBNull(reader["POSITION_NAME"]),
-                                PositionId = Validate.getDefaultIntIfDBNull(reader["POSITION_ID"]),
-                                Description = Validate.getDefaultStringIfDBNull(reader["JOB_DETAIL"]),
-                                Departament = new Departament() {
-                                    Id = Validate.getDefaultIntIfDBNull(reader["DEPARTAMENT_ID"]),
-                                    Code = Validate.getDefaultStringIfDBNull(reader["DEPTO_CODE"]),
-                                    Name = Validate.getDefaultStringIfDBNull(reader["DEPARTAMENT"])
-                                }
-                            },
-                            Shift = new Shift() {
-                                Id = Validate.getDefaultIntIfDBNull(reader["SHIFT_ID"]),
-                                Name = Validate.getDefaultStringIfDBNull(reader["SHIFT_CODE"]),
-                                DayCount = Validate.getDefaultIntIfDBNull(reader["SHIFT_INTERVAL"]),
-                                InTime = Validate.getDefaultTimeSpanIfDBNull(reader["IN_SHIFT"]),
-                                OutTime = Validate.getDefaultTimeSpanIfDBNull(reader["OUT_SHIFT"]),
-                                LunchTime = Validate.getDefaultTimeSpanIfDBNull(reader["LUNCH"])
-                            },
-                            AccessLevels = new List<AccessLevel>()                            
-
+                            Job =  position.IsValidPosition() ? position : null,
+                            Shift = shift.IsValid() ? shift : null,
+                            AccessLevels = new List<AccessLevel>()
                         });
                     }
                 }
 
-            }, (ex, msg) => {
-                // Put something here
-            });
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetEmployees", msg, ex));
             
             return model;
         }
@@ -121,9 +125,7 @@ namespace Engine.DAL {
                     }
                 }
 
-            }, (ex, msg) => {
-                // Put something here
-            });
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetEmployeeAccessLevels", msg, ex));
             
             return model;
         }
@@ -143,10 +145,7 @@ namespace Engine.DAL {
                         });
                     }
                 }
-
-            }, (ex, msg) => {
-                // Put something here
-            });
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetAccessLevel", msg, ex));
 
             return model;
         }
@@ -451,7 +450,15 @@ namespace Engine.DAL {
             return result;
         }
 
-        public static void SetExceptionResult(string actionName, string msg, Exception ex, Result result) {
+        private void SetExceptionResult(string actionName, string msg, Exception ex) 
+        {
+            if(OnDALError != null) {
+                OnDALError(ex, $"Error on ({actionName}) - {msg}");
+            }
+        }
+
+        public static void SetExceptionResult(string actionName, string msg, Exception ex, Result result) 
+        {
             result.Status = C.ERROR;
             result.Message = $"Exception on ({actionName}) - Details({msg}) - {ex.Message}";
             result.Data = ex.GetType().ToString();            

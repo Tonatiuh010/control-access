@@ -5,10 +5,23 @@ using Engine.BO;
 using Engine.Constants;
 using Engine.DAL;
 using Engine.BL;
+using D = Engine.BL.Delegates;
 
 namespace Engine.BL {
     public class ControlAccessBL {
-        private ControlAccessDAL DAL => ControlAccessDAL.Instance;
+        public D.Delegates.CallbackExceptionMsg? OnError {get; set;} = null;
+        private ControlAccessDAL DAL { get {
+            var dal = ControlAccessDAL.Instance;
+
+            if (OnError != null) {
+                dal.OnDALError = OnError;
+            }
+
+            return dal;
+        } }
+
+
+        public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError ) => OnError = onError;
 
         public List<Employee> GetEmployees(int? employeeId = null) => DAL.GetEmployees(employeeId);
         

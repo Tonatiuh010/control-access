@@ -13,8 +13,6 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class CheckController : CustomContoller
 {
-    private ControlAccessBL bl = new ControlAccessBL();
-
     [HttpGet]
     public Result Get() => RequestResponse(() => "Empty For now...");
 
