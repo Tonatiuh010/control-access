@@ -7,34 +7,22 @@ header {
     display: flex;
 }
 
-
-/* div {
-    outline: red 1px solid;
-} */
-
 .sidebar {
-    float: left;
-    width: 50px;
-    min-height: 100vh;
-    background-color: #0090FD;
-    top: 0;
-    left: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    background-color: #fff;
+    justify-items: right;
 }
 
-.icon {
-    color: white;
+.logo {
+    color: #0090FD;
     height: 50px;
+    width: 200px;
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
-}
-
-.icon:hover:not(:first-child),
-.active {
-    color: #0090FD;
-    background-color: white;
-    cursor: pointer;
 }
 
 .fa-solid {
@@ -42,8 +30,35 @@ header {
     padding: 10px;
 }
 
-.tooltip {
-    padding: 10px;
+.mat-white {
     font-size: 16px;
+    color: #fff;
     background-color: #0090FD;
+    box-shadow: unset;
+}
+
+.mat-white:hover {
+    background-color: #fff;
+    color: #0090FD;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #0090FD;
+    height: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.mat-tab-link.mat-tab-label-active {
+    color: #0090FD;
+}
+
+.mat-tab-link:hover {
+    background-color: #ddd;
 }

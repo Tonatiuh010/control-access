@@ -26,7 +26,8 @@ const routes: Routes = [
     component: EntrancesDevicesComponent,
     data: { title: 'Entrances & Devices'}
   },
-  { path: '**', component: DashboardComponent }
+  { path: '**', component: DashboardComponent },
+  { path: '', component: DashboardComponent }
 ];
 
 @NgModule({

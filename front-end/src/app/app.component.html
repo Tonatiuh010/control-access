@@ -1,20 +1,14 @@
 <!-- <header>title</header> -->
 <div class="sidebar">
-    <div class="icon">
+    <div class="logo">
         <i class="fa-solid fa-door-closed"></i>
     </div>
-    <div class="icon" routerLink="/dashboard" routerLinkActive="active" matTooltip="Dashboard" matTooltipClass="tooltip" matTooltipPosition="right">
-        <i class="fa-solid fa-chart-line"></i>
-    </div>
-    <div class="icon" routerLink="/map" routerLinkActive="active" matTooltip="Map & Recent Access" matTooltipClass="tooltip" matTooltipPosition="right">
-        <i class="fa-solid fa-map"></i>
-    </div>
-    <div class="icon" routerLink="/cards-employee" matTooltip="Cards & Employees" matTooltipClass="tooltip" matTooltipPosition="right">
-        <i class="fa-solid fa-user-plus"></i>
-    </div>
-    <div class="icon" routerLink="/entrances-devices" matTooltip="Entrances & Devices" matTooltipClass="tooltip" matTooltipPosition="right">
-        <i class="fa-solid fa-diagram-project"></i>
-    </div>
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+
+        <a mat-tab-link *ngFor="let link of routes" [routerLink]="link.routeName" (click)="activeLink = link.displayName" [active]="activeLink == link.displayName">
+            <div [innerHTML]="link.icon"></div> {{link.displayName}} </a>
+    </nav>
+    <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 </div>
 
 <router-outlet></router-outlet>
