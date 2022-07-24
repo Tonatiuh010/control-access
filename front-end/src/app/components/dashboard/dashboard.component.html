@@ -1,26 +1,35 @@
-<div class="content">
-    <div class="cards-small-left">
-        <mat-card class="top-left cards-small">
-            <div class="title">Total Employees in Building</div>
-            <div class="body">161</div>
-        </mat-card>
-        <mat-card class="top-right cards-small">
-            <div class="title">Employees that Clocked-Out</div>
-            <div class="body">5</div>
-        </mat-card>
-        <mat-card class="bottom-left cards-small">
-            <div class="title">Notifications</div>
-            <div class="body">2</div>
-        </mat-card>
-        <mat-card class="bottom-right chart-small-left">
-            <div class="title">Pending</div>
-            <div class="body">0</div>
-        </mat-card>
-    </div>
-    <mat-card class="chart-small-right cards-big">
+<!-- <mat-card class="chart-small-right cards-big">
         <div echarts [options]="chartOption2"></div>
     </mat-card>
     <mat-card class="chart-large cards-big">
         <div echarts [options]="chartOption3"></div>
-    </mat-card>
+    </mat-card> -->
+
+<div class="parent">
+    <div class="div1">
+        <mat-card class="cards-small">
+            <div class="title">Total Employees in Building</div>
+            <div class="body">161</div>
+        </mat-card>
+        <mat-card class="cards-small">
+            <div class="title">Employees that Clocked-Out</div>
+            <div class="body">5</div>
+        </mat-card>
+        <mat-card class="cards-small">
+            <div class="title">Notifications</div>
+            <div class="body">2</div>
+        </mat-card>
+        <mat-card class="cards-small">
+            <div class="title">Pending</div>
+            <div class="body">0</div>
+        </mat-card>
+    </div>
+    <div class="div2">
+        <mat-card class="chart-large cards-big">
+            <div echarts [options]="chartOption3"></div>
+        </mat-card>
+        <mat-card class="chart-large cards-big">
+            <div echarts [options]="chartOption2"></div>
+        </mat-card>
+    </div>
 </div>

@@ -3,13 +3,12 @@
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     grid-gap: 10px;
-    height: calc(100vh - 20px);
-    width: calc(100vw - 78px);
+    height: calc(100vh - 1000px);
+    width: calc(100vw - 10px);
     padding: 10px;
 }
 
 .cards-big {
-    padding: 0;
     background-color: #fff;
 }
 

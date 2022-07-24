@@ -18,7 +18,7 @@
     </div>
     <div class="selects">
         <mat-grid-list cols="2" rowHeight="3:1" [gutterSize]="'10px'">
-            <mat-grid-tile>
+            <mat-grid-tile class="top-padding">
                 <mat-form-field appearance="outline">
                     <mat-label>Access</mat-label>
                     <mat-select [formControl]="access" [(ngModel)]="expectedEmployee.access" multiple required>
@@ -33,7 +33,7 @@
                     <mat-error *ngIf="access.invalid">{{getErrorMessage('access')}}</mat-error>
                 </mat-form-field>
             </mat-grid-tile>
-            <mat-grid-tile>
+            <mat-grid-tile class="top-padding">
                 <mat-form-field appearance="outline">
                     <mat-label>Position</mat-label>
                     <mat-select [formControl]="position" [(ngModel)]="expectedEmployee.position" required>

@@ -14,7 +14,9 @@ export class DashboardComponent implements OnInit {
     title: {
       text: 'Hourly Attendance'
     },
-    legend: {},
+    legend: {
+      left: 'right'
+    },
     tooltip: {},
     dataset: {
       source: [
@@ -35,7 +37,7 @@ export class DashboardComponent implements OnInit {
 
   chartOption3: EChartsOption = {
     title: {
-      text: 'Weekly Attendance by Department'
+      text: 'Weekly Attendance'
     },
     tooltip: {
       trigger: 'axis',
@@ -44,7 +46,9 @@ export class DashboardComponent implements OnInit {
         type: 'shadow' // 'shadow' as default; can also be 'line' or 'shadow'
       }
     },
-    legend: {},
+    legend: {
+      left: 'right'
+    },
     grid: {
       left: '3%',
       right: '4%',

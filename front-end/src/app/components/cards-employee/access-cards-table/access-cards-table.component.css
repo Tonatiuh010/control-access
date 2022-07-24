@@ -1,6 +1,5 @@
 .example-container {
     overflow: auto;
-    max-height: calc(50vh - 30px);
 }
 
 table {

@@ -43,10 +43,6 @@
     width: 100%;
 }
 
-.selects {
-    margin-top: 10px;
-}
-
 .remove-padding {
     padding-top: 80px !important;
 }
@@ -64,4 +60,12 @@
 .full-width {
     width: 100% !important;
     min-width: unset !important;
+}
+
+.top-padding {
+    padding-bottom: 25px;
+}
+
+.selects {
+    margin-top: 10px;
 }
