@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee-model';
+import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 
 @Component({
   selector: 'app-employee-table',
@@ -23,14 +24,19 @@ export class EmployeeTableComponent implements OnInit {
 
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  apiData: any;
 
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) { }
 
   ngOnInit(): void {
+    this.empService.getEmployees().subscribe(data => {
+      this.apiData = data;
+    });
     this.dataSource = new MatTableDataSource(data);
     this.cdRef.detectChanges();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log(this.apiData)
   }
 
   onEmployeeSelect(rowData: Employee) {

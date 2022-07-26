@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,5 +6,11 @@ import { Injectable } from '@angular/core';
 })
 export class EmployeeServiceService {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
+
+  getEmployees() {
+    return this.http.get("https://reqres.in/api/users?page=2")
+    // .subscribe(data => {
+    // });
+  }
 }

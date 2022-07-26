@@ -1,10 +1,11 @@
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { MapComponent } from './components/map/map.component';
 import { CardsEmployeeComponent } from './components/cards-employee/cards-employee.component';
 import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
+import { HistoryComponent } from './components/history/history.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,10 @@ const routes: Routes = [
     path: 'entrances-devices',
     component: EntrancesDevicesComponent,
     data: { title: 'Entrances & Devices'}
+  },{
+    path: 'history',
+    component: HistoryComponent,
+    data: { title: 'Entrance History'}
   },
   { path: '**', component: DashboardComponent },
   { path: '', component: DashboardComponent }

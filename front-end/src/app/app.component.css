@@ -23,6 +23,17 @@ header {
     text-align: center;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    margin: 0 30px;
+}
+
+i {
+    width: 50px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
 }
 
 .fa-solid {

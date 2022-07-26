@@ -13,7 +13,7 @@ export class AppComponent implements OnInit{
   icon = '';
   constructor(private router: Router){}
   ngOnInit(): void {
-    this.router.navigate(['/cards-employee']);
+    this.router.navigate(['/history']);
     this.activeLink = links[0].displayName;
   }
 
@@ -36,4 +36,8 @@ const links = [
     displayName: 'Entrances & Devices',
     routeName: 'entrances-devices',
     icon: '<i class="fa-solid fa-diagram-project"></i>'
+  },{
+    displayName: 'Entrance History',
+    routeName: 'history',
+    icon: '<i class="fa-solid fa-clock-rotate-left"></i>'
   },];
