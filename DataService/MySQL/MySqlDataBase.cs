@@ -17,16 +17,20 @@ namespace DataService.MySQL
         public delegate void DataException(Exception e, string customMsg = "");
 
         // Properties
-        public static DataException OnException {get; set;}
-        public MySqlConnection Connection { get;  set; }        
+        public static DataException? OnException {get; set;}
+        public MySqlConnection Connection { get;  set; } = new MySqlConnection();   
         
         // Constructor
-        public MySqlDataBase(string connString) {
+        public MySqlDataBase(string? connString) {
             try {
+                if(string.IsNullOrEmpty(connString)) {
+                    throw new Exception("MySQL Connection string is empty");
+                }
                 OpenConnection(connString);             
-            } catch (Exception ex) {
-                if (ex.GetType() == typeof(MySqlException) ) {
-                    MySqlException e = (MySqlException)ex;
+            } catch (Exception ex) {                
+                if(OnException != null) {
+                    if (ex.GetType() == typeof(MySqlException) ) {
+                    MySqlException e = (MySqlException)ex;                    
                     switch (e.Number) {
                         case 0:                            
                             OnException(ex, "Cannot connect to server.  Contact administrator");
@@ -35,9 +39,10 @@ namespace DataService.MySQL
                             OnException(ex, "Invalid username/password, please try again");
                             break;
                     }
-                } else {
+                } else {                    
                     OnException(ex, "Exception creating connection...");
                 }
+                }                
             }
         }
 
@@ -82,13 +87,14 @@ namespace DataService.MySQL
         };
 
         public static void TransactionBlock(MySqlConnection conn, TransactionCallback action, DataException onException) {
-            MySqlTransaction txn = null;
+            MySqlTransaction? txn = null;
             try {
                 txn = conn.BeginTransaction();                
                 action(txn);
                 txn.Commit();
             } catch (Exception e) {
-                txn.Rollback();
+                if(txn != null)
+                    txn.Rollback();
                 onException(e);
             }
         }

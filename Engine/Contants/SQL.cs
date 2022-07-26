@@ -12,6 +12,9 @@ namespace Engine.Constants {
         public const string SET_DOWN_EMPLOYEE = "SET_DOWN_EMPLOYEE";
         public const string SET_JOB = "SET_JOB";
         public const string SET_EMPLOYEE_ACCESS = "SET_ACCESS_EMPLOYEE";
+        public const string SET_ACCESS_LEVEL = "SET_ACCESS_LEVEL";
+        public const string SET_SHIFT = "SET_SHIFT";
+        public const string SET_POSITION = "SET_POSITION";
 
         public const string GET_ACCESS_LEVEL = "SELECT * from access_level";
         public const string GET_EMPLOYEE_DETAIL = "GET_EMPLOYEE_DETAIL";

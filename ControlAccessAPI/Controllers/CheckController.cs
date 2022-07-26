@@ -1,16 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using Newtonsoft.Json.Linq;
+using Engine.BL;
+using Engine.BL.Delegates;
+using Engine.BO;
+using Classes;
+using Engine.Constants;
 
 namespace ControlAccess.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
-public class CheckController : ControllerBase
-{          
+public class CheckController : CustomContoller
+{
     [HttpGet]
-    public string Get() => "Just a call";
+    public Result Get() => RequestResponse(() => "Empty For now...");
+
+    [HttpGet("employee/{id:int?}")]
+    public Result GetWeeklyChecks(int? id) => RequestResponse(() => $"Getting checks of employee ({id})");
 
     [HttpPost]
-    [Route("")]
-    public string Set() => "";
-       
+    public Result Set(dynamic obj) => RequestResponse(
+        () => bl.SetCheck(
+            JsonProperty<string>.GetValue(
+                "serial", 
+                JObject.Parse(obj.ToString()), 
+                OnMissingProperty
+            ), 
+            C.GLOBAL_USER
+        )
+    );
+
 }
