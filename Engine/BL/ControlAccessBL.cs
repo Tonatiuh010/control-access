@@ -41,6 +41,8 @@ namespace Engine.BL {
 
         public Result SetCheck(string cardSerial, string txnUser) => DAL.SetCheck(cardSerial, txnUser);
 
+        public List<Departament> GetDepartaments(int? deptoId = null) => DAL.GetDepartaments(deptoId);
+
         public Result SetDepartament(Departament departament, string txnUser) => DAL.SetDepartament(departament, txnUser);
 
         public Result SetJob(Job job, string txnUser) => DAL.SetJob(job, txnUser);

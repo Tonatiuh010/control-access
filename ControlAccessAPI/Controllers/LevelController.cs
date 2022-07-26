@@ -17,8 +17,8 @@ public class LevelController : CustomContoller
     [HttpGet]
     public Result GetAccessLevels() => RequestResponse(() => bl.GetAccessLevels());
 
-    [HttpGet]
-    public Result GetEmployeeAccessLevel(int id) => RequestResponse(() => bl.GetEmployeeAccessLevels(id));
+    [HttpGet("{id:int?}")]
+    public Result GetEmployeeAccessLevel(int? id) => RequestResponse(() => bl.GetEmployeeAccessLevels(id));
 
     [HttpPost]
     public Result SetLevel(dynamic obj) => RequestResponse(() => {

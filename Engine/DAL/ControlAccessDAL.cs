@@ -55,6 +55,31 @@ namespace Engine.DAL {
             return model;
         }
 
+        public List<Departament> GetDepartaments(int? deptoId) {
+            List<Departament> model = new List<Departament>();
+
+            MySqlDataBase.TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                cmd.Parameters.Add(CreateParameter("IN_DEPTO", deptoId, MySqlDbType.Int32));
+                cmd.Parameters.Add(pResult);
+
+                using(var reader = cmd.ExecuteReader()) {
+                    while(reader.Read()) {
+                        model.Add(new Departament() {
+                            Id = Validate.getDefaultIntIfDBNull(reader["DEPARTAMENT_ID"]),
+                            Code = Validate.getDefaultStringIfDBNull(reader["CODE"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["NAME"])
+                        });
+                    }
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetDepartaments", msg, ex));
+            
+            return model;
+        }
+
         public List<Employee> GetEmployees(int? employeeId) {
             List<Employee> model = new List<Employee>();
 
