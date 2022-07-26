@@ -14,8 +14,8 @@ public class LevelController : ControllerBase
     [HttpGet]
     public List<AccessLevel> GetAccessLevels() => bl.GetAccessLevels();
 
-    [HttpGet]
-    public List<EmployeeAccessLevel> GetEmployeeAccessLevel(int id) => bl.GetEmployeeAccessLevels(id);
+    //[HttpGet]
+    //public List<EmployeeAccessLevel> GetEmployeeAccessLevel(int id) => bl.GetEmployeeAccessLevels(id);
 
        
 }
