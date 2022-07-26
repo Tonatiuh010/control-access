@@ -35,6 +35,7 @@ public class CardController : CustomContoller
     });
 
     [HttpPost]
+    [Route("DownCard")]
     public Result SetDownCard(dynamic obj) => RequestResponse(() => 
         bl.SetDownCard(
             JsonProperty<int>.GetValue(

@@ -16,7 +16,7 @@ public class JobController : CustomContoller
     [HttpGet]
     public Result GetJobs() => RequestResponse(() => "Is empty for now.");
 
-    [HttpGet]
+    [HttpGet("{id:int?}")]
     public Result GetJob(int id) => RequestResponse(() => "Is empty for now");
 
     [HttpPost]

@@ -1,5 +1,9 @@
 using Engine.DAL;
 using Engine.Constants;
+using System;
+using System.Reflection;
+using System.IO;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
-    config.SwaggerDoc("ControlAccess",new Microsoft.OpenApi.Models.OpenApiInfo
+    config.SwaggerDoc("AccessControl", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "AccessControl",
         Version = "v1"
@@ -28,16 +32,21 @@ ControlAccessDAL.SetOnConnectionException((ex, msg) => Console.WriteLine($"Error
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 // app.UseHttpsRedirection();
 
+app.UseRouting();
+
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.Run();
