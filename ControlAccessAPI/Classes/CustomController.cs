@@ -40,29 +40,39 @@ public abstract class CustomContoller : ControllerBase
 
             if(action3 != null)
                 result.Data3 = action3();
-        }        
+
+            result.Message = C.COMPLETE;
+
+            
+        }
+
+        return result;
     });
 
     protected Result RequestResponse(Delegates.ActionResult_R action) => RequestBlock( 
         result => {
             if (action != null)
-                result = action();
+            {
+                var res = action();
+                result = res != null ? res : new Result() { Status = "ERROR", Message = "Not Result Founded!!!"};
+            }
+
+            return result;
         }
     );
 
     private Result RequestBlock(Delegates.CallbackResult action) {
-        Result result = new Result(){
+        Result result = new(){
             Status = C.OK
         };
 
         try {
-            action(result);
+            result = action(result);
 
             if(ErrorsRequest != null && ErrorsRequest.Count > 0){
                 throw new Exception("Errores en request");
             }
 
-            result.Message = C.COMPLETE;
         } catch (Exception ex) {
             ErrorResult(result, ex);
         }

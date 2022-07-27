@@ -9,7 +9,7 @@ using Engine.Constants;
 
 namespace ControlAccess.Controllers;
 
-[Route("[controller]")]
+[Route("api/[controller]")]
 [ApiController]
 public class LevelController : CustomContoller
 {
@@ -17,7 +17,7 @@ public class LevelController : CustomContoller
     [HttpGet]
     public Result GetAccessLevels() => RequestResponse(() => bl.GetAccessLevels());
 
-    [HttpGet("{id:int?}")]
+    [HttpGet("EmployeeLevel/{id:int?}")]
     public Result GetEmployeeAccessLevel(int? id) => RequestResponse(() => bl.GetEmployeeAccessLevels(id));
 
     [HttpPost]

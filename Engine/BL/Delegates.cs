@@ -11,5 +11,5 @@ public static class Delegates {
     // Callbacks
     public delegate object? ActionResult();
     public delegate Result? ActionResult_R();
-    public delegate void CallbackResult(Result?  result);
+    public delegate Result CallbackResult(Result  result);
 }

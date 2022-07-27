@@ -23,7 +23,7 @@ public class CardController : CustomContoller
     [HttpPost]
     public Result SetCard(dynamic obj) => RequestResponse(() => {
         JObject jObj = new JObject(obj.ToString());
-        Card card = new Card(){
+        CardEmployee card = new CardEmployee(){
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Employee = new Employee() {
                 Id = JsonProperty<int?>.GetValue("employeeId", jObj, OnMissingProperty)

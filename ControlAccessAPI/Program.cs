@@ -14,7 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
 {
-    config.SwaggerDoc("AccessControl", new Microsoft.OpenApi.Models.OpenApiInfo
+    config.SwaggerDoc("AccessControl", new OpenApiInfo
     {
         Title = "AccessControl",
         Version = "v1"

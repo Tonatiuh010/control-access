@@ -23,13 +23,23 @@ namespace Engine.BL {
 
         public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError ) => OnError = onError;
 
-        public List<Employee> GetEmployees(int? employeeId = null) => DAL.GetEmployees(employeeId);
+        public List<Employee> GetEmployees(int? employeeId = null) {
+            var employees = DAL.GetEmployees(employeeId);
+
+            foreach (var employee in employees)
+                employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels( 
+                    GetEmployeeAccessLevels(employee.Id) 
+                );
+          
+            return employees;
+        }
         
         public Result SetEmployee(Employee employee, string txnUser) => DAL.SetEmployee(employee, txnUser);
         
-        public Result SetCard(Card card, string txnUser) => DAL.SetCard(card, txnUser);
+        public Result SetCard(CardEmployee card, string txnUser) => DAL.SetCard(card, txnUser);
 
-        public Result SetEmployeeAccessLevel (int employeeId, int accessLevelId, string txnUser) => DAL.SetEmployeeAccessLevel(employeeId, accessLevelId, txnUser);
+        public Result SetEmployeeAccessLevel(int employeeId, int accessLevelId, bool status, string txnUser) => 
+            DAL.SetEmployeeAccessLevel(employeeId, accessLevelId, status ? C.ENABLED : C.DISABLED, txnUser);
 
         public Result SetDownEmployee(int employeeId, string txnUser) => DAL.SetDownEmployee(employeeId, txnUser);        
 

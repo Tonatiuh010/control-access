@@ -48,7 +48,7 @@ public class EmployeeController : CustomContoller
     [HttpPost]
     [Route("DownEmployee")]
     public Result SetDownEmployee(dynamic obj) => RequestResponse(
-        () => bl.SetDownEmployee(
+        () => (Result)bl.SetDownEmployee(
             JsonProperty<int>.GetValue(
                 "id", 
                 JObject.Parse(obj.ToString()), 
@@ -60,7 +60,14 @@ public class EmployeeController : CustomContoller
 
     [HttpPost]
     [Route("SetLevel")]
-    public Result SetEmployeeAccessLevel(int employeeId, int accessLevel) => RequestResponse(() => 
-        bl.SetEmployeeAccessLevel(employeeId, accessLevel, C.GLOBAL_USER)
-    );
+    public Result SetEmployeeAccessLevel(dynamic obj) => RequestResponse(() =>
+    {
+        JObject jObj = JObject.Parse(obj.ToString());
+        return bl.SetEmployeeAccessLevel(
+            JsonProperty<int>.GetValue("employee", jObj, OnMissingProperty),
+            JsonProperty<int>.GetValue("level", jObj, OnMissingProperty),
+            JsonProperty<bool>.GetValue("status", jObj, OnMissingProperty),
+            C.GLOBAL_USER
+        );
+    });
 }

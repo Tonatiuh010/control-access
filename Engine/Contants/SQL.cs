@@ -19,6 +19,8 @@ namespace Engine.Constants {
         public const string GET_ACCESS_LEVEL = "SELECT * from access_level";
         public const string GET_EMPLOYEE_DETAIL = "GET_EMPLOYEE_DETAIL";
         public const string GET_EMPLOYEE_ACCESS_LEVEL = "GET_EMPLOYEE_ACCESS_LEVEL";
+        public const string GET_DEPARTAMENTS = "GET_DEPARTAMENTS";
+        public const string GET_JOBS = "GET_JOBS";
 
 
         public const string WEIRD_QRY = @"

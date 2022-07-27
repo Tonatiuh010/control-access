@@ -18,11 +18,10 @@ public class DepartamentController : CustomContoller
 
     [HttpGet("{id:int?}")]
     public Result GetDepartament(int? id) => RequestResponse(() => {
-        Departament depto = new Departament();
         var deptos = bl.GetDepartaments(id);
 
         if(deptos != null && deptos.Count() > 0) {
-            depto = deptos[0];
+            return deptos[0];
         }
         
         return "Departamento no encontrado";

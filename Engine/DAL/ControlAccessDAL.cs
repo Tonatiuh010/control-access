@@ -34,7 +34,7 @@ namespace Engine.DAL {
         public List<Check> GetChecks() {
             List<Check> model = new List<Check>();
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(SQL.WEIRD_QRY, txn, CommandType.Text);            
 
                 using(var reader = cmd.ExecuteReader()) {
@@ -58,8 +58,8 @@ namespace Engine.DAL {
         public List<Departament> GetDepartaments(int? deptoId) {
             List<Departament> model = new List<Departament>();
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
-                var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
+            TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(SQL.GET_DEPARTAMENTS, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
                 cmd.Parameters.Add(CreateParameter("IN_DEPTO", deptoId, MySqlDbType.Int32));
@@ -83,7 +83,7 @@ namespace Engine.DAL {
         public List<Employee> GetEmployees(int? employeeId) {
             List<Employee> model = new List<Employee>();
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -92,6 +92,14 @@ namespace Engine.DAL {
 
                 using(var reader = cmd.ExecuteReader()) {
                     while(reader.Read()) {
+
+                        var card = new Card()
+                        {
+                            Id = Validate.getDefaultIntIfDBNull(reader["CARD_ID"]),
+                            Key = Validate.getDefaultStringIfDBNull(reader["CARD_NUMBER"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["CARD_STATUS"]),
+                        };
+
                         var position = new Position(){
                             Id = Validate.getDefaultIntIfDBNull(reader["JOB_ID"]),
                             Alias = Validate.getDefaultStringIfDBNull(reader["POSITION_NAME"]),
@@ -117,8 +125,11 @@ namespace Engine.DAL {
                             Id = Validate.getDefaultIntIfDBNull(reader["EMPLOYEE_ID"]),
                             Name = Validate.getDefaultStringIfDBNull(reader["FIRST_NAME"]),
                             LastName = Validate.getDefaultStringIfDBNull(reader["LAST_NAME"]),
+                            ImageUrl = Validate.getDefaultStringIfDBNull(reader["IMAGE"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["EMPLOYEE_STATUS"]),
                             Job =  position.IsValidPosition() ? position : null,
                             Shift = shift.IsValid() ? shift : null,
+                            Card = card.IsValid() ? card : null,
                             AccessLevels = new List<AccessLevel>()
                         });
                     }
@@ -132,8 +143,8 @@ namespace Engine.DAL {
         public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId) {
             List<EmployeeAccessLevel> model = new List<EmployeeAccessLevel>();
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
-                var cmd = CreateCommand(SQL.GET_EMPLOYEE_ACCESS_LEVEL, txn, CommandType.Text);
+            TransactionBlock(Connection, txn => {
+                var cmd = CreateCommand(SQL.GET_EMPLOYEE_ACCESS_LEVEL, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
                 cmd.Parameters.Add(CreateParameter("IN_EMPLOYEE", employeeId, MySqlDbType.Int32));
@@ -158,7 +169,7 @@ namespace Engine.DAL {
         public List<AccessLevel> GetAccessLevels() {
             List<AccessLevel> model = new List<AccessLevel>();
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(SQL.GET_ACCESS_LEVEL, txn, CommandType.Text);                            
 
                 using(var reader = cmd.ExecuteReader()) {
@@ -179,7 +190,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_CARD_CHECK;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -201,7 +212,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_DEPARTAMENT;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {                
+            TransactionBlock(Connection, txn => {                
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -226,7 +237,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_JOB;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -251,7 +262,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_ACCESS_LEVEL;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -275,7 +286,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_SHIFT;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -303,7 +314,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_POSITION;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -329,7 +340,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_EMPLOYEE;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -338,7 +349,8 @@ namespace Engine.DAL {
                 cmd.Parameters.Add(CreateParameter("IN_NAME", employee.Name, MySqlDbType.String));
                 cmd.Parameters.Add(CreateParameter("IN_LAST_NAME", employee.LastName, MySqlDbType.String));
                 cmd.Parameters.Add(CreateParameter("IN_POSITION", employee.Job.PositionId, MySqlDbType.Int32));
-                cmd.Parameters.Add(CreateParameter("IN_SHIFT", employee.Shift.Id, MySqlDbType.Int32));                
+                cmd.Parameters.Add(CreateParameter("IN_SHIFT", employee.Shift.Id, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_IMG", employee.ImageUrl, MySqlDbType.Int32));
                 cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
                 cmd.Parameters.Add(pResult);
                 
@@ -356,7 +368,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_DOWN_EMPLOYEE;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {                
+            TransactionBlock(Connection, txn => {                
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -375,11 +387,11 @@ namespace Engine.DAL {
         }
 
 
-        public Result SetEmployeeAccessLevel(int employeeNumber, int accessLevel, string status) {
+        public Result SetEmployeeAccessLevel(int employeeNumber, int accessLevel, string status, string user) {
             Result result = new Result();
             string sSp = SQL.SET_EMPLOYEE_ACCESS;
 
-            MySqlDataBase.TransactionBlock(Connection, txn  =>{
+            TransactionBlock(Connection, txn  =>{
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -387,6 +399,7 @@ namespace Engine.DAL {
                 cmd.Parameters.Add(CreateParameter("IN_EMPLOYEE", employeeNumber, MySqlDbType.Int32));                
                 cmd.Parameters.Add(CreateParameter("IN_ACCESS", accessLevel, MySqlDbType.Int32));                
                 cmd.Parameters.Add(CreateParameter("IN_STATUS", status, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_USER", user, MySqlDbType.String));
                 cmd.Parameters.Add(pResult);
                 
                 using(var reader = cmd.ExecuteReader()) 
@@ -399,11 +412,11 @@ namespace Engine.DAL {
             return result;                      
         }
 
-        public Result SetCard(Card card, string txnUser) {
+        public Result SetCard(CardEmployee card, string txnUser) {
             Result result = new Result();
             string sSp = SQL.SET_CARD;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
 
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
@@ -429,7 +442,7 @@ namespace Engine.DAL {
             Result result = new Result();
             string sSp = SQL.SET_DOWN_CARD;
 
-            MySqlDataBase.TransactionBlock(Connection, txn => {
+            TransactionBlock(Connection, txn => {
 
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
@@ -489,7 +502,7 @@ namespace Engine.DAL {
             result.Data = ex.GetType().ToString();            
         }
 
-        public static void SetOnConnectionException(DataException onException) => MySqlDataBase.OnException = onException;        
+        public static void SetOnConnectionException(DataException onException) => OnException = onException;        
 
     }
 }

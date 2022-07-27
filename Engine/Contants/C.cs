@@ -10,7 +10,11 @@ namespace Engine.Constants {
         public const string COMPLETE = "COMPLETE";
         public const string PENDING = "PENDING";
         public const string ROLLABACK = "ROLLBACK";
-        
+
+        public const string ENABLED = "ENABLED";
+        public const string DISABLED = "DISABLED";
+
+
         /* Connection Strings */
         public const string CTL_ACC = "CTL_ACC";
     }

@@ -12,9 +12,12 @@ namespace Engine.BO {
     public class Employee  : BaseBO{
         public string? Name {get; set;}
         public string? LastName {get; set;}
+        public string? ImageUrl { get; set; }
         public Position? Job {get; set;}
         public List<AccessLevel>? AccessLevels {get; set;}
         public Shift? Shift {get; set;}
+        public Card? Card { get; set; }
+        public string? Status { get; set; }
     }
 
     public class Job : BaseBO {
@@ -40,6 +43,9 @@ namespace Engine.BO {
     public class EmployeeAccessLevel : AccessLevel {
         public int? EmployeeId {get; set;}
         public bool IsValidEmployeeAccessLevel() => IsValid() && EmployeeId != null && EmployeeId != 0;
+
+        public static List<AccessLevel> GetAccessLevels(List<EmployeeAccessLevel> levels) => 
+            levels.Select(x => (AccessLevel)x).ToList();
     }
 
     public class Departament : BaseBO {
@@ -47,8 +53,14 @@ namespace Engine.BO {
         public string? Code {get; set;}
     }
 
-    public class Card : BaseBO {
-        public string? Key {get; set;}
+    public class Card : BaseBO
+    {
+        public string? Key { get; set; }
+        public string? Status { get; set; }
+
+    }
+
+    public class CardEmployee : Card {
         public Employee? Employee {get; set;}
     }
 
