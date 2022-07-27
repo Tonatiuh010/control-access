@@ -1,10 +1,12 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee-model';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
+import { ResetFormService } from 'src/app/services/reset-form.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-employee-table',
@@ -13,31 +15,29 @@ import { EmployeeServiceService } from 'src/app/services/employee-service.servic
 })
 export class EmployeeTableComponent implements OnInit {
   displayedColumns = ['name', 'position', 'status', 'card_number', 'options'];
-  dataSource: any;
+  dataSource =  new MatTableDataSource<any | Welcome>([]);;
   initial!: boolean;
   emptyEmployee: Employee = {photo: '',
   name: '', position: '', status: '',
   card_number: '', shift:'', access: ['']};
+  apiData!: Welcome;
 
   @Output() employeeSelected = new EventEmitter<Employee>();
   @Output() employeeCreate = new EventEmitter<Employee>();
 
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  apiData: any;
 
-  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) { }
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService, private rstService: ResetFormService){ };
 
   ngOnInit(): void {
-    // this.empService.getEmployees().subscribe(data => {
-    //   this.apiData = data;
-    //   console.log(this.apiData)
-
-    // });
-    this.dataSource = new MatTableDataSource(data);
-    this.cdRef.detectChanges();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.empService.getEmployees().subscribe(data => {
+      this.apiData = data;
+      this.dataSource = new MatTableDataSource(this.apiData.data);
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.cdRef.detectChanges();
+    });
   }
 
   onEmployeeSelect(rowData: Employee) {
@@ -55,28 +55,64 @@ export class EmployeeTableComponent implements OnInit {
 
   onEmployeeCreate() {
     this.employeeCreate.emit(this.emptyEmployee);
+    this.rstService.sendResetForm();
     this.initial = true;
   }
+
+  onImgError(event: any): void{
+    event.target.src = './../../../../assets/no-photo-available.png'
+   }
 }
 
-const data: Employee[] = [
-  {photo: 'https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg',
-  name: 'Carl Lazlo', position: 'Manager', status: 'Active',
-  card_number: 'C1 2F D6 0E', shift:'Night', access: ['Warehouse', 'Production']},
+export interface Welcome {
+  status?:  string;
+  message?: string;
+  data?:    Datum[];
+  data2?:   any;
+  data3?:   any;
+  error?:   any;
+}
 
-  {photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-1-min.png',
-  name: 'Steve Michael', position: 'Employee', status: 'Active',
-  card_number: 'FD A9 A1 B3', shift:'Morning', access: ['Warehouse']},
+export interface Datum {
+  name?:         string;
+  lastName?:     string;
+  imageUrl?:     string;
+  job?:          Job;
+  accessLevels?: AccessLevel[];
+  shift?:        Shift;
+  card?:         null;
+  status?:       string;
+  id?:           number;
+}
 
-  {photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-8-min.png',
-  name: 'Gerard Maldonado', position: 'Security', status: 'Active',
-  card_number: '9E CD FC 7C', shift:'Evening', access: ['Production']},
+export interface AccessLevel {
+  name?:   string;
+  status?: string;
+  id?:     number;
+}
 
-  {photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-16-min.png',
-  name: 'Taylor Hawkins', position: 'Employee', status: 'Active',
-  card_number: '84 9C 73 AB', shift:'Morning', access: ['HR']},
+export interface Job {
+  positionId?:  number;
+  code?:        null;
+  alias?:       string;
+  departament?: Departament;
+  name?:        null;
+  specialist?:  null;
+  description?: string;
+  id?:          number;
+}
 
-  {photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-20-min.png',
-  name: 'Tyrone Skinner', position: 'Security', status: 'Suspended',
-  card_number: 'E8 F6 FF 42', shift:'Morning', access: ['Office #1']},
-];
+export interface Departament {
+  name?: string;
+  code?: string;
+  id?:   number;
+}
+
+export interface Shift {
+  name?:      string;
+  inTime?:    string;
+  outTime?:   string;
+  lunchTime?: string;
+  dayCount?:  number;
+  id?:        number;
+}

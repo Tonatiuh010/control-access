@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { Employee } from 'src/app/models/employee-model';
+import { ResetFormService } from 'src/app/services/reset-form.service';
 // import {} from './../../../../assets/no-photo-available.png';
 @Component({
   selector: 'app-employee-edit',
@@ -13,13 +15,18 @@ export class EmployeeEditComponent implements OnInit {
   @Input() expectedEmployee!: Employee;
   @Input() employeeInitial!: boolean;
   form: FormGroup = new FormGroup({});
+  rstFormEventSubscription!: Subscription;
 
   accessList: string[] = ['HR', 'Office #1', 'Warehouse', 'Production'];
   positionList: string[] = ['Manager', 'Employee', 'Security'];
   cardList: string[] = ['C1 2F D6 0E', 'FD A9 A1 B3', '9E CD FC 7C', '84 9C 73 AB', 'E8 F6 FF 42'];
   shiftList: string[] = ['Morning', 'Evening', 'Night'];
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private rstService: ResetFormService) {
+    this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
+      this.resetForm()
+    )
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({

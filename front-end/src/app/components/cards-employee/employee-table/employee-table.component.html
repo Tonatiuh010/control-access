@@ -5,14 +5,13 @@
 
 <div class="example-container">
     <table mat-table [dataSource]="dataSource" matSort>
-
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
             <td mat-cell *matCellDef="let e">
                 <div class="image-name-container">
-                    <img class="pfp" [src]="e.photo" alt="Employee">
+                    <img (error)="onImgError($event)" class="pfp" [src]="e.photo" alt="Employee">
                     <div style="margin-left: 10px;">
-                        {{e.name}}
+                        {{e.name + ' ' +e.lastName}}
                     </div>
                 </div>
             </td>
@@ -20,7 +19,7 @@
 
         <ng-container matColumnDef="position">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
-            <td mat-cell *matCellDef="let e"> {{e.position}} </td>
+            <td mat-cell *matCellDef="let e"> {{e.job.description}} </td>
         </ng-container>
 
         <ng-container matColumnDef="status">
@@ -36,7 +35,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Number </th>
             <td mat-cell *matCellDef="let e">
                 <mat-chip-list aria-label="card_number">
-                    <mat-chip color="violet" selected>{{e.card_number}}</mat-chip>
+                    <mat-chip color="violet" selected>{{e.card}}</mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>

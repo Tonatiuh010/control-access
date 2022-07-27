@@ -8,17 +8,9 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ControlAccess
 build_property.RootNamespace = ControlAccess
-build_property.ProjectDir = c:\Users\sammy\Documents\GitHub\Frontdoor\ControlAccessAPI\
+build_property.ProjectDir = C:\Users\sammy\Documents\GitHub\Frontdoor\ControlAccessAPI\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = c:\Users\sammy\Documents\GitHub\Frontdoor\ControlAccessAPI
+build_property.MSBuildProjectDirectory = C:\Users\sammy\Documents\GitHub\Frontdoor\ControlAccessAPI
 build_property._RazorSourceGeneratorDebug = 
-
-[c:/Users/sammy/Documents/GitHub/Frontdoor/ControlAccessAPI/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[c:/Users/sammy/Documents/GitHub/Frontdoor/ControlAccessAPI/Pages/_ViewImports.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
