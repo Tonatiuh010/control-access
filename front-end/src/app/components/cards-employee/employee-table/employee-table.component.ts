@@ -29,14 +29,15 @@ export class EmployeeTableComponent implements OnInit {
   constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) { }
 
   ngOnInit(): void {
-    this.empService.getEmployees().subscribe(data => {
-      this.apiData = data;
-    });
+    // this.empService.getEmployees().subscribe(data => {
+    //   this.apiData = data;
+    //   console.log(this.apiData)
+
+    // });
     this.dataSource = new MatTableDataSource(data);
     this.cdRef.detectChanges();
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    console.log(this.apiData)
   }
 
   onEmployeeSelect(rowData: Employee) {

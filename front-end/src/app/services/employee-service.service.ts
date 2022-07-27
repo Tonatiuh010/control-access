@@ -5,12 +5,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class EmployeeServiceService {
-
+  API_URL = 'https://controlaccess20220725234915.azurewebsites.net/api/'
   constructor(private http: HttpClient) { }
 
   getEmployees() {
-    return this.http.get("https://reqres.in/api/users?page=2")
-    // .subscribe(data => {
-    // });
+    return this.http.get(this.API_URL + 'Employee')
   }
 }
