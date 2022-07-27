@@ -42,6 +42,23 @@ public class EmployeeController : CustomContoller
             }
         };
 
+        var jArray = JsonProperty<JArray>.GetValue("accessLevels", jObj);
+
+        if(jArray != null && jArray.Count > 0 )
+        {
+            foreach (var jOb in jArray)
+            {
+                var objE = (JObject)jOb;
+                bl.SetEmployeeAccessLevel(
+                    JsonProperty<int>.GetValue("employee", objE, OnMissingProperty),
+                    JsonProperty<int>.GetValue("level", objE, OnMissingProperty),
+                    JsonProperty<bool>.GetValue("status", objE, OnMissingProperty),
+                    C.GLOBAL_USER
+                );
+            }
+        }
+
+
         return bl.SetEmployee(employee, C.GLOBAL_USER);
     });
 
