@@ -10,10 +10,15 @@
                 <img class="pfp" [src]="expectedEmployee.photo" (error)="onImgError($event)" alt="Employee">
             </div>
             <div class="name-container">
-                <mat-form-field appearance="outline" [style.width.%]="100">
+                <mat-form-field appearance="outline" class="name">
                     <mat-label>Employee Name</mat-label>
-                    <input matInput placeholder="Juan Caballero" [(ngModel)]="expectedEmployee.name" formControlName="name" required>
+                    <input matInput placeholder="Juan" [(ngModel)]="expectedEmployee.name" formControlName="name" required>
                     <mat-error *ngIf="isValidField('name')">{{getErrorMessage('name')}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="name">
+                    <mat-label>Employee Last Name</mat-label>
+                    <input matInput placeholder="Caballero" [(ngModel)]="expectedEmployee.lastName" formControlName="lastName" required>
+                    <mat-error *ngIf="isValidField('lastName')">{{getErrorMessage('lastName')}}</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -43,7 +48,7 @@
                 <mat-grid-tile class="remove-padding top-padding">
                     <mat-form-field appearance="outline">
                         <mat-label>Shift</mat-label>
-                        <mat-select formControlName="shift" [(ngModel)]="expectedEmployee.shift" required>
+                        <mat-select formControlName="shift" [(ngModel)]="expectedEmployee.shift.name" required>
                             <mat-option *ngFor="let sh of shiftList" [value]="sh">{{sh}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('shift')">{{getErrorMessage('shift')}}</mat-error>

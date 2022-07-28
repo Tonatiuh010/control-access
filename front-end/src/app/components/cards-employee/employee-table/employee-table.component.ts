@@ -15,15 +15,15 @@ import { Subscription } from 'rxjs';
 })
 export class EmployeeTableComponent implements OnInit {
   displayedColumns = ['name', 'position', 'status', 'card_number', 'options'];
-  dataSource =  new MatTableDataSource<any | Welcome>([]);;
+  dataSource =  new MatTableDataSource<any>([]);;
   initial!: boolean;
   emptyEmployee: Employee = {photo: '',
   name: '', position: '', status: '',
   card_number: '', shift:'', access: ['']};
-  apiData!: Welcome;
+  apiData!: any;
 
-  @Output() employeeSelected = new EventEmitter<Employee>();
-  @Output() employeeCreate = new EventEmitter<Employee>();
+  @Output() employeeSelected = new EventEmitter<any>();
+  @Output() employeeCreate = new EventEmitter<any>();
 
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -40,10 +40,11 @@ export class EmployeeTableComponent implements OnInit {
     });
   }
 
-  onEmployeeSelect(rowData: Employee) {
+  onEmployeeSelect(rowData: any) {
     this.employeeSelected.emit({
         photo: rowData.photo,
         name: rowData.name,
+        lastName: rowData.lastName,
         position: rowData.position,
         status: rowData.status,
         card_number: rowData.card_number,
@@ -64,55 +65,3 @@ export class EmployeeTableComponent implements OnInit {
    }
 }
 
-export interface Welcome {
-  status?:  string;
-  message?: string;
-  data?:    Datum[];
-  data2?:   any;
-  data3?:   any;
-  error?:   any;
-}
-
-export interface Datum {
-  name?:         string;
-  lastName?:     string;
-  imageUrl?:     string;
-  job?:          Job;
-  accessLevels?: AccessLevel[];
-  shift?:        Shift;
-  card?:         null;
-  status?:       string;
-  id?:           number;
-}
-
-export interface AccessLevel {
-  name?:   string;
-  status?: string;
-  id?:     number;
-}
-
-export interface Job {
-  positionId?:  number;
-  code?:        null;
-  alias?:       string;
-  departament?: Departament;
-  name?:        null;
-  specialist?:  null;
-  description?: string;
-  id?:          number;
-}
-
-export interface Departament {
-  name?: string;
-  code?: string;
-  id?:   number;
-}
-
-export interface Shift {
-  name?:      string;
-  inTime?:    string;
-  outTime?:   string;
-  lunchTime?: string;
-  dayCount?:  number;
-  id?:        number;
-}

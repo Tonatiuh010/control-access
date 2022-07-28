@@ -73,3 +73,8 @@
 .margin-top {
     margin-top: 30px;
 }
+
+.name {
+    width: calc(50% - 10px);
+    margin-right: 10px;
+}

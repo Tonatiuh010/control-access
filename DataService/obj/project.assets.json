@@ -279,20 +279,6 @@
             "rid": "win"
           }
         }
-      },
-      "DataService/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "dependencies": {
-          "MySql.Data": "8.0.29",
-          "MySqlConnector": "2.1.10"
-        },
-        "compile": {
-          "bin/placeholder/DataService.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DataService.dll": {}
-        }
       }
     }
   },
@@ -896,16 +882,12 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
-    },
-    "DataService/1.0.0": {
-      "type": "project",
-      "path": "../DataService/DataService.csproj",
-      "msbuildProject": "../DataService/DataService.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "DataService >= 1.0.0"
+      "MySql.Data >= 8.0.29",
+      "MySqlConnector >= 2.1.10"
     ]
   },
   "packageFolders": {
@@ -914,11 +896,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\Engine\\Engine.csproj",
-      "projectName": "Engine",
-      "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\Engine\\Engine.csproj",
+      "projectUniqueName": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj",
+      "projectName": "DataService",
+      "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj",
       "packagesPath": "C:\\Users\\sammy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\Engine\\obj\\",
+      "outputPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\sammy\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -934,11 +916,7 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {
-            "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj": {
-              "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj"
-            }
-          }
+          "projectReferences": {}
         }
       },
       "warningProperties": {
@@ -950,6 +928,16 @@
     "frameworks": {
       "net6.0": {
         "targetAlias": "net6.0",
+        "dependencies": {
+          "MySql.Data": {
+            "target": "Package",
+            "version": "[8.0.29, )"
+          },
+          "MySqlConnector": {
+            "target": "Package",
+            "version": "[2.1.10, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",

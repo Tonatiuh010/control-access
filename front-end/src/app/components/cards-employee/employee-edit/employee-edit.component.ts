@@ -12,7 +12,7 @@ import { ResetFormService } from 'src/app/services/reset-form.service';
 export class EmployeeEditComponent implements OnInit {
 
 
-  @Input() expectedEmployee!: Employee;
+  @Input() expectedEmployee!: any;
   @Input() employeeInitial!: boolean;
   form: FormGroup = new FormGroup({});
   rstFormEventSubscription!: Subscription;
@@ -20,7 +20,7 @@ export class EmployeeEditComponent implements OnInit {
   accessList: string[] = ['HR', 'Office #1', 'Warehouse', 'Production'];
   positionList: string[] = ['Manager', 'Employee', 'Security'];
   cardList: string[] = ['C1 2F D6 0E', 'FD A9 A1 B3', '9E CD FC 7C', '84 9C 73 AB', 'E8 F6 FF 42'];
-  shiftList: string[] = ['Morning', 'Evening', 'Night'];
+  shiftList: string[] = ['MATUTINE', 'Evening', 'Night'];
 
   constructor(private fb: FormBuilder, private rstService: ResetFormService) {
     this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
@@ -31,6 +31,7 @@ export class EmployeeEditComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required, Validators.minLength(2)]],
+      lastName: [null, [Validators.required, Validators.minLength(2)]],
       access: [null, [Validators.required, Validators.minLength(1)]],
       position: [null, [Validators.required]],
       shift: [null, [Validators.required]],
@@ -40,7 +41,7 @@ export class EmployeeEditComponent implements OnInit {
 
   getErrorMessage(field: string): string {
     switch(field){
-      case 'name': {
+      case 'name': case 'lastName':{
         if (this.form.get(field)!.hasError('required')) {
         return 'You must enter a value';
       }
