@@ -103,6 +103,7 @@ namespace Engine.DAL {
                         var position = new Position(){
                             Id = Validate.getDefaultIntIfDBNull(reader["JOB_ID"]),
                             Alias = Validate.getDefaultStringIfDBNull(reader["POSITION_NAME"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["JOB"]),
                             PositionId = Validate.getDefaultIntIfDBNull(reader["POSITION_ID"]),
                             Description = Validate.getDefaultStringIfDBNull(reader["JOB_DETAIL"]),
                             Departament = new Departament() {

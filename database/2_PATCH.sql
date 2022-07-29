@@ -66,5 +66,5 @@ ALTER TABLE EMPLOYEE_ACCESS_LEVEL ADD COLUMN UPDATED_BY VARCHAR(40);
 /* INSERTS */
 INSERT INTO ACCESS_LEVEL (NAME) VALUES ('G1'), ('G2'), ('G3');
 INSERT INTO SHIFT (NAME, CLOCK_IN, CLOCK_OUT, DAY_COUNT, LUNCH_TIME) VALUES 
-	('MATUTINE', maketime(8, 00, 00), maketime(18, 00, 00), 0, maketime(12, 00, 00)), 
-	('VESPERTINE', maketime(16, 00, 00), maketime(2, 00, 00), 1, maketime(20, 00, 00));
+	('MORNING SHIFT', maketime(8, 00, 00), maketime(18, 00, 00), 0, maketime(12, 00, 00)), 
+	('EVENING SHIFT', maketime(16, 00, 00), maketime(2, 00, 00), 1, maketime(20, 00, 00));

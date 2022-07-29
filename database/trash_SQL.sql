@@ -89,9 +89,9 @@ SELECT * FROM SHIFT;
     
     SET @RESULT = '';
 	CALL SET_CARD(
-		1,
-		'12345',
-		1,
+		NULL,
+		'TXN-JD-CD-2',
+		NULL,
 		'API_TEST',
 		@RESULT
 	);
