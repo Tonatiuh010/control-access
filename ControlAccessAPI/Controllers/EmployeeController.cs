@@ -39,25 +39,37 @@ public class EmployeeController : CustomContoller
             },
             Shift = new Shift() {
                 Id = JsonProperty<int?>.GetValue("shift", jObj),
-            }
+            },
+            Image = new ImageData(JsonProperty<string>.GetValue("image", jObj))
         };
 
-        var jArray = JsonProperty<JArray>.GetValue("accessLevels", jObj);
+        var levels = JsonProperty<JArray>.GetValue("accessLevels", jObj);
 
-        if(jArray != null && jArray.Count > 0 )
-        {
-            foreach (var jOb in jArray)
+        var resultInsert = bl.SetEmployee(employee, C.GLOBAL_USER);
+
+        if (levels != null && resultInsert.Status == C.OK)
+        {            
+            int? employeeId = resultInsert.InsertDetails.Id;
+            var employeeLevels = bl.GetEmployeeAccessLevels(employeeId);
+            var incomingLevels = levels.Select(x => bl.GetAccessLevel(x.ToString())).ToList();
+
+            foreach(var level in incomingLevels)
             {
-                var objE = (JObject)jOb;
-                bl.SetEmployeeAccessLevel(
-                    JsonProperty<int>.GetValue("employee", objE, OnMissingProperty),
-                    JsonProperty<int>.GetValue("level", objE, OnMissingProperty),
-                    JsonProperty<bool>.GetValue("status", objE, OnMissingProperty),
-                    C.GLOBAL_USER
-                );
+                if(level != null && level.IsValid() && !employeeLevels.Any(x => x.Id == level.Id)) 
+                {
+                    bl.SetEmployeeAccessLevel((int)employeeId, (int)level.Id, true, C.GLOBAL_USER);
+                }
             }
-        }
 
+            foreach(var empLevel in employeeLevels)
+            {
+                if (!incomingLevels.Any(x => x != null && x.IsValid() && x.Id == empLevel.Id ))
+                {
+                    bl.SetEmployeeAccessLevel((int)employeeId, (int)empLevel.Id, false, C.GLOBAL_USER);
+                }
+            }
+
+        }
 
         return bl.SetEmployee(employee, C.GLOBAL_USER);
     });

@@ -77,10 +77,10 @@ SELECT * FROM SHIFT;
 
 	SET @RESULT = '';
 	CALL SET_EMPLOYEE(
+			null,
+			'FAKE EMPLOYEE',
+			'TEST',
 			1,
-			'TONATIUH',
-			'LOPEZ RAMIREZ',
-			NULL,
 			1,
 			'API_TEST',
 			@RESULT
@@ -129,3 +129,6 @@ SELECT * FROM SHIFT;
 		@RESULT
 	);
 	SELECT @RESULT;
+
+
+SELECT last_insert_id();

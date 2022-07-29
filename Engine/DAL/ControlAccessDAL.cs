@@ -11,16 +11,16 @@ using Engine.BL.Delegates;
 
 namespace Engine.DAL {
     public class ControlAccessDAL : MySqlDataBase {
-        private static ControlAccessDAL? _DAL {get; set;} = null;        
+        private static ControlAccessDAL? DAL {get; set;} = null;        
         public static string? ConnString {get; set;}
         public static ControlAccessDAL Instance {
             get
             {
-                if(_DAL == null) {
-                    _DAL = new ControlAccessDAL(); 
+                if(DAL == null) {
+                    DAL = new ControlAccessDAL(); 
                 }
 
-                return _DAL;
+                return DAL;
             } 
         }
 
@@ -34,7 +34,7 @@ namespace Engine.DAL {
         public List<Check> GetChecks() {
             List<Check> model = new List<Check>();
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(SQL.WEIRD_QRY, txn, CommandType.Text);            
 
                 using(var reader = cmd.ExecuteReader()) {
@@ -58,7 +58,7 @@ namespace Engine.DAL {
         public List<Departament> GetDepartaments(int? deptoId) {
             List<Departament> model = new List<Departament>();
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(SQL.GET_DEPARTAMENTS, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -83,7 +83,7 @@ namespace Engine.DAL {
         public List<Employee> GetEmployees(int? employeeId) {
             List<Employee> model = new List<Employee>();
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -125,7 +125,7 @@ namespace Engine.DAL {
                             Id = Validate.getDefaultIntIfDBNull(reader["EMPLOYEE_ID"]),
                             Name = Validate.getDefaultStringIfDBNull(reader["FIRST_NAME"]),
                             LastName = Validate.getDefaultStringIfDBNull(reader["LAST_NAME"]),
-                            ImageUrl = Validate.getDefaultStringIfDBNull(reader["IMAGE"]),
+                            Image =  new ImageData(Validate.getDefaultBytesIfDBNull(reader["IMAGE"])),
                             Status = Validate.getDefaultStringIfDBNull(reader["EMPLOYEE_STATUS"]),
                             Job =  position.IsValidPosition() ? position : null,
                             Shift = shift.IsValid() ? shift : null,
@@ -143,7 +143,7 @@ namespace Engine.DAL {
         public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId) {
             List<EmployeeAccessLevel> model = new List<EmployeeAccessLevel>();
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(SQL.GET_EMPLOYEE_ACCESS_LEVEL, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -169,7 +169,7 @@ namespace Engine.DAL {
         public List<AccessLevel> GetAccessLevels() {
             List<AccessLevel> model = new List<AccessLevel>();
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(SQL.GET_ACCESS_LEVEL, txn, CommandType.Text);                            
 
                 using(var reader = cmd.ExecuteReader()) {
@@ -187,10 +187,10 @@ namespace Engine.DAL {
         }
 
         public Result SetCheck(string cardSerial, string txnUser) {
-            Result result = new Result();
+            Result result = new();
             string sSp = SQL.SET_CARD_CHECK;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -200,19 +200,21 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
             }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetCheck", msg, ex, result));
 
+
+
             return result;
         }
 
-        public Result SetDepartament(Departament departament, string txnUser) {
-            Result result = new Result();
+        public ResultInsert SetDepartament(Departament departament, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_DEPARTAMENT;
 
-            TransactionBlock(Connection, txn => {                
+            TransactionBlock(this, txn => {                
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -225,19 +227,22 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDepartament", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDepartament", msg, ex, result),
+                () => SetResultInsert(result, departament)
+            );
 
             return result;
         }
 
-        public Result SetJob(Job job, string txnUser) {
-            Result result = new Result();
+        public ResultInsert SetJob(Job job, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_JOB;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -250,19 +255,22 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetJob", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetJob", msg, ex, result),
+                () => SetResultInsert(result, job)
+            );
 
             return result;
         }
 
-        public Result SetAccessLevel(AccessLevel level, string txnUser){ 
-            Result result = new Result();
+        public ResultInsert SetAccessLevel(AccessLevel level, string txnUser){
+            ResultInsert result = new();
             string sSp = SQL.SET_ACCESS_LEVEL;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -274,19 +282,22 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetAccessLevel", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetAccessLevel", msg, ex, result),
+                () => SetResultInsert(result, level)
+            );
 
             return result;
         }
 
-        public Result SetShift(Shift shift, string txnUser) {
-            Result result = new Result();
+        public ResultInsert SetShift(Shift shift, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_SHIFT;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -302,19 +313,22 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetShift", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetShift", msg, ex, result),
+                () => SetResultInsert(result, shift)
+            );
 
             return result;
         }
 
-        public Result SetPosition(Position position, string txnUser) {  
-            Result result = new Result();
+        public ResultInsert SetPosition(Position position, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_POSITION;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -328,19 +342,28 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetPosition", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetPosition", msg, ex, result),
+                () => SetResultInsert(
+                    result,
+                    new BaseBO()
+                    {
+                        Id = position.PositionId
+                    }
+                )
+            );
 
             return result;
         }
 
-        public Result SetEmployee(Employee employee, string txnUser) {
-            Result result = new Result();
+        public ResultInsert SetEmployee(Employee employee, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_EMPLOYEE;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -350,25 +373,28 @@ namespace Engine.DAL {
                 cmd.Parameters.Add(CreateParameter("IN_LAST_NAME", employee.LastName, MySqlDbType.String));
                 cmd.Parameters.Add(CreateParameter("IN_POSITION", employee.Job.PositionId, MySqlDbType.Int32));
                 cmd.Parameters.Add(CreateParameter("IN_SHIFT", employee.Shift.Id, MySqlDbType.Int32));
-                cmd.Parameters.Add(CreateParameter("IN_IMG", employee.ImageUrl, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_IMG", employee.Image.Hex, MySqlDbType.LongText));
                 cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
                 cmd.Parameters.Add(pResult);
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetEmployee", msg, ex, result));
-
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetEmployee", msg, ex, result), 
+                () => SetResultInsert(result, employee)
+            );
+            
             return result;
         }
 
         public Result SetDownEmployee(int employeeId, string txnUser) {
-            Result result = new Result();
+            Result result = new();
             string sSp = SQL.SET_DOWN_EMPLOYEE;
 
-            TransactionBlock(Connection, txn => {                
+            TransactionBlock(this, txn => {                
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -378,7 +404,7 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
             }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDownEmployee", msg, ex, result));
@@ -388,10 +414,10 @@ namespace Engine.DAL {
 
 
         public Result SetEmployeeAccessLevel(int employeeNumber, int accessLevel, string status, string user) {
-            Result result = new Result();
+            Result result = new();
             string sSp = SQL.SET_EMPLOYEE_ACCESS;
 
-            TransactionBlock(Connection, txn  =>{
+            TransactionBlock(this, txn  =>{
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -404,7 +430,7 @@ namespace Engine.DAL {
                 
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }
 
             }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetAccessLevel", msg, ex, result));
@@ -412,11 +438,11 @@ namespace Engine.DAL {
             return result;                      
         }
 
-        public Result SetCard(CardEmployee card, string txnUser) {
-            Result result = new Result();
+        public ResultInsert SetCard(CardEmployee card, string txnUser) {
+            ResultInsert result = new();
             string sSp = SQL.SET_CARD;
 
-            TransactionBlock(Connection, txn => {
+            TransactionBlock(this, txn => {
 
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
@@ -430,20 +456,22 @@ namespace Engine.DAL {
                  
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }                
 
-            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetCard", msg, ex, result));
+            }, 
+                (ex, msg) => SetExceptionResult("ControlAccessDAL.SetCard", msg, ex, result), 
+                () =>  SetResultInsert(result, card)
+            );
 
             return result;
         }
 
         public Result SetDownCard(int cardId, string txnUser) {
-            Result result = new Result();
+            Result result = new();
             string sSp = SQL.SET_DOWN_CARD;
 
-            TransactionBlock(Connection, txn => {
-
+            TransactionBlock(this, txn => {
                 var cmd = CreateCommand(sSp, txn, CommandType.StoredProcedure);
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
@@ -454,16 +482,33 @@ namespace Engine.DAL {
                  
                 using(var reader = cmd.ExecuteReader()) 
                 {
-                    result = GetResult(pResult, sSp);
+                    GetResult(pResult, sSp, result);
                 }                
 
             }, (ex, msg) => SetExceptionResult("ControlAccessDAL.SetDownCard", msg, ex, result));
 
             return result;
-        }        
+        }
 
-        public static Result GetResult(IDataParameter pResult, string sSp) {  
-            Result result = new Result();
+        public int? GetLastId()
+        {
+            int? id = null; 
+            TransactionBlock(this, txn => {
+
+                var cmd = CreateCommand("SELECT LAST_INSERT_ID()", txn, CommandType.Text);
+                var result = cmd.ExecuteScalar().ToString();
+
+                if(result != null)
+                {
+                    id = int.Parse(result);
+                }
+
+            }, (ex, msg) => SetExceptionResult("ControlAccessDAL.GetChecks", msg, ex));
+
+            return id;
+        }
+
+        public static void GetResult(IDataParameter pResult, string sSp, Result result) {
 
             try {
                 if(pResult.Value != null) {
@@ -475,25 +520,35 @@ namespace Engine.DAL {
                     } else if (res != C.OK) {
                         result.Status = C.ERROR;
                         result.Message = res;
+                        throw new ArgumentException($"Error From Internal Procedure DB -> Says: {result.Message}");
                     } else {
                         result.Status = res;
                         result.Message = C.COMPLETE;
                     }
                 }
+            } catch (ArgumentException ex )
+            {
+                throw ex;
             } catch (Exception ex) {
                 result.Status = C.ERROR;
                 result.Message = ex.Message;
             }
 
-            return result;
         }
 
-        private void SetExceptionResult(string actionName, string msg, Exception ex) 
-        {
-            if(OnDALError != null) {
-                OnDALError(ex, $"Error on ({actionName}) - {msg}");
-            }
+        public void SetResultInsert(ResultInsert result, BaseBO bo)
+        { 
+            result.InsertDetails = bo.IsValid() ? 
+                new InsertStatus(bo) : 
+                new InsertStatus() {
+                    Id = GetLastId(),
+                    FromObject = bo.GetType()
+                };
         }
+
+        private void SetExceptionResult(string actionName, string msg, Exception ex) => 
+            OnDALError?.Invoke(ex, $"Error on ({actionName}) - {msg}");
+        
 
         public static void SetExceptionResult(string actionName, string msg, Exception ex, Result result) 
         {
@@ -502,7 +557,7 @@ namespace Engine.DAL {
             result.Data = ex.GetType().ToString();            
         }
 
-        public static void SetOnConnectionException(DataException onException) => OnException = onException;        
+        public static void SetOnConnectionException(DataException onException) => OnException = onException;
 
     }
 }

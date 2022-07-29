@@ -38,11 +38,7 @@ public abstract class CustomContoller : ControllerBase
             if(action2 != null)
                 result.Data2 = action2();
 
-            if(action3 != null)
-                result.Data3 = action3();
-
             result.Message = C.COMPLETE;
-
             
         }
 

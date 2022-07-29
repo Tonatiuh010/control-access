@@ -1,34 +1,90 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Engine.BO {
 
-    public abstract class BaseBO {
+    public class BaseBO {
         public int? Id {get; set;}
         public bool IsValid() => Id != null && Id != 0;
+    }
+
+    public class ImageData
+    {
+        [JsonIgnore]
+        public byte[]? Bytes { get; set; }
+        public string? B64 => Bytes != null ? AddB64Header( Convert.ToBase64String(Bytes) ) : string.Empty;
+        [JsonIgnore]
+        public string? Hex { get
+            {
+                if(Bytes != null )
+                {                    
+                    return BitConverter.ToString(Bytes).Replace("-", "");
+                } else
+                {
+                    return null;
+                }                
+            }
+        }
+
+        public ImageData() => Bytes = null;
+
+        public ImageData(byte[] bytes) => Bytes = bytes;
+
+        public ImageData(string? b64) => 
+            Bytes = string.IsNullOrEmpty(b64) ? null : Convert.FromBase64String(RemoveHeaderB64(b64));
+
+        private static string RemoveHeaderB64(string b64)
+        {
+            var indexOf = b64.IndexOf(",");
+
+            if(indexOf == -1)
+            {
+                return b64;
+            } else
+            {
+                return b64.Substring(indexOf + 1);
+            }            
+        }
+
+        private static string AddB64Header(string b64)
+        {
+            var indexOf = b64.IndexOf(",");
+
+            if (indexOf != -1)
+            {
+                return b64;
+            }
+            else
+            {
+                return $"data:image/png;base64,{b64}";
+            }
+        }
+
     }
 
     public class Employee  : BaseBO{
         public string? Name {get; set;}
         public string? LastName {get; set;}
-        public string? ImageUrl { get; set; }
+        public ImageData? Image { get; set; }
         public Position? Job {get; set;}
         public List<AccessLevel>? AccessLevels {get; set;}
         public Shift? Shift {get; set;}
         public Card? Card { get; set; }
         public string? Status { get; set; }
+
+
     }
 
     public class Job : BaseBO {
         public string? Name {get; set;}
-        public string? Specialist {get; set;}
         public string? Description {get; set;}
     }
 
     public class Position : Job {
         public int? PositionId {get; set;}
-        public string? Code { get; set;}
         public string? Alias {get; set;}
         public Departament? Departament {get; set;}
 
@@ -37,6 +93,7 @@ namespace Engine.BO {
 
     public class AccessLevel : BaseBO {        
         public string? Name {get; set;}
+        [JsonIgnore]
         public string? Status {get; set;}                                   
     }
 

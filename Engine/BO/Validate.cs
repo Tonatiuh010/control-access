@@ -58,6 +58,21 @@ namespace Engine.BO
             return obj2;
         }
 
+        public byte[] getDefaultBytesIfDBNull(object value) 
+        {
+            byte[] bytes;
+
+            if(value.GetType() == typeof(byte[]))
+            {
+                bytes = (byte[])value;
+            } else
+            {
+                bytes = Array.Empty<byte>();
+            }
+
+            return bytes;
+        }
+
         #endregion
 
         #region DAL Methods
@@ -152,7 +167,7 @@ namespace Engine.BO
                 return DBNull.Value;
             else
                 return valor;
-        }
+        }        
 
         #endregion
     }

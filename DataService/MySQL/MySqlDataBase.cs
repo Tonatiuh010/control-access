@@ -19,14 +19,13 @@ namespace DataService.MySQL
         // Properties
         public static DataException? OnException {get; set;}
         public MySqlConnection Connection { get;  set; } = new MySqlConnection();   
+        private string? ConnectionString { get; set; }
         
         // Constructor
         public MySqlDataBase(string? connString) {
             try {
-                if(string.IsNullOrEmpty(connString)) {
-                    throw new Exception("MySQL Connection string is empty");
-                }
-                OpenConnection(connString);             
+                ConnectionString = connString;
+                OpenConnection();             
             } catch (Exception ex) {                
                 if(OnException != null) {
                     if (ex.GetType() == typeof(MySqlException) ) {
@@ -39,18 +38,14 @@ namespace DataService.MySQL
                             OnException(ex, "Invalid username/password, please try again");
                             break;
                     }
-                } else {                    
-                    OnException(ex, "Exception creating connection...");
-                }
+                    } else {                    
+                        OnException(ex, "Exception creating connection...");
+                    }
                 }                
             }
         }
 
-        public void OpenConnection(string connString) {
-            Connection = new MySqlConnection(connString);                        
-            Connection.StateChange += OnStateChange;
-            Connection.Open();
-        }
+        public void OpenConnection() => OpenConnection(this);
 
         public void CloseConnection() {
             if(Connection.State == ConnectionState.Open) {                
@@ -86,41 +81,49 @@ namespace DataService.MySQL
             MySqlDbType = type
         };
 
-        public static void TransactionBlock(MySqlConnection conn, TransactionCallback action, DataException onException) {
+        private static void OpenConnection(MySqlDataBase db)
+        {
+            if (string.IsNullOrEmpty(db.ConnectionString))
+            {
+                throw new Exception("MySQL Connection string is empty");
+            }
+
+            db.Connection = new MySqlConnection(db.ConnectionString);
+            db.Connection.StateChange += OnStateChange;
+            db.Connection.Open();
+        }
+
+        public static void TransactionBlock(
+            MySqlDataBase db, 
+            TransactionCallback action, 
+            DataException onException,
+            Action? onProcess = null
+        ) {
             MySqlTransaction? txn = null;
+            MySqlConnection conn = db.Connection;
+            bool isTxnSuccess;
+
             try {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    OpenConnection(db);
+                }
+
                 txn = conn.BeginTransaction();                
                 action(txn);
                 txn.Commit();
+                isTxnSuccess = true;
             } catch (Exception e) {
                 if(txn != null)
                     txn.Rollback();
                 onException(e);
+
+                isTxnSuccess = false;
             }
+
+            if (isTxnSuccess)
+                onProcess?.Invoke();
+
         }
     }
 }
-/*
-=> TransactionBlock(
-            Connection,
-            txn => {
-                Connection = new MySqlConnection();
-                Connection.ConnectionString = connString;
-                Connection.Open();
-            },
-            exception => {
-                if (exception.GetType() == typeof(MySqlException) ) {
-                    MySqlException e = (MySqlException)exception;
-                    switch (e.Number) {
-                        case 0:
-                            Console.WriteLine("Cannot connect to server.  Contact administrator");
-                            break;
-                        case 1045:
-                            Console.WriteLine("Invalid username/password, please try again");
-                            break;
-                    }
-                }
-                Console.WriteLine(exception.Message);
-            } 
-        );
-*/
