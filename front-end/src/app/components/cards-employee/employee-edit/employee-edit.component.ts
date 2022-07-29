@@ -33,6 +33,7 @@ export class EmployeeEditComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       upload: [null],
       lastName: [null, [Validators.required, Validators.minLength(2)]],
@@ -79,26 +80,30 @@ export class EmployeeEditComponent implements OnInit {
 
   resetForm(): void{
     this.form.reset();
-    this.form.markAsPristine
+    this.form.markAsPristine();
+    this.employeePhoto = undefined;
   }
 
   createEmployee(form: any): void{
-    this.form.markAsPristine
-    console.log(form)
-    console.log(this.employeePhoto)
-    this.employeePhoto = undefined
+    form.value.id = null;
+    if (this.employeePhoto){
+      form.value.upload = this.employeePhoto
+    } else{
+      form.value.upload = Constants['no-image-found']
+    }
+    console.log(form.value)
+    this.resetForm();
+    this.expectedEmployee = undefined;
   }
 
   updateEmployee(form: any): void{
     this.form.markAsPristine
     if (this.employeePhoto){
-      console.log('hola')
       form.value.upload = this.employeePhoto
     } else{
       form.value.upload = Constants['no-image-found']
     }
-    console.log(form)
-    this.employeePhoto = undefined
+    console.log(form.value)
   }
 
   isValidField(field: string): boolean{
@@ -109,8 +114,7 @@ export class EmployeeEditComponent implements OnInit {
     event.target.src = './../../../../assets/no-photo-available.png'
    }
 
-   imageUpload(event:any)
-  {
+   imageUpload(event:any){
     var file = event.target.files.length;
     for(let i=0;i<file;i++)
     {
@@ -122,6 +126,10 @@ export class EmployeeEditComponent implements OnInit {
        }
        reader.readAsDataURL(event.target.files[i]);
     }
+  }
+
+  photoState(){
+    console.log(this.form.get('shift')!.value)
   }
 
 }
