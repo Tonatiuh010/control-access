@@ -22,12 +22,16 @@
                 </mat-form-field>
             </div>
         </div>
+        <div class="image-upload">
+            <input type="file" class="upload" multiple style="height: 100%;" accept="image/*" formControlName="upload" (change)="imageUpload($event)">
+        </div>
+
         <div class="selects">
             <mat-grid-list cols="2" rowHeight="3:1" [gutterSize]="'10px'">
                 <mat-grid-tile class="top-padding">
                     <mat-form-field appearance="outline">
                         <mat-label>Access</mat-label>
-                        <mat-select formControlName="access" [(ngModel)]="expectedEmployee.access" multiple required>
+                        <mat-select formControlName="access" [(ngModel)]="expectedEmployee.accessLevels" multiple required>
                             <mat-select-trigger>
                                 {{ getDepartmentCount() }}
                             </mat-select-trigger>
@@ -70,7 +74,7 @@
 
                 </mat-grid-tile>
                 <mat-grid-tile>
-                    <button type='button' *ngIf="!employeeInitial" (click)="createEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Update Employee</button>
+                    <button type='button' *ngIf="!employeeInitial" (click)="updateEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Update Employee</button>
                     <button type='button' *ngIf="employeeInitial" (click)="createEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Add Employee</button>
                 </mat-grid-tile>
 

@@ -1,5 +1,6 @@
 export interface Employee {
   name?: string;
+  lastName?: string,
   photo?: string;
   position?: string;
   status?: string;

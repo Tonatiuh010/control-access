@@ -11,6 +11,7 @@ export class CardsEmployeeComponent implements OnInit {
   employee!: Employee;
   @Output() employeeInitial = new EventEmitter<boolean>();
   initial!: boolean;
+  photo!: any;
   constructor() { }
 
   ngOnInit(): void {
@@ -19,11 +20,13 @@ export class CardsEmployeeComponent implements OnInit {
   onEmployeeSelect(eventData: Employee) {
     this.employee = eventData;
     this.initial = false
+    this.photo = eventData.photo
   }
 
   onEmployeeCreate(eventData: Employee) {
     this.employee = eventData;
     this.initial = true
+    this.photo = undefined
   }
 
 }

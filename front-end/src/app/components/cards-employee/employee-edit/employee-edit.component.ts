@@ -1,6 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/models/constants';
 import { Employee } from 'src/app/models/employee-model';
 import { ResetFormService } from 'src/app/services/reset-form.service';
 // import {} from './../../../../assets/no-photo-available.png';
@@ -14,15 +15,17 @@ export class EmployeeEditComponent implements OnInit {
 
   @Input() expectedEmployee!: any;
   @Input() employeeInitial!: boolean;
+  @Input() employeePhoto!: any;
   form: FormGroup = new FormGroup({});
   rstFormEventSubscription!: Subscription;
 
-  accessList: string[] = ['HR', 'Office #1', 'Warehouse', 'Production'];
+  accessList: any[] = ['G1', 'G2', 'G3', 'Production'];
   positionList: string[] = ['Manager', 'Employee', 'Security'];
   cardList: string[] = ['C1 2F D6 0E', 'FD A9 A1 B3', '9E CD FC 7C', '84 9C 73 AB', 'E8 F6 FF 42'];
   shiftList: string[] = ['MATUTINE', 'Evening', 'Night'];
+  //employeePhoto: any = this.expectedEmployee;
 
-  constructor(private fb: FormBuilder, private rstService: ResetFormService) {
+  constructor(private fb: FormBuilder, private rstService: ResetFormService, private cdRef: ChangeDetectorRef) {
     this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
       this.resetForm()
     )
@@ -31,6 +34,7 @@ export class EmployeeEditComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       name: [null, [Validators.required, Validators.minLength(2)]],
+      upload: [null],
       lastName: [null, [Validators.required, Validators.minLength(2)]],
       access: [null, [Validators.required, Validators.minLength(1)]],
       position: [null, [Validators.required]],
@@ -81,11 +85,20 @@ export class EmployeeEditComponent implements OnInit {
   createEmployee(form: any): void{
     this.form.markAsPristine
     console.log(form)
+    console.log(this.employeePhoto)
+    this.employeePhoto = undefined
   }
 
   updateEmployee(form: any): void{
     this.form.markAsPristine
+    if (this.employeePhoto){
+      console.log('hola')
+      form.value.upload = this.employeePhoto
+    } else{
+      form.value.upload = Constants['no-image-found']
+    }
     console.log(form)
+    this.employeePhoto = undefined
   }
 
   isValidField(field: string): boolean{
@@ -95,5 +108,20 @@ export class EmployeeEditComponent implements OnInit {
   onImgError(event: any): void{
     event.target.src = './../../../../assets/no-photo-available.png'
    }
+
+   imageUpload(event:any)
+  {
+    var file = event.target.files.length;
+    for(let i=0;i<file;i++)
+    {
+       var reader = new FileReader();
+       reader.onload = (event:any) =>
+       {
+           this.employeePhoto = event.target.result;
+           this.cdRef.detectChanges();
+       }
+       reader.readAsDataURL(event.target.files[i]);
+    }
+  }
 
 }
