@@ -1,0 +1,15 @@
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\bin\Debug\net6.0\Engine.deps.json
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\bin\Debug\net6.0\Engine.dll
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\bin\Debug\net6.0\Engine.pdb
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\bin\Debug\net6.0\DataService.dll
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\bin\Debug\net6.0\DataService.pdb
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.csproj.AssemblyReference.cache
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.AssemblyInfoInputs.cache
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.AssemblyInfo.cs
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.csproj.CoreCompileInputs.cache
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.csproj.CopyComplete
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.dll
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\refint\Engine.dll
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\Engine.pdb
+C:\Users\sammy\Documents\GitHub\Frontdoor\Engine\obj\Debug\net6.0\ref\Engine.dll

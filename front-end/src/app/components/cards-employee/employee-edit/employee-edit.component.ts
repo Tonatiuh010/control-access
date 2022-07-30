@@ -22,7 +22,7 @@ export class EmployeeEditComponent implements OnInit {
   accessList: any[] = ['G1', 'G2', 'G3', 'Production'];
   positionList: string[] = ['Manager', 'Employee', 'Security'];
   cardList: string[] = ['C1 2F D6 0E', 'FD A9 A1 B3', '9E CD FC 7C', '84 9C 73 AB', 'E8 F6 FF 42'];
-  shiftList: string[] = ['MATUTINE', 'Evening', 'Night'];
+  shiftList: string[] = ['Morning', 'Evening', 'Night'];
   //employeePhoto: any = this.expectedEmployee;
 
   constructor(private fb: FormBuilder, private rstService: ResetFormService, private cdRef: ChangeDetectorRef) {

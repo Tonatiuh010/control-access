@@ -46,12 +46,12 @@ export class EmployeeTableComponent implements OnInit {
     });
     this.employeeSelected.emit({
         id: rowData.id,
-        photo: rowData.photo,
+        photo: rowData.image.b64,
         name: rowData.name,
         lastName: rowData.lastName,
         position: rowData.job.position,
         status: rowData.status,
-        card_number: rowData.card,
+        card_number: rowData.card.key,
         shift: rowData.shift.name,
         accessLevels: arr
       });
