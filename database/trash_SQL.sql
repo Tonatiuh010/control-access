@@ -75,17 +75,6 @@ SELECT * FROM SHIFT;
     );
     SELECT @RESULT;
 
-	SET @RESULT = '';
-	CALL SET_EMPLOYEE(
-			null,
-			'FAKE EMPLOYEE',
-			'TEST',
-			1,
-			1,
-			'API_TEST',
-			@RESULT
-	);
-	SELECT @RESULT;	
     
     SET @RESULT = '';
 	CALL SET_CARD(

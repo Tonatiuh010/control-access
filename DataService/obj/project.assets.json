@@ -891,19 +891,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sammy\\.nuget\\packages\\": {}
+    "C:\\Users\\te-lopezk\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj",
+      "projectUniqueName": "C:\\Develops\\control-access\\control-access\\DataService\\DataService.csproj",
       "projectName": "DataService",
-      "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\DataService.csproj",
-      "packagesPath": "C:\\Users\\sammy\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataService\\obj\\",
+      "projectPath": "C:\\Develops\\control-access\\control-access\\DataService\\DataService.csproj",
+      "packagesPath": "C:\\Users\\te-lopezk\\.nuget\\packages\\",
+      "outputPath": "C:\\Develops\\control-access\\control-access\\DataService\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\sammy\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\te-lopezk\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -953,7 +958,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }

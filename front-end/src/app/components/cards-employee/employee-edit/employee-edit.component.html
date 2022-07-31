@@ -1,0 +1,89 @@
+<div *ngIf="!expectedEmployee" class="placeholder">Select an Employee from the table</div>
+
+<div *ngIf="expectedEmployee" class="form">
+    <form [formGroup]="form">
+        <div class="title">
+            Employee Details
+        </div>
+        <div class="photo-name">
+            <div class="image-name-container">
+                <img class="pfp" [src]="employeePhoto" (error)="onImgError($event)" alt="Employee">
+            </div>
+            <!--button mat-button type="button" (click)="photoState()">PhotoState</button-->
+            <div class="name-container">
+                <mat-form-field appearance="outline" style="display: none;">
+                    <input matInput [(ngModel)]="expectedEmployee.id" formControlName="id">
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="name">
+                    <mat-label>Employee Name</mat-label>
+                    <input matInput placeholder="Juan" [(ngModel)]="expectedEmployee.name" formControlName="name" required>
+                    <mat-error *ngIf="isValidField('name')">{{getErrorMessage('name')}}</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="name">
+                    <mat-label>Employee Last Name</mat-label>
+                    <input matInput placeholder="Caballero" [(ngModel)]="expectedEmployee.lastName" formControlName="lastName" required>
+                    <mat-error *ngIf="isValidField('lastName')">{{getErrorMessage('lastName')}}</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="image-upload">
+            <input type="file" class="upload" multiple style="height: 100%;" accept="image/*" formControlName="upload" (change)="imageUpload($event)">
+        </div>
+
+        <div class="selects">
+            <mat-grid-list cols="2" rowHeight="3:1" [gutterSize]="'10px'">
+                <mat-grid-tile class="top-padding">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Access</mat-label>
+                        <mat-select formControlName="access" [(ngModel)]="expectedEmployee.accessLevels" multiple required>
+                            <mat-select-trigger>
+                                {{ getDepartmentCount() }}
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let acc of accessList" [value]="acc">{{acc}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="isValidField('access')">{{getErrorMessage('access')}}</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile class="top-padding">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Position</mat-label>
+                        <mat-select formControlName="position" [(ngModel)]="expectedEmployee.position" required>
+                            <mat-option *ngFor="let pos of positionList" [value]="pos">{{pos}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="isValidField('position')">{{getErrorMessage('position')}}</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile class="remove-padding top-padding">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Shift</mat-label>
+                        <mat-select formControlName="shift" [(ngModel)]="expectedEmployee.shift" required>
+                            <mat-option *ngFor="let sh of shiftList" [value]="sh">{{sh}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="isValidField('shift')">{{getErrorMessage('shift')}}</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile class="remove-padding top-padding">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Card Assigned</mat-label>
+                        <mat-select formControlName="card" [(ngModel)]="expectedEmployee.card_number" required>
+                            <mat-option *ngFor="let card of cardList" [value]="card">{{card}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="isValidField('card')">{{getErrorMessage('card')}}</mat-error>
+                    </mat-form-field>
+                </mat-grid-tile>
+            </mat-grid-list>
+            <mat-grid-list cols="2" rowHeight="60px" [gutterSize]="'10px'" class="margin-top">
+                <mat-grid-tile>
+                    <button type='button' mat-raised-button class="full-width" (click)="resetForm()" color="red">Reset</button>
+
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <button type='button' *ngIf="!employeeInitial" (click)="updateEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Update Employee</button>
+                    <button type='button' *ngIf="employeeInitial" (click)="createEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Add Employee</button>
+                </mat-grid-tile>
+
+            </mat-grid-list>
+
+        </div>
+    </form>
+</div>

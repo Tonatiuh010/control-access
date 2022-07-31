@@ -1,0 +1,55 @@
+.example-container {
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-paginator-sticky {
+    bottom: 0;
+    position: sticky;
+    z-index: 10;
+}
+
+.pfp {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.image-name-container {
+    margin: 10px 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.mat-blue {
+    background-color: #0090FD;
+    color: #fff;
+}
+
+.mat-green {
+    background-color: #8FE597;
+    color: #fff;
+    justify-content: center;
+    width: 90px;
+}
+
+.mat-violet {
+    background-color: #AB8FE5;
+    color: #fff;
+}
+
+.mat-red {
+    background-color: #e58f8f;
+    justify-content: center;
+    color: #fff;
+    width: 90px;
+}
+
+.options {
+    cursor: pointer;
+}
