@@ -21,7 +21,8 @@ int port = 1883;
 char myBuffer;
 String bufferString;
 char cardNumber[0];
-
+StaticJsonDocument<200> doc;
+JsonObject message = doc.to<JsonObject>();
 
 void wifiInit() {
     Serial.print("Conectándose a ");
@@ -157,9 +158,14 @@ MFRC522::MIFARE_Key key;
     reconnect();
   }
  Serial.print("publicando mtqq: ");
- Serial.println(cardNumber);
  
-  mqttClient.publish("esp32/rfid", cardNumber );
+ Serial.println(cardNumber);
+ message["serial"] = cardNumber;
+ message["device"] = "Office";
+ char json[100];
+ serializeJson(message,json);
+ Serial.print(json);
+  mqttClient.publish("esp32/rfid", json );
   mfrc522.PICC_HaltA();
   mfrc522.PCD_StopCrypto1();
   bufferString = "";
