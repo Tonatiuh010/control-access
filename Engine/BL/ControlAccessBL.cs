@@ -32,7 +32,7 @@ namespace Engine.BL {
                 c.SetEmployee(id =>
                 {
                     var employees = GetEmployees(id);
-                    return employees != null ? employees[0] : new Employee();
+                    return employees != null && employees.Count > 0 ? employees[0] : new Employee();
                 });
             }
 
