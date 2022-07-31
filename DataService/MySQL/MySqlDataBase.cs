@@ -69,7 +69,7 @@ namespace DataService.MySQL
             CommandType = type
         };
 
-        public static IDataParameter CreateParameter(string name, object value, MySqlDbType type, bool isNullable = true)  => new MySqlParameter(name, value) {
+        public static IDataParameter CreateParameter(string name, object? value, MySqlDbType type, bool isNullable = true)  => new MySqlParameter(name, value) {
             Direction = ParameterDirection.Input,
             MySqlDbType = type,
             IsNullable = isNullable

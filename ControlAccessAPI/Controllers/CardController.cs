@@ -12,22 +12,22 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CardController : CustomContoller 
+public class CardController : CustomController
 {
     [HttpGet]
-    public Result GetCards() => RequestResponse(() => "This is my basic response.");
+    public Result GetCards() => RequestResponse(() => bl.GetCards());
 
     [HttpGet("{id:int?}")]
-    public Result GetCard(int id) => RequestResponse(() => "This is my basic return call");
+    public Result GetCard(int? id) => RequestResponse(() => 
+        GetItem(bl.GetCards(id)) 
+    );
 
     [HttpPost]
     public Result SetCard(dynamic obj) => RequestResponse(() => {
-        JObject jObj = new JObject(obj.ToString());
-        CardEmployee card = new CardEmployee(){
-            Id = JsonProperty<int?>.GetValue("id", jObj),
-            Employee = new Employee() {
-                Id = JsonProperty<int?>.GetValue("employeeId", jObj, OnMissingProperty)
-            },
+        JObject jObj = new (obj.ToString());
+        CardEmployee card = new (JsonProperty<int?>.GetValue("employeeId", jObj, OnMissingProperty))
+        {
+            Id = JsonProperty<int?>.GetValue("id", jObj),            
             Key = JsonProperty<string>.GetValue("serial", jObj, OnMissingProperty)
         };
 

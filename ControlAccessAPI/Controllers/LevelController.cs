@@ -11,7 +11,7 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LevelController : CustomContoller
+public class LevelController : CustomController
 {
     
     [HttpGet]

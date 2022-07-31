@@ -74,8 +74,11 @@ namespace Engine.BO {
         public Shift? Shift {get; set;}
         public Card? Card { get; set; }
         public string? Status { get; set; }
+    }
 
-
+    public class EmployeeCard : Employee
+    {
+        public Card? Card { get;set; }
     }
 
     public class Job : BaseBO {
@@ -112,13 +115,31 @@ namespace Engine.BO {
 
     public class Card : BaseBO
     {
-        public string? Key { get; set; }
-        public string? Status { get; set; }
+        public string? Key { get; set; }        
 
     }
 
     public class CardEmployee : Card {
-        public Employee? Employee {get; set;}
+        public delegate Employee FindEmployee(int? employeeId);
+        private FindEmployee? GetEmployee { get; set; }
+
+        [JsonIgnore]
+        public int? Employee {get; set;}
+
+        [JsonPropertyName("employee")]
+        public Employee? EmployeeDetails => GetEmployee != null ? GetEmployee(Employee) : null;
+        public void SetEmployee(FindEmployee employeeCallback) => GetEmployee = employeeCallback;
+
+        public CardEmployee(FindEmployee? getEmployee, int? employee)
+        {
+            GetEmployee = getEmployee;
+            Employee = employee;
+        }
+
+        public CardEmployee(int? employee)
+        {
+            Employee = employee;
+        }
     }
 
     public class Check : BaseBO {
@@ -142,7 +163,6 @@ namespace Engine.BO {
             LunchTime = null;
             DayCount = null;
         }
-
 
         public Shift(string? inTime, string? outTime) {
             InTime = ConvertTime(inTime);

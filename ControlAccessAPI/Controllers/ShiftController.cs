@@ -11,10 +11,15 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ShiftController : CustomContoller
+public class ShiftController : CustomController
 {    
     [HttpGet]
-    public Result GetShift() => RequestResponse(() => "Working on it...");
+    public Result GetShifts() => RequestResponse(() => bl.GetShifts());
+
+    [HttpGet("{id:int?}")]
+    public Result GetShift(int? id) => RequestResponse(() => 
+        GetItem(bl.GetShifts(id)) 
+    );
 
     [HttpPost]
     public Result SetShift(dynamic obj) => RequestResponse(() => {

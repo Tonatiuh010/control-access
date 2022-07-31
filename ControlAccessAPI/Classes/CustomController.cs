@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using Newtonsoft.Json.Linq;
@@ -9,14 +10,14 @@ using Engine.Constants;
 
 namespace Classes;
 
-public abstract class CustomContoller : ControllerBase
+public abstract class CustomController : ControllerBase
 {
     public ControlAccessBL bl {get;}
 
     protected Delegates.CallbackExceptionMsg OnMissingProperty => SetErrorOnRequest;
     protected List<RequestError> ErrorsRequest {get; set;} = new List<RequestError>();    
 
-    public CustomContoller() {
+    public CustomController() {
         bl = new ControlAccessBL(SetErrorOnRequest);
     }
 
@@ -37,6 +38,9 @@ public abstract class CustomContoller : ControllerBase
 
             if(action2 != null)
                 result.Data2 = action2();
+
+            if (action3 != null)
+                result.Data3 = action3();
 
             result.Message = C.COMPLETE;
             
@@ -72,6 +76,7 @@ public abstract class CustomContoller : ControllerBase
         } catch (Exception ex) {
             ErrorResult(result, ex);
         }
+
         return result;
     }
 
@@ -84,6 +89,16 @@ public abstract class CustomContoller : ControllerBase
         } else {
             result.Message = "Error doing something!";
         }
+    }
+
+    public static object? GetItem<T>(List<T> list, string? emptyMsg = null)
+    {
+        if (list != null && list.Count > 0)
+        {
+            return list[0];
+        }
+
+        return emptyMsg;
     }
     
 }

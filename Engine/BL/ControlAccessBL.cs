@@ -23,6 +23,29 @@ namespace Engine.BL {
 
         public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError ) => OnError = onError;
 
+        public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
+        {
+            var cards = DAL.GetCards(cardId, assigned);
+
+            foreach(var c in cards)
+            {
+                c.SetEmployee(id =>
+                {
+                    var employees = GetEmployees(id);
+                    return employees != null ? employees[0] : new Employee();
+                });
+            }
+
+            return cards;
+        }
+
+        public List<Shift> GetShifts(int? shiftId = null) => DAL.GetShifts(shiftId);
+
+        public List<Job> GetJobs(int? jobId = null) => DAL.GetJobs(jobId);
+
+        public List<Position> GetPositions(int? positionId = null, int? jobId = null, int? departmentId = null) =>
+            DAL.GetPositions(positionId, jobId, departmentId);
+
         public List<Employee> GetEmployees(int? employeeId = null) {
             var employees = DAL.GetEmployees(employeeId);
 
@@ -47,7 +70,7 @@ namespace Engine.BL {
         
         public List<AccessLevel> GetAccessLevels() => DAL.GetAccessLevels();                
 
-        public  List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId)=> DAL.GetEmployeeAccessLevels(employeeId);
+        public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId)=> DAL.GetEmployeeAccessLevels(employeeId);
 
         public Result SetCheck(string cardSerial, string txnUser) => DAL.SetCheck(cardSerial, txnUser);
 

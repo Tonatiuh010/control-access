@@ -10,6 +10,8 @@ namespace Engine.BO {
         public string? Message {get; set;}
         public object? Data {get; set;} = null;
         public object? Data2 {get; set;} = null;
+        public object? Data3 { get; set; } = null;
+
     }
 
     public class ResultInsert : Result

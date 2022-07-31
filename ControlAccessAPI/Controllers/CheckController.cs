@@ -11,7 +11,7 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CheckController : CustomContoller
+public class CheckController : CustomController
 {
     [HttpGet]
     public Result Get() => RequestResponse(() => "Empty For now...");

@@ -11,21 +11,15 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController : CustomContoller
+public class EmployeeController : CustomController
 {
     [HttpGet]
     public Result GetEmployees() => RequestResponse(() => bl.GetEmployees());
     
     [HttpGet("{id:int?}")]
-    public Result GetEmployee(int? id) => RequestResponse(() => {
-        var emps = bl.GetEmployees(id);
-
-        if(emps != null && emps.Count > 0) {
-            return emps[0];
-        }
-        
-        return "Empleado no encontrado";
-    });
+    public Result GetEmployee(int? id) => RequestResponse(() =>
+        GetItem(bl.GetEmployees(id))
+    );
 
     [HttpPost]
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {       

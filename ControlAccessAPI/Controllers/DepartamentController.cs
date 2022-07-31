@@ -11,21 +11,15 @@ namespace ControlAccess.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class DepartamentController : CustomContoller 
+public class DepartamentController : CustomController
 {
     [HttpGet]
     public Result GetDepartaments() => RequestResponse(() => bl.GetDepartaments());
 
     [HttpGet("{id:int?}")]
-    public Result GetDepartament(int? id) => RequestResponse(() => {
-        var deptos = bl.GetDepartaments(id);
-
-        if(deptos != null && deptos.Count() > 0) {
-            return deptos[0];
-        }
-        
-        return "Departamento no encontrado";
-    });
+    public Result GetDepartament(int? id) => RequestResponse(() => 
+        GetItem( bl.GetDepartaments(id) )
+    );
 
     [HttpPost]
     public Result SetDepartament(dynamic obj) => RequestResponse(() => {
