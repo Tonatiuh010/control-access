@@ -17,8 +17,8 @@ namespace ControlAccess.Controllers
     {
         [HttpGet]
         public Result GetPostitions() => RequestResponse(() => bl.GetPositions());
-
-        [HttpGet]
+        
+        [HttpPost]
         public Result GetPostitions(dynamic obj) =>  RequestResponse(() => {
             JObject jObj = JObject.Parse(obj.ToString());
             return bl.GetPositions(
