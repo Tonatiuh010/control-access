@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Employee } from 'src/app/models/employee-model';
+import { ResetFormService } from 'src/app/services/reset-form.service';
 
 @Component({
   selector: 'app-cards-employee',
@@ -8,25 +9,36 @@ import { Employee } from 'src/app/models/employee-model';
 })
 export class CardsEmployeeComponent implements OnInit {
 
-  employee!: Employee;
-  @Output() employeeInitial = new EventEmitter<boolean>();
+  employee!: any;
   initial!: boolean;
   photo!: any;
-  constructor() { }
+  constructor(private rstService: ResetFormService) { }
 
   ngOnInit(): void {
   }
 
-  onEmployeeSelect(eventData: Employee) {
-    this.employee = eventData;
-    this.initial = false
-    this.photo = eventData.photo
+  employeeSelector(eventData: any){
+    if (eventData.name){
+      this.onEmployeeSelect(eventData);
+    }else{
+      this.onEmployeeCreate(eventData);
+    }
   }
 
-  onEmployeeCreate(eventData: Employee) {
+  onEmployeeSelect(eventData: any) {
+    this.employee = eventData;
+    this.initial = false
+    this.rstService.sendResetForm()
+    this.photo = eventData.photo
+    console.log('select')
+  }
+
+  onEmployeeCreate(eventData: any) {
     this.employee = eventData;
     this.initial = true
+    this.rstService.sendResetForm()
     this.photo = undefined
+    console.log('create')
   }
 
 }

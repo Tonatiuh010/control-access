@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { IMqttMessage, MqttService } from 'ngx-mqtt';
+import { Subscription } from 'rxjs';
+import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 
 const employees: any[] = [
   {
@@ -32,8 +35,6 @@ const employees: any[] = [
   // },
 ];
 
-
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -41,12 +42,29 @@ const employees: any[] = [
 })
 export class MapComponent implements OnInit {
   employeesArray = employees;
-  constructor() { }
+  private subscription: Subscription;
+  public message!: string;
+  apiData!: any[];
 
+  constructor(private _mqttService: MqttService, private empService: EmployeeServiceService) {
+    this.subscription = this._mqttService.observe('esp32/rfid').subscribe((message: IMqttMessage) => {
+      this.message = message.payload.toString();
+      console.log(JSON.parse(this.message))
+      this.empService.getEmployees().subscribe(data => {
+        this.apiData = data;
+        console.log(this.apiData);
+      });
+    });
+  }
   ngOnInit(): void {
+  }
 
+  public unsafePublish(topic: string, message: string): void {
+    this._mqttService.unsafePublish(topic, message, {qos: 0, retain: true});
+  }
 
-
+  public ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

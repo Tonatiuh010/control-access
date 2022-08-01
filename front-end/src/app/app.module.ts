@@ -20,6 +20,14 @@ import { EmployeeEditComponent } from './components/cards-employee/employee-edit
 import { AccessCardsEditComponent } from './components/cards-employee/access-cards-edit/access-cards-edit.component';
 import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
 import { HistoryComponent } from './components/history/history.component';
+import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+
+export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
+  hostname: 'broker.emqx.io',
+  port: 8083,
+  protocol: 'ws',
+  path: '/mqtt'
+};
 
 @NgModule({
   declarations: [
@@ -44,6 +52,7 @@ import { HistoryComponent } from './components/history/history.component';
     ReactiveFormsModule,
     MaterialModule,
     PrimeNgModule,
+    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
     NgxEchartsModule.forRoot({
       echarts
     }),

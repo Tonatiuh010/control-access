@@ -12,4 +12,8 @@ export class EmployeeServiceService {
   getEmployees(): Observable<any> {
     return this.http.get<any>(this.API_URL + 'Employee')
   }
+
+  getCatalog(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'Catalog/Assets')
+  }
 }

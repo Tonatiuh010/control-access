@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/models/constants';
 import { Employee } from 'src/app/models/employee-model';
+import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 import { ResetFormService } from 'src/app/services/reset-form.service';
 // import {} from './../../../../assets/no-photo-available.png';
 @Component({
@@ -16,22 +17,35 @@ export class EmployeeEditComponent implements OnInit {
   @Input() expectedEmployee!: any;
   @Input() employeeInitial!: boolean;
   @Input() employeePhoto!: any;
+
   form: FormGroup = new FormGroup({});
   rstFormEventSubscription!: Subscription;
 
-  accessList: any[] = ['G1', 'G2', 'G3', 'Production'];
-  positionList: string[] = ['Manager', 'Employee', 'Security'];
-  cardList: string[] = ['C1 2F D6 0E', 'FD A9 A1 B3', '9E CD FC 7C', '84 9C 73 AB', 'E8 F6 FF 42'];
-  shiftList: string[] = ['Morning', 'Evening', 'Night'];
-  //employeePhoto: any = this.expectedEmployee;
+  accessList: string[] = [];
+  positionList: string[] = [];
+  cardList: string[] = [];
+  shiftList: string[] = [];
+  showCard: boolean = false;
 
-  constructor(private fb: FormBuilder, private rstService: ResetFormService, private cdRef: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private rstService: ResetFormService,
+    private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) {
     this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
-      this.resetForm()
+      this.showCard = true
     )
   }
 
   ngOnInit(): void {
+    setTimeout(()=>{
+      this.empService.getCatalog().subscribe(data => {
+        this.retrieveList(data.data, this.shiftList);
+        this.retrieveList(data.data2, this.positionList);
+        data.data3.forEach((element: { key: string; }) => {
+          this.cardList.push(element.key);
+        });
+        this.retrieveList(data.data4, this.accessList);
+      });
+    }, 1000)
+
     this.form = this.fb.group({
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
@@ -43,6 +57,13 @@ export class EmployeeEditComponent implements OnInit {
       card: [null, [Validators.required]]
     });
   }
+
+  retrieveList(data: any[], list: string[]):void {
+    data.forEach((element: { name: string; }) => {
+      list.push(element.name);
+    });
+  }
+
 
   getErrorMessage(field: string): string {
     switch(field){
@@ -79,9 +100,7 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   resetForm(): void{
-    this.form.reset();
-    this.form.markAsPristine();
-    this.employeePhoto = undefined;
+    this.showCard = false;
   }
 
   createEmployee(form: any): void{
@@ -92,8 +111,8 @@ export class EmployeeEditComponent implements OnInit {
       form.value.upload = Constants['no-image-found']
     }
     console.log(form.value)
-    this.resetForm();
     this.expectedEmployee = undefined;
+    this.resetForm();
   }
 
   updateEmployee(form: any): void{

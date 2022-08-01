@@ -1,6 +1,6 @@
-<div *ngIf="!expectedEmployee" class="placeholder">Select an Employee from the table</div>
+<div *ngIf="!showCard" class="placeholder">Select an Employee from the table</div>
 
-<div *ngIf="expectedEmployee" class="form">
+<div *ngIf="showCard" class="form">
     <form [formGroup]="form">
         <div class="title">
             Employee Details
@@ -65,7 +65,7 @@
                 <mat-grid-tile class="remove-padding top-padding">
                     <mat-form-field appearance="outline">
                         <mat-label>Card Assigned</mat-label>
-                        <mat-select formControlName="card" [(ngModel)]="expectedEmployee.card_number" required>
+                        <mat-select formControlName="card" [(ngModel)]="expectedEmployee.card_number">
                             <mat-option *ngFor="let card of cardList" [value]="card">{{card}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('card')">{{getErrorMessage('card')}}</mat-error>
@@ -74,7 +74,7 @@
             </mat-grid-list>
             <mat-grid-list cols="2" rowHeight="60px" [gutterSize]="'10px'" class="margin-top">
                 <mat-grid-tile>
-                    <button type='button' mat-raised-button class="full-width" (click)="resetForm()" color="red">Reset</button>
+                    <button type='button' mat-raised-button class="full-width" (click)="resetForm()" color="red">Cancel</button>
 
                 </mat-grid-tile>
                 <mat-grid-tile>
