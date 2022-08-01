@@ -20,6 +20,7 @@ namespace DataService.MySQL
         // Properties
         public static DataException? OnException { get; set; }
         public MySqlConnection Connection { get; set; } = new MySqlConnection();
+        public MySqlTransaction? Txn { get; set; }
         private string? ConnectionString { get; set; }
 
         // Constructor
@@ -64,6 +65,14 @@ namespace DataService.MySQL
                 //OpenConnection();
             }
         }
+
+        private void BeginTransaction() => Txn = Connection.BeginTransaction();
+
+        private void RollbackTransaction() => Txn?.Rollback();
+
+        private void CommitTransaction() => Txn?.Commit();
+
+        private void DisposeTransaction() => Txn?.Dispose();
 
         public static MySqlCommand CreateCommand(string cmdText, MySqlConnection conn, MySqlTransaction txn, CommandType type)
         => new MySqlCommand(cmdText, conn, txn) {
@@ -113,40 +122,36 @@ namespace DataService.MySQL
             DataException onException,
             Action? onProcess = null
         ) {
-            MySqlTransaction? txn = null;
             MySqlConnection conn = db.Connection;
             bool isTxnSuccess;
-
+            
             try {
                 if (conn.State == ConnectionState.Closed)
                 {
                     OpenConnection(db);
-                }                
+                }
 
-                txn = conn.BeginTransaction();                
-                action(txn);
-                txn.Commit();
+                db.BeginTransaction();               
+                action(db.Txn);
+                db.CommitTransaction();
                 isTxnSuccess = true;
             } catch (Exception e) {
-                if(txn != null)
-                    txn.Rollback();
+                db.RollbackTransaction();
                 onException(e);
-
                 isTxnSuccess = false;
             }
 
             if (isTxnSuccess)
                 onProcess?.Invoke();
 
-            if (txn != null)
-                txn.Dispose();
-
         }
         
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             Connection.Close();
-            Connection.Dispose();            
+            Connection.Dispose();
+            DisposeTransaction();
+            GC.SuppressFinalize(this);
         }
     }
 }

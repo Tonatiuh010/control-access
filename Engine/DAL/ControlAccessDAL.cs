@@ -10,25 +10,13 @@ using Engine.BO;
 using Engine.BL.Delegates;
 
 namespace Engine.DAL {
-    public class ControlAccessDAL : MySqlDataBase {
-        private static ControlAccessDAL? DAL { get; set; } = null;
+    public class ControlAccessDAL : MySqlDataBase 
+    {
         public static string? ConnString { get; set; }
-        public static ControlAccessDAL Instance {
-            get
-            {
-                //if (DAL == null) {
-                //    DAL = new ControlAccessDAL();
-                //} else if(DAL.Connection.State == ConnectionState.Closed)
-                //{
-                //    DAL.OpenConnection();
-                //}
+        public static ControlAccessDAL Instance => new();
 
-                return new ControlAccessDAL();
-            }
-        }
-
+        private readonly Validate Validate;
         public Delegates.CallbackExceptionMsg? OnDALError { get; set; }
-        private Validate Validate;
         private ControlAccessDAL() : base(ConnString) {
             Validate = Validate.Instance;
             OnDALError = null;
