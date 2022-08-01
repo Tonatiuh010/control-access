@@ -61,7 +61,7 @@ namespace DataService.MySQL
         // Static Methods
         private void OnStateChange(object obj, StateChangeEventArgs args) {
             if (args.CurrentState == ConnectionState.Closed) {
-                OpenConnection();
+                //OpenConnection();
             }
         }
 
@@ -118,10 +118,13 @@ namespace DataService.MySQL
             bool isTxnSuccess;
 
             try {
-                if (conn.State == ConnectionState.Closed)
+                if (conn.State == ConnectionState.Open)
                 {
-                    OpenConnection(db);
+                    db.Connection.Close();
+                    db.Connection.Dispose();
                 }
+
+                OpenConnection(db);
 
                 txn = conn.BeginTransaction();                
                 action(txn);
