@@ -29,6 +29,8 @@ namespace Engine.BO {
             }
         }
 
+        public string? Url { get; set; }
+
         public ImageData() => Bytes = null;
 
         public ImageData(byte[] bytes) => Bytes = bytes;
@@ -115,7 +117,7 @@ namespace Engine.BO {
 
     public class Card : BaseBO
     {
-        public string? Key { get; set; }        
+        public string? Key { get; set; }
 
     }
 
@@ -137,10 +139,20 @@ namespace Engine.BO {
             Employee = employee;
         }
 
+        public CardEmployee(Card card, int? employee)
+        {
+            Id = card.Id;
+            Key = card.Key;
+            Employee = employee;
+        }
+
         public CardEmployee(int? employee)
         {
             Employee = employee;
         }
+
+        public CardEmployee UnbindEmployee() => new(this, null);        
+
     }
 
     public class Check : BaseBO {

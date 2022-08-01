@@ -8,7 +8,7 @@ using Engine.BL;
 using D = Engine.BL.Delegates;
 
 namespace Engine.BL {
-    public class ControlAccessBL {
+    public class ControlAccessBL {        
         public D.Delegates.CallbackExceptionMsg? OnError { get; set; } = null;
         private ControlAccessDAL DAL { get {
                 /*using */var dal = ControlAccessDAL.Instance;
@@ -18,10 +18,16 @@ namespace Engine.BL {
                 }
 
                 return dal;
-            } }
+            } 
+        }
+
+        public string DomainUrl { get; set; }
 
 
-        public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError) => OnError = onError;
+        public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError) { 
+            OnError = onError;
+            DomainUrl = string.Empty;
+        }
 
         public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
         {
@@ -46,9 +52,14 @@ namespace Engine.BL {
             var employees = DAL.GetEmployees(employeeId);
 
             foreach (var employee in employees)
+            {
                 employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
                     GetEmployeeAccessLevels(employee.Id)
                 );
+
+                if(employee.Image != null)
+                    employee.Image.Url = $"{DomainUrl}/api/employee/img/{employee.Id}";
+            }                
 
             return employees;
         }

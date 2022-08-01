@@ -14,6 +14,7 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class CardController : CustomController
 {
+
     [HttpGet]
     public Result GetCards() => RequestResponse(() => bl.GetCards());
 

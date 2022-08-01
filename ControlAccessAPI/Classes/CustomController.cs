@@ -18,7 +18,10 @@ public abstract class CustomController : ControllerBase
     protected List<RequestError> ErrorsRequest {get; set;} = new List<RequestError>();    
 
     public CustomController() {
-        bl = new ControlAccessBL(SetErrorOnRequest);
+        bl = new ControlAccessBL(SetErrorOnRequest)
+        {
+            //DomainUrl = $"{Request.Scheme}://{Request.Host}{Request.PathBase}{Request.Path}"
+        };        
     }
 
     protected void SetErrorOnRequest(Exception ex, string msg) => ErrorsRequest.Add(

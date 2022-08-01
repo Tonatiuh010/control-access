@@ -6,6 +6,7 @@ using Engine.BL.Delegates;
 using Engine.BO;
 using Classes;
 using Engine.Constants;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ControlAccess.Controllers;
 
@@ -23,7 +24,8 @@ public class EmployeeController : CustomController
 
     [HttpPost]
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {       
-        JObject jObj = JObject.Parse(obj.ToString());
+        JObject jObj = JObject.Parse(obj.ToString());        
+
         Employee employee = new Employee() {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
@@ -34,39 +36,79 @@ public class EmployeeController : CustomController
             Shift = new Shift() {
                 Id = JsonProperty<int?>.GetValue("shift", jObj),
             },
-            Image = new ImageData(JsonProperty<string>.GetValue("image", jObj))
+            Image = new ImageData(JsonProperty<string>.GetValue("image", jObj)),
+            Card = new Card()
+            {
+                Id = JsonProperty<int?>.GetValue("card", jObj)
+            }
         };
 
         var levels = JsonProperty<JArray>.GetValue("accessLevels", jObj);
 
         var resultInsert = bl.SetEmployee(employee, C.GLOBAL_USER);
 
-        if (levels != null && resultInsert.Status == C.OK)
-        {            
+        if ( resultInsert.Status == C.OK )
+        {
             int? employeeId = resultInsert.InsertDetails.Id;
-            var employeeLevels = bl.GetEmployeeAccessLevels(employeeId);
-            var incomingLevels = levels.Select(x => bl.GetAccessLevel(x.ToString())).ToList();
 
-            foreach(var level in incomingLevels)
+            if (employee.Card != null && employee.Card.IsValid())
             {
-                if(level != null && level.IsValid() && !employeeLevels.Any(x => x.Id == level.Id)) 
-                {
-                    bl.SetEmployeeAccessLevel((int)employeeId, (int)level.Id, true, C.GLOBAL_USER);
-                }
+
+                var employeeCard = bl.GetCards(assigned: true).Find(x => x.Employee == employeeId);
+
+                if (employeeCard != null && employeeCard.IsValid())
+                    bl.SetDownCard((int)employeeCard.Id, C.GLOBAL_USER);
+
+                var chResult = bl.SetCard(new CardEmployee(employee.Card, employeeId), C.GLOBAL_USER);
+                
             }
 
-            foreach(var empLevel in employeeLevels)
-            {
-                if (!incomingLevels.Any(x => x != null && x.IsValid() && x.Id == empLevel.Id ))
-                {
-                    bl.SetEmployeeAccessLevel((int)employeeId, (int)empLevel.Id, false, C.GLOBAL_USER);
-                }
-            }
+            if (levels != null)
+            {                
+                var employeeLevels = bl.GetEmployeeAccessLevels(employeeId);
+                var incomingLevels = levels.Select(x => bl.GetAccessLevel(x.ToString())).ToList();
 
+                foreach (var level in incomingLevels)
+                {
+                    if (level != null && level.IsValid() && !employeeLevels.Any(x => x.Id == level.Id))
+                    {
+                        bl.SetEmployeeAccessLevel((int)employeeId, (int)level.Id, true, C.GLOBAL_USER);
+                    }
+                }
+
+                foreach (var empLevel in employeeLevels)
+                {
+                    if (!incomingLevels.Any(x => x != null && x.IsValid() && x.Id == empLevel.Id))
+                    {
+                        bl.SetEmployeeAccessLevel((int)employeeId, (int)empLevel.Id, false, C.GLOBAL_USER);
+                    }
+                }
+
+            }
+        }        
+
+        return resultInsert;
+    });
+
+    [HttpGet("image/{id:int?}")]    
+    public IActionResult GetEmployeeImage(int? id)
+    {
+        byte[] bytes = Array.Empty<byte>();
+        var obj = GetItem(bl.GetEmployees(id));
+
+        if(obj != null)
+        {
+            var emp = (Employee)obj;
+            var imgBytes = emp.Image?.Bytes;
+
+            if(imgBytes != null)
+            {
+                bytes = imgBytes;
+            }
         }
 
-        return bl.SetEmployee(employee, C.GLOBAL_USER);
-    });
+        return File(bytes, "image/jpeg");
+    }
 
     [HttpPost]
     [Route("DownEmployee")]
