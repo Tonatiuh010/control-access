@@ -4,6 +4,14 @@
 #include <MFRC522.h>
 #include <WiFi.h>
 
+//Vcc <-> 3V3 (o Vin(5V) según la versión del módulo)
+//RST (Reset) <-> D0
+//GND (Masse) <-> GND
+//MISO (Master Input Slave Output) <-> 19
+//MOSI (Master Output Slave Input) <-> 23
+//SCK (Serial Clock) <-> 18
+//SS/SDA (Slave select) <-> 5
+
 #define RST_PIN         22           // Configurable, see typical pin layout above
 #define SS_PIN          5          // Configurable, see typical pin layout above
 
@@ -15,12 +23,14 @@ PubSubClient mqttClient(esp32Client);
 const char* ssid     = "Sheesh";
 const char* password = "Gtorrecillas1435";
 const char* topic = "esp32/rfid";
-
+const int BUZZER = 4;
+const int BUZZER2 = 2;
 char *server = "broker.emqx.io";
 int port = 1883;
 char myBuffer;
 String bufferString;
 char cardNumber[0];
+boolean statusP;
 StaticJsonDocument<200> doc;
 JsonObject message = doc.to<JsonObject>();
 
@@ -76,7 +86,8 @@ void setup()
   mfrc522.PCD_Init();                                              // Init MFRC522 
   wifiInit();
   mqttClient.setServer(server, port);
-//  mqttClient.setCallback(callback);
+  pinMode(BUZZER,OUTPUT);
+  digitalWrite(BUZZER, LOW);
 }
 
 void loop()
@@ -136,7 +147,7 @@ MFRC522::MIFARE_Key key;
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("Reading failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
-    return;
+
   }
 
   //PRINT CARD NUMBER
@@ -164,12 +175,22 @@ MFRC522::MIFARE_Key key;
  message["device"] = "Office";
  char json[100];
  serializeJson(message,json);
- Serial.print(json);
-  mqttClient.publish("esp32/rfid", json );
-  mfrc522.PICC_HaltA();
-  mfrc522.PCD_StopCrypto1();
-  bufferString = "";
-  mqttClient.loop();
+ Serial.println(json);
+ statusP = mqttClient.publish("esp32/rfid", json );
+ Serial.println(statusP);
+ if (statusP == true){
+   Serial.println("uwu");
+   tone(BUZZER, 9,500);
+   delay(200);
+   digitalWrite(BUZZER, LOW);
+ }
+ 
+ statusP = false;
+ Serial.println(statusP);
+ mfrc522.PICC_HaltA();
+ mfrc522.PCD_StopCrypto1();
+ bufferString = "";
+ mqttClient.loop();
 
   
  
