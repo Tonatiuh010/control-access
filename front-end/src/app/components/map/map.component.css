@@ -1,0 +1,57 @@
+body {
+    background-color: white;
+}
+
+
+/* .cardContainer {
+  width: 300px;
+  height: 500px;
+} */
+
+.card {
+    background-color: #f6f6f6;
+    margin-top: -15px;
+    border-radius: 5px;
+}
+
+svg {
+    margin-top: 160px;
+}
+
+.title {
+    margin-top: 60px;
+}
+
+.photo {
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: -50px;
+}
+
+label {
+    width: fit-content;
+    margin-top: 10px;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: no-wrap;
+}
+
+.labels {
+    flex-wrap: wrap;
+}
+
+.icon {
+    margin-top: 90px;
+}
+
+.icon:hover {
+    color: #0090FD;
+    cursor: pointer;
+    margin-top: 90px;
+    cursor: pointer;
+}
+
+.card-container {
+    width: 450px;
+}

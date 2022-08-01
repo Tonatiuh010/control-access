@@ -5,32 +5,71 @@ header {
     padding-left: 60px;
     align-items: center;
     display: flex;
-    position: fixed;
-}
-
-div {
-    outline: red 1px solid;
 }
 
 .sidebar {
-    position: fixed;
-    width: 50px;
-    height: 100vh;
-    background-color: #0090FD;
-    z-index: 2;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    background-color: #fff;
+    justify-items: right;
 }
 
-.icon {
-    color: white;
+.logo {
+    color: #0090FD;
     height: 50px;
+    width: 200px;
     display: flex;
     text-align: center;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    margin: 0 30px;
 }
 
-.icon:hover:not(:first-child) {
+i {
+    width: 50px;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.fa-solid {
+    font-size: 18px;
+    padding: 10px;
+}
+
+.mat-white {
+    font-size: 16px;
+    color: #fff;
+    background-color: #0090FD;
+    box-shadow: unset;
+}
+
+.mat-white:hover {
+    background-color: #fff;
     color: #0090FD;
-    background-color: white;
-    cursor: pointer;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background-color: #0090FD;
+    height: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.mat-tab-link.mat-tab-label-active {
+    color: #0090FD;
+}
+
+.mat-tab-link:hover {
+    background-color: #ddd;
 }

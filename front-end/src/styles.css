@@ -1,6 +1,41 @@
 * {
     margin: 0;
+    font-family: "Roboto", sans-serif;
+    margin: 0;
     font-family: 'Roboto', sans-serif;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: #f1f0f0;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0090FD;
+    border-radius: 4px;
+}
+
+
+/* ::-webkit-scrollbar-thumb:hover {
+    background: #0090FD;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+
+::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+    background: #0090FD;
+} */

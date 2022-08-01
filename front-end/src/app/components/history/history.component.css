@@ -1,0 +1,71 @@
+.example-container {
+    margin: 10px;
+}
+
+table {
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.mat-paginator-sticky {
+    bottom: 0;
+    z-index: 10;
+}
+
+.pfp {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.image-name-container {
+    margin: 10px 0;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.mat-blue {
+    background-color: #0090FD;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.mat-orange {
+    background-color: #fda400;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.mat-green {
+    background-color: #8FE597;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.mat-red {
+    background-color: #e58f8f;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.mat-violet {
+    background-color: #AB8FE5;
+    color: #fff;
+    justify-content: center;
+    width: 120px;
+}
+
+.options {
+    cursor: pointer;
+}
+
+.hover-row:hover {
+    background-color: rgb(230, 230, 230);
+    cursor: pointer;
+}
