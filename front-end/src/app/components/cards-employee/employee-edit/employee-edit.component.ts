@@ -1,48 +1,75 @@
-import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/models/constants';
 import { Employee } from 'src/app/models/employee-model';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
-import { ResetFormService } from 'src/app/services/reset-form.service';
+import { InformationService } from 'src/app/services/information.service';
 // import {} from './../../../../assets/no-photo-available.png';
 @Component({
   selector: 'app-employee-edit',
   templateUrl: './employee-edit.component.html',
   styleUrls: ['./employee-edit.component.css']
 })
-export class EmployeeEditComponent implements OnInit {
+export class EmployeeEditComponent implements OnInit, OnDestroy {
 
-
-  @Input() expectedEmployee!: any;
-  @Input() employeeInitial!: boolean;
-  @Input() employeePhoto!: any;
+  expectedEmployee!: any;
+  employeeInitial!: boolean;
+  employeePhoto!: string;
+  employeeType!: boolean;
 
   form: FormGroup = new FormGroup({});
   rstFormEventSubscription!: Subscription;
+  subscription1$!: Subscription
+  subscription2$!: Subscription
+  subscription3$!: Subscription
 
-  accessList: string[] = [];
-  positionList: string[] = [];
-  cardList: string[] = [];
-  shiftList: string[] = [];
+  accessList: any[] = [];
+  jobList: any[] = [];
+  cardList: any[] = [];
+  shiftList: any[] = [];
   showCard: boolean = false;
 
-  constructor(private fb: FormBuilder, private rstService: ResetFormService,
+  constructor(private fb: FormBuilder, private infService: InformationService,
     private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) {
-    this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
-      this.showCard = true
-    )
+    // this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
+    //   this.showCard = true
+    // )
   }
 
   ngOnInit(): void {
+    this.subscription1$ = this.infService.selectedEmployee$.subscribe((value) => {
+      this.expectedEmployee = value;
+      this.employeePhoto = value.photo;
+    });
+
+    this.subscription2$ = this.infService.employeeState$.subscribe((value) => {
+      this.employeeInitial = value;
+    });
+
+    this.subscription3$ = this.infService.employeeType$.subscribe((value) => {
+      this.employeeType = value;
+    });
+
     setTimeout(()=>{
       this.empService.getCatalog().subscribe(data => {
-        this.retrieveList(data.data, this.shiftList);
-        this.retrieveList(data.data2, this.positionList);
-        data.data3.forEach((element: { key: string; }) => {
-          this.cardList.push(element.key);
+        //this.retrieveList(data.data, this.shiftList);
+        data.data.forEach((element: { id: any; name: any; }) => {
+          this.shiftList.push({id: element.id, name: element.name});
         });
-        this.retrieveList(data.data4, this.accessList);
+
+        data.data2.forEach((element: { id: any; name: any; }) => {
+          this.jobList.push({id: element.id, name: element.name});
+        });
+
+        data.data3.forEach((element: { id: any; key: any; }) => {
+          this.cardList.push({id: element.id, key: element.key});
+        });
+
+        data.data4.forEach((element: { id: any; name: any; }) => {
+          this.accessList.push({id: element.id, name: element.name});
+        });
+
       });
     }, 1000)
 
@@ -51,19 +78,18 @@ export class EmployeeEditComponent implements OnInit {
       name: [null, [Validators.required, Validators.minLength(2)]],
       upload: [null],
       lastName: [null, [Validators.required, Validators.minLength(2)]],
-      access: [null, [Validators.required, Validators.minLength(1)]],
+      accessLevels: [null, [Validators.required, Validators.minLength(1)]],
       position: [null, [Validators.required]],
       shift: [null, [Validators.required]],
-      card: [null, [Validators.required]]
+      card: [null]
     });
   }
 
-  retrieveList(data: any[], list: string[]):void {
-    data.forEach((element: { name: string; }) => {
-      list.push(element.name);
-    });
+  ngOnDestroy() {
+    this.subscription1$.unsubscribe()
+    this.subscription2$.unsubscribe()
+    this.subscription3$.unsubscribe()
   }
-
 
   getErrorMessage(field: string): string {
     switch(field){
@@ -74,7 +100,7 @@ export class EmployeeEditComponent implements OnInit {
         return this.form.get(field)!.hasError('minlength') ? 'Name must be longer than 2 characters' : ''
     };
 
-      case 'access': return 'You must select at least 1 option';
+      case 'accessLevels': return 'You must select at least 1 option';
       case 'position': return 'You must select an option';
       case 'shift': return 'You must select an option';
       case 'card': return 'You must select an option';
@@ -84,23 +110,23 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   getDepartmentCount():string{
-    if(this.form.get('access')!.value === ''){
+    if(this.form.get('accessLevels')!.value === ''){
       return ''
     }
-    if(this.form.get('access')!.value?.[0]){
-      if((this.form.get('access')!.value?.length || 0) > 1){
-        if((this.form.get('access')!.value?.length || 0) > 2){
-          return `${this.form.get('access')!.value[0]} (+${this.form.get('access')!.value?.length - 1}  others)`;
+    if(this.form.get('accessLevels')!.value?.[0]){
+      if((this.form.get('accessLevels')!.value?.length || 0) > 1){
+        if((this.form.get('accessLevels')!.value?.length || 0) > 2){
+          return `${this.form.get('accessLevels')!.value[0]} (+${this.form.get('accessLevels')!.value?.length - 1}  others)`;
         }
-        return `${this.form.get('access')!.value[0]} (+${this.form.get('access')!.value?.length - 1}  other)`;
+        return `${this.form.get('accessLevels')!.value[0]} (+${this.form.get('accessLevels')!.value?.length - 1}  other)`;
       }
-      return this.form.get('access')!.value;
+      return this.form.get('accessLevels')!.value;
     }
-    return this.form.get('access')!.value
+    return this.form.get('accessLevels')!.value
   }
 
   resetForm(): void{
-    this.showCard = false;
+    this.infService.sendEmployeeState(false);
   }
 
   createEmployee(form: any): void{
@@ -110,9 +136,10 @@ export class EmployeeEditComponent implements OnInit {
     } else{
       form.value.upload = Constants['no-image-found']
     }
-    console.log(form.value)
-    this.expectedEmployee = undefined;
-    this.resetForm();
+    this.empService.postEmployee(form.value).subscribe(data => {
+      console.log(data)
+      this.resetForm();
+    })
   }
 
   updateEmployee(form: any): void{
@@ -123,6 +150,9 @@ export class EmployeeEditComponent implements OnInit {
       form.value.upload = Constants['no-image-found']
     }
     console.log(form.value)
+    this.empService.updateEmployee(form.value).subscribe(data => {
+      this.resetForm();
+    })
   }
 
   isValidField(field: string): boolean{
@@ -145,10 +175,6 @@ export class EmployeeEditComponent implements OnInit {
        }
        reader.readAsDataURL(event.target.files[i]);
     }
-  }
-
-  photoState(){
-    console.log(this.form.get('shift')!.value)
   }
 
 }

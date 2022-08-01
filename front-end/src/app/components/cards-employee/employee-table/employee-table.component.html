@@ -26,7 +26,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let e">
                 <mat-chip-list aria-label="status">
-                    <mat-chip [color]="e.status == 'Active' ? 'green' : 'red'" selected>{{e.status}}</mat-chip>
+                    <mat-chip [color]="e.status == 'ENABLED' ? 'green' : 'red'" selected>{{e.status}}</mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>
@@ -35,7 +35,8 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Number </th>
             <td mat-cell *matCellDef="let e">
                 <mat-chip-list aria-label="card_number">
-                    <mat-chip color="violet" selected>{{e.card.key}}</mat-chip>
+                    <mat-chip color="violet" *ngIf="e.card" selected>{{ e.card.key }}</mat-chip>
+                    <mat-chip color="violet" *ngIf="!e.card" selected>{{ "No Card" }}</mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>

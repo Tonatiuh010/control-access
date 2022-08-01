@@ -16,4 +16,16 @@ export class EmployeeServiceService {
   getCatalog(): Observable<any> {
     return this.http.get<any>(this.API_URL + 'Catalog/Assets')
   }
+
+  postEmployee(data: any): Observable<any> {
+    return this.http.post<any>(this.API_URL + 'Employee', data)
+  }
+
+  updateEmployee(data: any): Observable<any> {
+    return this.http.post<any>(this.API_URL + 'Employee', data)
+  }
+
+  getCards(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'Card')
+  }
 }

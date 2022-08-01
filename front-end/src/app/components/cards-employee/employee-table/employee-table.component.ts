@@ -2,9 +2,8 @@ import { ChangeDetectorRef, Component, EventEmitter, OnInit, ViewChild } from '@
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Output } from '@angular/core';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
-import { ResetFormService } from 'src/app/services/reset-form.service';
+import { InformationService } from 'src/app/services/information.service';
 
 @Component({
   selector: 'app-employee-table',
@@ -19,13 +18,10 @@ export class EmployeeTableComponent implements OnInit {
   card_number: '', shift: '', access: ['']};
   apiData!: any;
 
-  @Output() employeeSelected = new EventEmitter<any>();
-  @Output() employeePhoto = new EventEmitter<any>();
-
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService, private rstService: ResetFormService){ };
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService, private infService: InformationService){ };
 
   ngOnInit(): void {
     this.empService.getEmployees().subscribe(data => {
@@ -42,23 +38,25 @@ export class EmployeeTableComponent implements OnInit {
     rowData.accessLevels.forEach((element: { name: string; }) => {
       arr.push(element.name)
     });
-    this.employeePhoto.emit(rowData.image.b64);
-    this.employeeSelected.emit({
-        id: rowData.id,
-        photo: rowData.image.b64,
-        name: rowData.name,
-        lastName: rowData.lastName,
-        position: rowData.job.name,
-        status: rowData.status,
-        card_number: rowData.card.key,
-        shift: rowData.shift.name,
-        accessLevels: arr
-      });
+    this.infService.sendEmployee({
+      id: rowData.id,
+      photo: rowData.image.b64,
+      name: rowData.name,
+      lastName: rowData.lastName,
+      position: rowData.job.id,
+      status: rowData.status,
+      card_number: rowData.card,
+      shift: rowData.shift.id,
+      accessLevels: arr
+    });
+    this.infService.sendEmployeeState(true);
+    this.infService.sendType(true);
   }
 
   onEmployeeCreate() {
-    this.employeeSelected.emit(this.emptyEmployee);
-    this.employeePhoto.emit(undefined);
+    this.infService.sendEmployee(this.emptyEmployee)
+    this.infService.sendEmployeeState(true);
+    this.infService.sendType(false);
   }
 
   onImgError(event: any): void{
