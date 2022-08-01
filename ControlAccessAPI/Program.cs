@@ -1,5 +1,6 @@
 using Engine.DAL;
 using Engine.Constants;
+using ControlAccess.Hubs;
 using System;
 using System.Reflection;
 using System.IO;
@@ -7,9 +8,10 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
+// Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(config =>
@@ -24,6 +26,7 @@ builder.Services.AddSwaggerGen(config =>
 var app = builder.Build();
 
 app.MapGet("/", () => "Control Access API is working...");
+app.MapHub<CheckHub>("/CheckMonitor");
 
 ControlAccessDAL.ConnString = builder.Configuration.GetConnectionString(C.CTL_ACC);
 ControlAccessDAL.SetOnConnectionException((ex, msg) => Console.WriteLine($"Error Opening connection {msg} - {ex.Message}"));

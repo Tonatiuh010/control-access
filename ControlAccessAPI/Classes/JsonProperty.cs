@@ -6,18 +6,21 @@ using Engine.BL.Delegates;
 namespace Classes {
     public static class JsonProperty<T> {
         public static T? GetValue(string name, JObject jObj, Delegates.CallbackExceptionMsg? onMissingProperty = null) {
-            T? result = default(T);
+            T? result = default;
 
             try {
                 var jKey = jObj[name];
                 if(jKey != null) {
                     result = jKey.Value<T?>();
+                } 
+                
+                if(onMissingProperty != null && result == null)
+                {
+                    throw new Exception($"Invalid Property... JSON Property `{ name }` is missing or invalid");
                 }
-            } catch (Exception ex){
-                result = default(T);
-                if(onMissingProperty != null) {
-                    onMissingProperty(ex, $"Property {name} is missing");
-                }
+            } catch (Exception ex){                
+                onMissingProperty?.Invoke(ex, ex.Message);
+                throw;
             }
 
             return result;
@@ -42,9 +45,9 @@ namespace Classes {
             string result  = string.Empty;
 
 
-            if(errors != null && errors.Count() > 0 ) {
+            if(errors != null && errors.Count > 0 ) {
                 foreach(var err in errors) {
-                    result += $"\n\t * {err.FormatError} ";
+                    result += $" * {err.FormatError} ";
                 }
             }
 

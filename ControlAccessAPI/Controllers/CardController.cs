@@ -24,10 +24,10 @@ public class CardController : CustomController
 
     [HttpPost]
     public Result SetCard(dynamic obj) => RequestResponse(() => {
-        JObject jObj = new (obj.ToString());
-        CardEmployee card = new (JsonProperty<int?>.GetValue("employeeId", jObj, OnMissingProperty))
+        JObject jObj = JObject.Parse(obj.ToString());
+        CardEmployee card = new (JsonProperty<int?>.GetValue("employee", jObj))
         {
-            Id = JsonProperty<int?>.GetValue("id", jObj),            
+            Id = JsonProperty<int?>.GetValue("id", jObj),
             Key = JsonProperty<string>.GetValue("serial", jObj, OnMissingProperty)
         };
 

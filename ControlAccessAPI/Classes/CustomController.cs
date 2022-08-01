@@ -31,7 +31,8 @@ public abstract class CustomController : ControllerBase
     protected Result RequestResponse(
         Delegates.ActionResult action, 
         Delegates.ActionResult? action2 = null, 
-        Delegates.ActionResult? action3 = null
+        Delegates.ActionResult? action3 = null,
+        Delegates.ActionResult? action4 = null
     ) => RequestBlock(result => {
         if (result != null) {
             result.Data = action();
@@ -41,6 +42,9 @@ public abstract class CustomController : ControllerBase
 
             if (action3 != null)
                 result.Data3 = action3();
+
+            if (action4 != null)
+                result.Data4 = action4();
 
             result.Message = C.COMPLETE;
             
@@ -54,7 +58,7 @@ public abstract class CustomController : ControllerBase
             if (action != null)
             {
                 var res = action();
-                result = res != null ? res : new Result() { Status = "ERROR", Message = "Not Result Founded!!!"};
+                result = res ?? new Result() { Status = "ERROR", Message = "Not Result Founded!!!" };
             }
 
             return result;

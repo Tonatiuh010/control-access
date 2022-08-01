@@ -20,7 +20,9 @@ namespace ControlAccess.Controllers
         public Result GetEmployeeAssets() => RequestResponse(
             () => bl.GetShifts(),
             () => bl.GetPositions(),
-            () => bl.GetCards(assigned:false)            
+            () => bl.GetCards(assigned:false),
+            () => bl.GetAccessLevels()
         );
+
     }
 }

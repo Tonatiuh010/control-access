@@ -9,31 +9,27 @@ using D = Engine.BL.Delegates;
 
 namespace Engine.BL {
     public class ControlAccessBL {
-        public D.Delegates.CallbackExceptionMsg? OnError {get; set;} = null;
+        public D.Delegates.CallbackExceptionMsg? OnError { get; set; } = null;
         private ControlAccessDAL DAL { get {
-            var dal = ControlAccessDAL.Instance;
+                var dal = ControlAccessDAL.Instance;
 
-            if (OnError != null) {
-                dal.OnDALError = OnError;
-            }
+                if (OnError != null) {
+                    dal.OnDALError = OnError;
+                }
 
-            return dal;
-        } }
+                return dal;
+            } }
 
 
-        public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError ) => OnError = onError;
+        public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError) => OnError = onError;
 
         public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
         {
             var cards = DAL.GetCards(cardId, assigned);
 
-            foreach(var c in cards)
+            foreach (var c in cards)
             {
-                c.SetEmployee(id =>
-                {
-                    var employees = GetEmployees(id);
-                    return employees != null && employees.Count > 0 ? employees[0] : new Employee();
-                });
+                c.SetEmployeeFinder(GetEmployee);
             }
 
             return cards;
@@ -50,31 +46,52 @@ namespace Engine.BL {
             var employees = DAL.GetEmployees(employeeId);
 
             foreach (var employee in employees)
-                employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels( 
+                employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
                     GetEmployeeAccessLevels(employee.Id)
                 );
-          
+
             return employees;
         }
-        
+
+        //public CardEmployee GetCard(string serial)
+        //{
+        //    var cards = GetCards(assigned: true);
+        //    return cards.Find(x => x.Key == serial);
+        //}
+
         public ResultInsert SetEmployee(Employee employee, string txnUser) => DAL.SetEmployee(employee, txnUser);
-        
+
         public ResultInsert SetCard(CardEmployee card, string txnUser) => DAL.SetCard(card, txnUser);
 
-        public Result SetEmployeeAccessLevel(int employeeId, int accessLevelId, bool status, string txnUser) => 
+        public Result SetEmployeeAccessLevel(int employeeId, int accessLevelId, bool status, string txnUser) =>
             DAL.SetEmployeeAccessLevel(employeeId, accessLevelId, status ? C.ENABLED : C.DISABLED, txnUser);
 
-        public Result SetDownEmployee(int employeeId, string txnUser) => DAL.SetDownEmployee(employeeId, txnUser);        
+        public Result SetDownEmployee(int employeeId, string txnUser) => DAL.SetDownEmployee(employeeId, txnUser);
 
         public Result SetDownCard(int cardId, string txnUser) => DAL.SetDownCard(cardId, txnUser);
-        
-        public List<AccessLevel> GetAccessLevels() => DAL.GetAccessLevels();                
 
-        public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId)=> DAL.GetEmployeeAccessLevels(employeeId);
+        public List<AccessLevel> GetAccessLevels() => DAL.GetAccessLevels();
+
+        public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId) => DAL.GetEmployeeAccessLevels(employeeId);
 
         public Result SetCheck(string cardSerial, string txnUser) => DAL.SetCheck(cardSerial, txnUser);
 
         public List<Departament> GetDepartaments(int? deptoId = null) => DAL.GetDepartaments(deptoId);
+
+        public List<Check> GetChecks(int? checkId = null, int? cardId = null, int? employeeId = null) {
+            var checks = DAL.GetChecks(checkId, cardId, employeeId);
+
+            foreach(var ch in checks)
+            {
+                var card = ch.Card;
+                if(card?.GetType() == typeof(CardEmployee))
+                {
+                    ((CardEmployee)card).SetEmployeeFinder(GetEmployee);
+                }
+            }
+
+            return checks;
+        }            
 
         public ResultInsert SetDepartament(Departament departament, string txnUser) => DAL.SetDepartament(departament, txnUser);
 
@@ -87,7 +104,13 @@ namespace Engine.BL {
         public ResultInsert SetPosition(Position position, string txnUser) => DAL.SetPosition(position, txnUser);
 
         public AccessLevel? GetAccessLevel(string name) => GetAccessLevels().Find(x => x.Name == name);
-    
+
+        private Employee? GetEmployee(int? id )
+        {
+            var employees = GetEmployees(id);
+            return employees != null && employees.Count > 0 ? employees[0] : null;
+        }
+        
     }
 
 }

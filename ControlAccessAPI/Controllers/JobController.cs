@@ -14,10 +14,12 @@ namespace ControlAccess.Controllers;
 public class JobController : CustomController
 {
     [HttpGet]
-    public Result GetJobs() => RequestResponse(() => "Is empty for now.");
+    public Result GetJobs() => RequestResponse(() => bl.GetJobs());
 
     [HttpGet("{id:int?}")]
-    public Result GetJob(int id) => RequestResponse(() => "Is empty for now");
+    public Result GetJob(int? id) => RequestResponse(() => 
+        GetItem( bl.GetJobs(id) )
+    );
 
     [HttpPost]
     public Result SetJob(dynamic obj) => RequestResponse(() => {
@@ -33,21 +35,4 @@ public class JobController : CustomController
         );
     });
 
-    [HttpPost]
-    [Route("SetPosition")]
-    public Result SetPosition(dynamic obj) => RequestResponse(() => {
-        JObject jObj = JObject.Parse(obj.ToString());
-
-        return bl.SetPosition(
-            new Position() {
-                Id =  JsonProperty<int?>.GetValue("jobId", jObj, OnMissingProperty),
-                Alias = JsonProperty<string>.GetValue("alias", jObj, OnMissingProperty),
-                PositionId = JsonProperty<int?>.GetValue("positionId", jObj, OnMissingProperty),
-                Departament = new Departament() {
-                    Id = JsonProperty<int?>.GetValue("departamentId", jObj, OnMissingProperty)
-                }
-            },
-            C.GLOBAL_USER
-        );
-    });
 }

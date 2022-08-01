@@ -11,6 +11,7 @@ namespace Engine.BO {
         public object? Data {get; set;} = null;
         public object? Data2 {get; set;} = null;
         public object? Data3 { get; set; } = null;
+        public object? Data4 { get; set; } = null;
 
     }
 

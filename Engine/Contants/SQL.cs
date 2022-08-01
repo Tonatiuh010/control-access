@@ -23,7 +23,8 @@ namespace Engine.Constants {
         public const string GET_JOBS = "GET_JOBS";
         public const string GET_SHIFTS = "GET_SHIFTS";
         public const string GET_CARDS = "GET_CARDS";
-        public const string GET_POSITIONS = "GET_POSITIONS";        
+        public const string GET_POSITIONS = "GET_POSITIONS";
+        public const string GET_CHECKS = "GET_CHECKS";
 
         public const string WEIRD_QRY = @"
             SELECT 

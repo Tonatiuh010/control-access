@@ -28,13 +28,13 @@ public class ShiftController : CustomController
         JObject jObj = JObject.Parse(obj.ToString());        
         shift = new Shift(
             JsonProperty<string>.GetValue("inTime", jObj, OnMissingProperty), 
-            JsonProperty<string>.GetValue("outTime", jObj, OnMissingProperty) 
+            JsonProperty<string>.GetValue("outTime", jObj, OnMissingProperty)
         ) {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
-            DayCount = JsonProperty<int?>.GetValue("dayCount", jObj),            
-        };
-        
+            LunchTime = Shift.ConvertTime( JsonProperty<string>.GetValue("lunchTime", jObj, OnMissingProperty) ),
+            DayCount = JsonProperty<int?>.GetValue("dayCount", jObj),
+        };        
 
         return bl.SetShift(shift, C.GLOBAL_USER);
     });

@@ -120,7 +120,7 @@ namespace Engine.BO {
     }
 
     public class CardEmployee : Card {
-        public delegate Employee FindEmployee(int? employeeId);
+        public delegate Employee? FindEmployee(int? employeeId);
         private FindEmployee? GetEmployee { get; set; }
 
         [JsonIgnore]
@@ -128,7 +128,8 @@ namespace Engine.BO {
 
         [JsonPropertyName("employee")]
         public Employee? EmployeeDetails => GetEmployee != null ? GetEmployee(Employee) : null;
-        public void SetEmployee(FindEmployee employeeCallback) => GetEmployee = employeeCallback;
+
+        public void SetEmployeeFinder(FindEmployee employeeCallback) => GetEmployee = employeeCallback;
 
         public CardEmployee(FindEmployee? getEmployee, int? employee)
         {
@@ -169,7 +170,7 @@ namespace Engine.BO {
             OutTime = ConvertTime(outTime);
         }
 
-        private static TimeSpan ConvertTime(string? timeExpression) {
+        public static TimeSpan ConvertTime(string? timeExpression) {
             try {
                 if(timeExpression != null) {
                     return TimeSpan.Parse(timeExpression);

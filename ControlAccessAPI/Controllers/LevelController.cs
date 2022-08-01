@@ -25,7 +25,7 @@ public class LevelController : CustomController
         JObject jObj = JObject.Parse(obj.ToString());
         return bl.SetAccessLevel(
             new AccessLevel() {
-                Id = JsonProperty<int?>.GetValue("id", jObj, OnMissingProperty),
+                Id = JsonProperty<int?>.GetValue("id", jObj),
                 Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty)
             }, 
             C.GLOBAL_USER
