@@ -16,11 +16,14 @@ namespace Engine.DAL {
         public static ControlAccessDAL Instance {
             get
             {
-                if (DAL == null) {
-                    DAL = new ControlAccessDAL();
-                }
+                //if (DAL == null) {
+                //    DAL = new ControlAccessDAL();
+                //} else if(DAL.Connection.State == ConnectionState.Closed)
+                //{
+                //    DAL.OpenConnection();
+                //}
 
-                return DAL;
+                return new ControlAccessDAL();
             }
         }
 

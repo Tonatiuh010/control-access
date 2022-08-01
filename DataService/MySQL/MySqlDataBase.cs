@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataService.MySQL
 {
-    public class MySqlDataBase {
+    public class MySqlDataBase : IDisposable {
         /*
         Pending to add 
             Reconnect Feature, sets a timer to reconnect
@@ -118,13 +118,10 @@ namespace DataService.MySQL
             bool isTxnSuccess;
 
             try {
-                if (conn.State == ConnectionState.Open)
+                if (conn.State == ConnectionState.Closed)
                 {
-                    db.Connection.Close();
-                    db.Connection.Dispose();
-                }
-
-                OpenConnection(db);
+                    OpenConnection(db);
+                }                
 
                 txn = conn.BeginTransaction();                
                 action(txn);
@@ -144,6 +141,12 @@ namespace DataService.MySQL
             if (txn != null)
                 txn.Dispose();
 
+        }
+        
+        public void Dispose()
+        {
+            Connection.Close();
+            Connection.Dispose();            
         }
     }
 }
