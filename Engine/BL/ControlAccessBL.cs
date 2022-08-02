@@ -58,7 +58,7 @@ namespace Engine.BL {
                 );
 
                 if(employee.Image != null)
-                    employee.Image.Url = $"{DomainUrl}/api/employee/img/{employee.Id}";
+                    employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
             }                
 
             return employees;

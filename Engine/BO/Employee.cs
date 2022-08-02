@@ -15,6 +15,7 @@ namespace Engine.BO {
     {
         [JsonIgnore]
         public byte[]? Bytes { get; set; }
+        [JsonIgnore]
         public string? B64 => Bytes != null ? AddB64Header( Convert.ToBase64String(Bytes) ) : string.Empty;
         [JsonIgnore]
         public string? Hex { get
