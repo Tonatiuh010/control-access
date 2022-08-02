@@ -13,6 +13,8 @@ namespace Classes;
 public abstract class CustomController : ControllerBase
 {
     public ControlAccessBL bl {get;}
+    public Uri Uri => new ($"{Request.Scheme}://{Request.Host}{Request.PathBase}{Request.Path}{Request.QueryString}");
+    public string DomainUrl => $"{Uri.Scheme}://{Uri.Authority}";
 
     protected Delegates.CallbackExceptionMsg OnMissingProperty => SetErrorOnRequest;
     protected List<RequestError> ErrorsRequest {get; set;} = new List<RequestError>();    
@@ -69,6 +71,7 @@ public abstract class CustomController : ControllerBase
     );
 
     private Result RequestBlock(Delegates.CallbackResult action) {
+        bl.DomainUrl = DomainUrl;
         Result result = new(){
             Status = C.OK
         };

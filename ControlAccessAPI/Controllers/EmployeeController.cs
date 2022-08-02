@@ -22,7 +22,7 @@ public class EmployeeController : CustomController
         GetItem(bl.GetEmployees(id))
     );
 
-    [HttpPost]
+    [HttpPost]  
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {       
         JObject jObj = JObject.Parse(obj.ToString());        
 
