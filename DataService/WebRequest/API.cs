@@ -27,9 +27,7 @@ namespace DataService.WebRequest
             {
                 Client.BaseAddress = new Uri(url);
                 Client.DefaultRequestHeaders.Accept.Clear();
-                Client.DefaultRequestHeaders.Add(new );
-
-
+                //Client.DefaultRequestHeaders.Add(GetValidHeaders());
             }
         }
 
