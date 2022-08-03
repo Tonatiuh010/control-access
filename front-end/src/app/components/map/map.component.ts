@@ -57,6 +57,7 @@ export class MapComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.unsafePublish('esp32/rfid', 'Tavo es gay')
   }
 
   public unsafePublish(topic: string, message: string): void {

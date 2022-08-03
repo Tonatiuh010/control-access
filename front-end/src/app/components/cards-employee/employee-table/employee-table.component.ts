@@ -26,7 +26,15 @@ export class EmployeeTableComponent implements OnInit {
   ngOnInit(): void {
     this.empService.getEmployees().subscribe(data => {
       this.apiData = data;
-      this.dataSource = new MatTableDataSource(this.apiData.data);
+      let replaceImages = JSON.stringify(this.apiData.data, (key, val) => {
+        if (key === 'url') {
+         return val.replace('img', 'image');
+        }
+        return val
+      });
+      let parsedJson = JSON.parse(replaceImages)
+      console.log(parsedJson)
+      this.dataSource = new MatTableDataSource(parsedJson);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.cdRef.detectChanges();
@@ -38,9 +46,10 @@ export class EmployeeTableComponent implements OnInit {
     rowData.accessLevels.forEach((element: { name: string; }) => {
       arr.push(element.name)
     });
+
     this.infService.sendEmployee({
       id: rowData.id,
-      photo: rowData.image.b64,
+      photo: rowData.image.url,
       name: rowData.name,
       lastName: rowData.lastName,
       position: rowData.job.id,
