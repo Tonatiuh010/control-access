@@ -119,6 +119,7 @@ namespace Engine.BO {
     public class Card : BaseBO
     {
         public string? Key { get; set; }
+        public string? Status { get; set; }
 
     }
 

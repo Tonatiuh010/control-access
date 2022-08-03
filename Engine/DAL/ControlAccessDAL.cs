@@ -46,6 +46,7 @@ namespace Engine.DAL {
                             {
                                 Id = Validate.getDefaultIntIfDBNull(reader["CARD_ID"]),
                                 Key = Validate.getDefaultStringIfDBNull(reader["NUMBER"]),
+                                Status = Validate.getDefaultStringIfDBNull(reader["CARD_STATUS"])
                             },
                             CheckDt = Validate.getDefaultDateIfDBNull(reader["CHECK_DT"]),
                             Type = Validate.getDefaultStringIfDBNull(reader["TYPE"])
@@ -167,6 +168,7 @@ namespace Engine.DAL {
                         {
                             Id = Validate.getDefaultIntIfDBNull(reader["CARD_ID"]),
                             Key = Validate.getDefaultStringIfDBNull(reader["NUMBER"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["STATUS"])
                         });
                     }                    
                 });
@@ -234,7 +236,7 @@ namespace Engine.DAL {
                         {
                             Id = Validate.getDefaultIntIfDBNull(reader["CARD_ID"]),
                             Key = Validate.getDefaultStringIfDBNull(reader["CARD_NUMBER"]),
-                            //Status = Validate.getDefaultStringIfDBNull(reader["CARD_STATUS"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["CARD_STATUS"]),
                         };
 
                         var position = new Position()
