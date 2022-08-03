@@ -27,7 +27,8 @@ namespace DataService.WebRequest
             {
                 Client.BaseAddress = new Uri(url);
                 Client.DefaultRequestHeaders.Accept.Clear();
-                //Client.DefaultRequestHeaders.Add(GetValidHeaders());
+                foreach(var header in GetValidHeaders())
+                    Client.DefaultRequestHeaders.Accept.Add(header);
             }
         }
 
@@ -37,7 +38,7 @@ namespace DataService.WebRequest
         }
 
 
-        public static List<MediaTypeWithQualityHeaderValue> GetValidHeaders() =>
+        private static List<MediaTypeWithQualityHeaderValue> GetValidHeaders() =>
             new() {
                 new ("application/json"),
                 new ("application/text"),
