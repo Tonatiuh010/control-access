@@ -23,8 +23,8 @@ import { HistoryComponent } from './components/history/history.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: 'broker.emqx.io',
-  port: 8083,
+  hostname: 'broker.hivemq.com',
+  port: 8000,
   protocol: 'ws',
   path: '/mqtt'
 };
