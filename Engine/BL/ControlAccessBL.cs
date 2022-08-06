@@ -8,7 +8,10 @@ using Engine.BL;
 using D = Engine.BL.Delegates;
 
 namespace Engine.BL {
-    public class ControlAccessBL {        
+    public class ControlAccessBL {
+
+        public delegate void DALCallback(ControlAccessDAL dal);
+
         public D.Delegates.CallbackExceptionMsg? OnError { get; set; } = null;
         private ControlAccessDAL DAL { get {
                 using var dal = ControlAccessDAL.Instance;
@@ -31,14 +34,17 @@ namespace Engine.BL {
 
         public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
         {
-            var cards = DAL.GetCards(cardId, assigned);
-
-            foreach (var c in cards)
+            using (var dal = DAL)
             {
-                c.SetEmployeeFinder(GetEmployee);
-            }
+                var cards = DAL.GetCards(cardId, assigned);
 
-            return cards;
+                foreach (var c in cards)
+                {
+                    c.SetEmployeeFinder(GetEmployee);
+                }
+
+                return cards;
+            }
         }
 
         public List<Shift> GetShifts(int? shiftId = null) => DAL.GetShifts(shiftId);
@@ -49,17 +55,22 @@ namespace Engine.BL {
             DAL.GetPositions(positionId, jobId, departmentId);
 
         public List<ControlAccess> GetEmployees(int? employeeId = null) {
-            var employees = DAL.GetEmployees(employeeId);
+            List<ControlAccess> employees = new();
 
-            foreach (var employee in employees)
+            using (var dal = DAL)
             {
-                employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
-                    GetEmployeeAccessLevels(employee.Id)
-                );
+                employees = dal.GetEmployees(employeeId);
 
-                if(employee.Image != null)
-                    employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
-            }                
+                foreach (var employee in employees)
+                {
+                    employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
+                        dal.GetEmployeeAccessLevels(employee.Id)
+                    );
+
+                    if (employee.Image != null)
+                        employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
+                }
+            }
 
             return employees;
         }

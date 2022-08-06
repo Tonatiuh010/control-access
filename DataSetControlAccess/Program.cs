@@ -35,7 +35,7 @@ namespace DataSet {
                     csv.Context.RegisterClassMap<JobMap>();
                     var x = csv.GetRecords<Job>();
                     foreach (var j in x.ToList())
-                    {
+                    {   
                         bl.SetJob(j, C.PROCESS_USER);
                     }
                 });
