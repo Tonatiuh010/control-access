@@ -22,6 +22,7 @@ import { EntrancesDevicesComponent } from './components/entrances-devices/entran
 import { HistoryComponent } from './components/history/history.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { httpInterceptProviders } from './components/spinner';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'broker.hivemq.com',
@@ -59,7 +60,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
       echarts
     }),
   ],
-  providers: [],
+  providers: [httpInterceptProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

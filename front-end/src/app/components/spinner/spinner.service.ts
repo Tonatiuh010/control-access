@@ -21,7 +21,8 @@ export class SpinnerService {
   }
 
   requestEnded(): void{
-    if(this.counter === 0 || --this.counter === 0){
+    console.log('counter' + this.counter)
+    if(this.counter === 0 || --this.counter === 2){
       this.spinner$.next(false);
     }
   }

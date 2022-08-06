@@ -1,10 +1,10 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest, HttpResponse } from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { SpinnerService } from "./spinner.service";
 
 @Injectable()
-export class HttpInterceptor implements HttpInterceptor{
+export class HttpInterceptorSpinner implements HttpInterceptor{
 
   constructor(private spinService: SpinnerService) {
 
@@ -20,6 +20,7 @@ export class HttpInterceptor implements HttpInterceptor{
       tap(
         (event) => {
           if (event instanceof HttpResponse){
+            console.log('me acabe XD')
             this.spinService.requestEnded()
           }
         (error: HttpErrorResponse) => {
