@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 import { InformationService } from 'src/app/services/information.service';
+import { SpinnerService } from '../../spinner/spinner.service';
 
 @Component({
   selector: 'app-employee-table',
@@ -18,23 +19,23 @@ export class EmployeeTableComponent implements OnInit {
   card_number: '', shift: '', access: ['']};
   apiData!: any;
 
+  showSpinner = false;
+
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService, private infService: InformationService){ };
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService,
+    private infService: InformationService, private spinService: SpinnerService){ };
 
   ngOnInit(): void {
+    this.spinService.getSpinnerObserver().subscribe(status =>{
+      this.showSpinner = status === true;
+      this.cdRef.detectChanges();
+    })
+
     this.empService.getEmployees().subscribe(data => {
       this.apiData = data;
-      let replaceImages = JSON.stringify(this.apiData.data, (key, val) => {
-        if (key === 'url') {
-         return val.replace('img', 'image');
-        }
-        return val
-      });
-      let parsedJson = JSON.parse(replaceImages)
-      console.log(parsedJson)
-      this.dataSource = new MatTableDataSource(parsedJson);
+      this.dataSource = new MatTableDataSource(this.apiData.data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.cdRef.detectChanges();

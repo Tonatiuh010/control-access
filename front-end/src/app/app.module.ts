@@ -21,6 +21,7 @@ import { AccessCardsEditComponent } from './components/cards-employee/access-car
 import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
 import { HistoryComponent } from './components/history/history.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   hostname: 'broker.hivemq.com',
@@ -40,7 +41,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AccessCardsTableComponent,
     AccessCardsEditComponent,
     EntrancesDevicesComponent,
-    HistoryComponent
+    HistoryComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
