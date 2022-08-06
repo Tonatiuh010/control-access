@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class EmployeeServiceService {
-  API_URL = 'https://controlaccess20220725234915.azurewebsites.net/api/'
+  API_URL = 'https://ctlacc.azurewebsites.net/api/'
   constructor(private http: HttpClient) { }
 
   getEmployees(): Observable<any> {
