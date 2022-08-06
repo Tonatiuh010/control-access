@@ -4,6 +4,7 @@ namespace Engine.Constants {
     public class C {
 
         public const string GLOBAL_USER = "API_CTL";
+        public const string PROCESS_USER = "CTL_DATASET";
 
         public const string OK = "OK";
         public const string ERROR = "ERROR";
@@ -13,6 +14,13 @@ namespace Engine.Constants {
 
         public const string ENABLED = "ENABLED";
         public const string DISABLED = "DISABLED";
+
+        public const string EmployeeCsv = "employees.csv";
+        public const string AccessCsv = "access.csv";
+        public const string CardCsv = "cards.csv";
+        public const string JobsCsv = "jobs.csv";
+        public const string DepartamentsCsv = "departament.csv";
+        public const string PositionsCsv = "positions.csv";
 
 
         /* Connection Strings */

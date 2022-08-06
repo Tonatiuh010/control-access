@@ -24,9 +24,9 @@ public class EmployeeController : CustomController
 
     [HttpPost]  
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {       
-        JObject jObj = JObject.Parse(obj.ToString());        
+        JObject jObj = JObject.Parse(obj.ToString());
 
-        Employee employee = new Employee() {
+        Engine.BO.ControlAccess employee = new Engine.BO.ControlAccess() {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
             LastName = JsonProperty<string>.GetValue("lastName", jObj, OnMissingProperty),
@@ -98,7 +98,7 @@ public class EmployeeController : CustomController
 
         if(obj != null)
         {
-            var emp = (Employee)obj;
+            var emp = (Engine.BO.ControlAccess)obj;
             var imgBytes = emp.Image?.Bytes;
 
             if(imgBytes != null)

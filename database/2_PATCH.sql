@@ -64,7 +64,7 @@ ALTER TABLE EMPLOYEE_ACCESS_LEVEL ADD COLUMN UPDATED_ON DATETIME;
 ALTER TABLE EMPLOYEE_ACCESS_LEVEL ADD COLUMN UPDATED_BY VARCHAR(40);
 
 /* INSERTS */
-INSERT INTO ACCESS_LEVEL (NAME) VALUES ('G1'), ('G2'), ('G3');
+-- INSERT INTO ACCESS_LEVEL (NAME) VALUES ('G1'), ('G2'), ('G3');
 INSERT INTO SHIFT (NAME, CLOCK_IN, CLOCK_OUT, DAY_COUNT, LUNCH_TIME) VALUES 
-	('MORNING SHIFT', maketime(8, 00, 00), maketime(18, 00, 00), 0, maketime(12, 00, 00)), 
-	('EVENING SHIFT', maketime(16, 00, 00), maketime(2, 00, 00), 1, maketime(20, 00, 00));
+	('Morning Shift', maketime(8, 00, 00), maketime(18, 00, 00), 0, maketime(12, 00, 00)), 
+	('Evening Shift', maketime(16, 00, 00), maketime(2, 00, 00), 1, maketime(20, 00, 00));

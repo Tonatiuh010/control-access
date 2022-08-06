@@ -48,7 +48,7 @@ namespace Engine.BL {
         public List<Position> GetPositions(int? positionId = null, int? jobId = null, int? departmentId = null) =>
             DAL.GetPositions(positionId, jobId, departmentId);
 
-        public List<Employee> GetEmployees(int? employeeId = null) {
+        public List<ControlAccess> GetEmployees(int? employeeId = null) {
             var employees = DAL.GetEmployees(employeeId);
 
             foreach (var employee in employees)
@@ -70,7 +70,7 @@ namespace Engine.BL {
         //    return cards.Find(x => x.Key == serial);
         //}
 
-        public ResultInsert SetEmployee(Employee employee, string txnUser) => DAL.SetEmployee(employee, txnUser);
+        public ResultInsert SetEmployee(ControlAccess employee, string txnUser) => DAL.SetEmployee(employee, txnUser);
 
         public ResultInsert SetCard(CardEmployee card, string txnUser) => DAL.SetCard(card, txnUser);
 
@@ -116,7 +116,7 @@ namespace Engine.BL {
 
         public AccessLevel? GetAccessLevel(string name) => GetAccessLevels().Find(x => x.Name == name);
 
-        private Employee? GetEmployee(int? id )
+        private ControlAccess? GetEmployee(int? id )
         {
             var employees = GetEmployees(id);
             return employees != null && employees.Count > 0 ? employees[0] : null;

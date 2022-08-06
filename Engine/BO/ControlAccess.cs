@@ -68,7 +68,7 @@ namespace Engine.BO {
 
     }
 
-    public class Employee  : BaseBO{
+    public class ControlAccess  : BaseBO{
         public string? Name {get; set;}
         public string? LastName {get; set;}
         public ImageData? Image { get; set; }
@@ -77,11 +77,6 @@ namespace Engine.BO {
         public Shift? Shift {get; set;}
         public Card? Card { get; set; }
         public string? Status { get; set; }
-    }
-
-    public class EmployeeCard : Employee
-    {
-        public Card? Card { get;set; }
     }
 
     public class Job : BaseBO {
@@ -121,17 +116,23 @@ namespace Engine.BO {
         public string? Key { get; set; }
         public string? Status { get; set; }
 
+        public Card()
+        {
+            Key = null;
+            Status = null;
+        }
+
     }
 
     public class CardEmployee : Card {
-        public delegate Employee? FindEmployee(int? employeeId);
+        public delegate ControlAccess? FindEmployee(int? employeeId);
         private FindEmployee? GetEmployee { get; set; }
 
         [JsonIgnore]
         public int? Employee {get; set;}
 
         [JsonPropertyName("employee")]
-        public Employee? EmployeeDetails => GetEmployee != null ? GetEmployee(Employee) : null;
+        public ControlAccess? EmployeeDetails => GetEmployee != null ? GetEmployee(Employee) : null;
 
         public void SetEmployeeFinder(FindEmployee employeeCallback) => GetEmployee = employeeCallback;
 
@@ -151,6 +152,11 @@ namespace Engine.BO {
         public CardEmployee(int? employee)
         {
             Employee = employee;
+        }
+
+        public CardEmployee()
+        {
+            Employee = null;
         }
 
         public CardEmployee UnbindEmployee() => new(this, null);        

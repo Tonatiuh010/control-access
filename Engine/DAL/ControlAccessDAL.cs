@@ -217,8 +217,8 @@ namespace Engine.DAL {
             return model;
         }
 
-        public List<Employee> GetEmployees(int? employeeId) {
-            List<Employee> model = new();
+        public List<ControlAccess> GetEmployees(int? employeeId) {
+            List<ControlAccess> model = new();
 
             TransactionBlock(this, txn => {
                 using var cmd = CreateCommand(SQL.GET_EMPLOYEE_DETAIL, txn, CommandType.StoredProcedure);
@@ -504,7 +504,7 @@ namespace Engine.DAL {
             return result;
         }
 
-        public ResultInsert SetEmployee(Employee employee, string txnUser) {
+        public ResultInsert SetEmployee(ControlAccess employee, string txnUser) {
             ResultInsert result = new();
             string sSp = SQL.SET_EMPLOYEE;
 
