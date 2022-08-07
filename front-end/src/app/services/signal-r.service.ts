@@ -5,7 +5,7 @@ import * as signalR from "@microsoft/signalr"
 })
 export class SignalRService {
 
-  private hubConnection!: signalR.HubConnection
+  public hubConnection!: signalR.HubConnection
   data!: string;
 
   public startConnection = () => {
@@ -23,5 +23,9 @@ export class SignalRService {
         this.data = data;
         console.log(data);
       });
+    }
+
+    public stopConnection = () => {
+      this.hubConnection.off('test')
     }
 }

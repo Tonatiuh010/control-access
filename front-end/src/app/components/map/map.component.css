@@ -93,7 +93,7 @@ i {
     line-height: 30px;
 }
 
-@keyframes green-fade {
+@keyframes green-fade-html {
     0% {
         background-color: rgb(0, 255, 55, 0.5);
     }
@@ -102,7 +102,49 @@ i {
     }
 }
 
+@keyframes red-fade-html {
+    0% {
+        background-color: rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        background-color: none;
+    }
+}
+
+@keyframes green-fade-svg {
+    0% {
+        fill: rgb(0, 255, 55, 0.5);
+    }
+    100% {
+        fill: '#000';
+    }
+}
+
+@keyframes red-fade-svg {
+    0% {
+        fill: rgba(255, 0, 0, 0.5);
+    }
+    100% {
+        fill: '#000';
+    }
+}
+
 .highlight {
     scroll-behavior: smooth;
-    animation: green-fade 1s ease-in 1;
+    animation: green-fade-html 0.5s ease-in 1;
+}
+
+.highlightUn {
+    scroll-behavior: smooth;
+    animation: red-fade-html 0.5s ease-in 1;
+}
+
+#cardActivation {
+    scroll-behavior: smooth;
+    animation: green-fade-svg 0.5s ease-in 1;
+}
+
+#cardaActivationUn {
+    scroll-behavior: smooth;
+    animation: red-fade-svg 0.5s ease-in 1;
 }

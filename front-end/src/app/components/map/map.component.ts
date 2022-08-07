@@ -48,18 +48,18 @@ export class MapComponent implements OnInit, OnDestroy {
   public message!: string;
   apiData!: any[];
   newArray!: any[];
-  condition: boolean = false;
+  cardA_Activation: boolean = false;
+  cardA_ActivationUn: boolean = false;
+  cardB_Activation: boolean = false;
+  cardB_ActivationUn: boolean = false;
+  warehouse_Activation: boolean = false;
+  warehouse_ActivationUn: boolean = false;
+  office_Activation: boolean = false;
+  office_ActivationUn: boolean = false;
 
   constructor(private _mqttService: MqttService, private empService: EmployeeServiceService,
     public signalRService: SignalRService, private http: HttpClient) {
-    // this.subscription = this._mqttService.observe('esp32/rfid').subscribe((message: IMqttMessage) => {
-    //   this.message = message.payload.toString();
-    //   console.log(this.message)
-    //   this.empService.getEmployees().subscribe(data => {
-    //     this.apiData = data;
-    //     console.log(this.apiData);
-    //   });
-    // });
+
   }
 
   ngOnInit(): void {
@@ -75,18 +75,34 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   displayNewEntry(): void{
-    this.condition = true
     let myemp: any = {
       photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-16-min.png',
       name: 'Taylor Hawkins', position: 'HR', status: 'Active', time: '13:12:41',
       card_number: '84 9C 73 AB', shift: 'Morning', access: ['Office']}
-    myemp.style = true
+
     this.employeesArray.pop()
     this.employeesArray.unshift(myemp)
+    let device = 'Entrance B'
+    if(true){
+      switch(device){
+        case 'Entrance A': { myemp.style = true; this.cardA_Activation = true; setTimeout(()=>{ this.cardA_Activation = false; myemp.style = false},500)} break;
+        case 'Entrance B': { myemp.style = true; this.cardB_Activation = true; setTimeout(()=>{ this.cardB_Activation = false; myemp.style = false},500)} break;
+        case 'Warehouse': { myemp.style = true; this.warehouse_Activation = true; setTimeout(()=>{ this.warehouse_Activation = false; myemp.style = false},500)} break;
+        case 'Office': { myemp.style = true; this.office_Activation = true; setTimeout(()=>{ this.office_Activation = false; myemp.style = false},500)} break;
+      }
+    }else{
+      switch(device){
+        case 'Entrance A': { myemp.styleUn = true; this.cardA_ActivationUn = true; setTimeout(()=>{ this.cardA_ActivationUn = false; myemp.styleUn = false},500)} break;
+        case 'Entrance B': { myemp.styleUn = true; this.cardB_ActivationUn = true; setTimeout(()=>{ this.cardB_ActivationUn = false; myemp.styleUn = false},500)} break;
+        case 'Warehouse': { myemp.styleUn = true; this.warehouse_ActivationUn = true; setTimeout(()=>{ this.warehouse_ActivationUn = false; myemp.styleUn = false},500)} break;
+        case 'Office': { myemp.styleUn = true; this.office_ActivationUn = true; setTimeout(()=>{ this.office_ActivationUn = false; myemp.styleUn = false},500)} break;
+      }
+    }
+
+    // this.cardA_ActivationUn = true
+
     console.log(this.employeesArray)
-    setTimeout(()=>{
-      this.condition = false
-    },2000)
+
   }
 
   public unsafePublish(topic: string, message: string): void {
@@ -95,6 +111,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy() {
     //this.subscription.unsubscribe();
+    this.signalRService.stopConnection();
   }
 
 }
