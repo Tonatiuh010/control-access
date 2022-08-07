@@ -10,10 +10,22 @@ using Engine.BO;
 using Engine.BL.Delegates;
 
 namespace Engine.DAL {
-    public class ControlAccessDAL : MySqlDataBase 
+    public class ControlAccessDAL : MySqlDataBase
     {
         public static string? ConnString { get; set; }
-        public static ControlAccessDAL Instance => new();
+        public static ControlAccessDAL Instance { get {
+                if(_DAL == null)
+                {
+                    _DAL = new ControlAccessDAL();
+                } else if (!_DAL.IsOpen())
+                {
+                    _DAL.OpenConnection();
+                }
+                return _DAL;
+            }
+        }
+        private static ControlAccessDAL _DAL { get; set; }
+
 
         private readonly Validate Validate;
         public Delegates.CallbackExceptionMsg? OnDALError { get; set; }

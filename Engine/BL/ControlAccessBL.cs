@@ -14,7 +14,7 @@ namespace Engine.BL {
 
         public D.Delegates.CallbackExceptionMsg? OnError { get; set; } = null;
         private ControlAccessDAL DAL { get {
-                using var dal = ControlAccessDAL.Instance;
+                var dal = ControlAccessDAL.Instance;
                 if (OnError != null)
                 {
                     dal.OnDALError = OnError;
@@ -36,7 +36,7 @@ namespace Engine.BL {
         {
             using (var dal = DAL)
             {
-                var cards = DAL.GetCards(cardId, assigned);
+                var cards = dal.GetCards(cardId, assigned);
 
                 foreach (var c in cards)
                 {

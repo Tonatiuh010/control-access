@@ -47,6 +47,8 @@ namespace DataService.MySQL
             }
         }
 
+        public bool IsOpen() => Connection.State == ConnectionState.Open;
+
         public void OpenConnection() => OpenConnection(this);
 
         public void CloseConnection() {
@@ -99,7 +101,7 @@ namespace DataService.MySQL
             }
 
             db.Connection = new MySqlConnection(db.ConnectionString);
-            db.Connection.StateChange += db.OnStateChange;            
+            db.Connection.StateChange += db.OnStateChange;
             db.Connection.Open();
         }
 
