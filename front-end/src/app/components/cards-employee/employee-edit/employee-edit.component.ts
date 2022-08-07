@@ -39,27 +39,32 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription1$ = this.infService.selectedEmployee$.subscribe((value) => {
+      this.form.markAsPristine();
+      this.form.markAsUntouched();
       this.expectedEmployee = value;
       this.employeePhoto = value.photo;
     });
 
     this.subscription2$ = this.infService.employeeState$.subscribe((value) => {
+      this.form.markAsPristine();
+      this.form.markAsUntouched();
       this.employeeInitial = value;
     });
 
     this.subscription3$ = this.infService.employeeType$.subscribe((value) => {
+      this.form.markAsPristine();
+      this.form.markAsUntouched();
       this.employeeType = value;
     });
 
-    setTimeout(()=>{
       this.empService.getCatalog().subscribe(data => {
         //this.retrieveList(data.data, this.shiftList);
         data.data.forEach((element: { id: any; name: any; }) => {
           this.shiftList.push({id: element.id, name: element.name});
         });
 
-        data.data2.forEach((element: { id: any; name: any; }) => {
-          this.jobList.push({id: element.id, name: element.name});
+        data.data2.forEach((element: { positionId: any; alias: any; }) => {
+          this.jobList.push({id: element.positionId, name: element.alias});
         });
 
         data.data3.forEach((element: { id: any; key: any; }) => {
@@ -71,12 +76,11 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
         });
 
       });
-    }, 1000)
 
     this.form = this.fb.group({
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
-      upload: [null],
+      image: [null],
       lastName: [null, [Validators.required, Validators.minLength(2)]],
       accessLevels: [null, [Validators.required, Validators.minLength(1)]],
       position: [null, [Validators.required]],
@@ -131,28 +135,50 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
   createEmployee(form: any): void{
     form.value.id = null;
+    this.form.value.card = this.form.value.card.id;
     if (this.employeePhoto){
-      form.value.upload = this.employeePhoto
+      form.value.image = this.employeePhoto
     } else{
-      form.value.upload = Constants['no-image-found']
+      form.value.image = Constants['no-image-found']
     }
+    console.log(form.value)
+
     this.empService.postEmployee(form.value).subscribe(data => {
-      console.log(data)
       this.resetForm();
     })
   }
 
   updateEmployee(form: any): void{
     this.form.markAsPristine
+
+    if (form.value.card){
+      if (this.isInt(form.value.card)){
+        form.value.card = form.value.card
+      }else{
+        form.value.card = form.value.card.id
+      }
+    }
+
+    console.log(form.value.card)
     if (this.employeePhoto){
-      form.value.upload = this.employeePhoto
+      form.value.image = this.employeePhoto
     } else{
-      form.value.upload = Constants['no-image-found']
+      form.value.image = Constants['no-image-found']
     }
     console.log(form.value)
     this.empService.updateEmployee(form.value).subscribe(data => {
+      console.log(data)
       this.resetForm();
     })
+  }
+
+  isInt(value: any) {
+    var x;
+    if (isNaN(value)) {
+      return false;
+    }
+    x = parseFloat(value);
+    return (x | 0) === x;
   }
 
   isValidField(field: string): boolean{

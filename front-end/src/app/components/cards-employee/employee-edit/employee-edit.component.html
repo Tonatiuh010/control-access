@@ -66,6 +66,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Card Assigned</mat-label>
                         <mat-select formControlName="card" [(ngModel)]="expectedEmployee.card_number">
+                            <mat-option disabled>-- Select Card --</mat-option>
                             <mat-option *ngFor="let card of cardList" [value]="card.id">{{card.key}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('card')">{{getErrorMessage('card')}}</mat-error>

@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 import { InformationService } from 'src/app/services/information.service';
-import { SpinnerService } from '../../spinner/spinner.service';
 
 @Component({
   selector: 'app-employee-table',
@@ -13,7 +12,7 @@ import { SpinnerService } from '../../spinner/spinner.service';
 })
 export class EmployeeTableComponent implements OnInit {
   displayedColumns = ['name', 'position', 'status', 'card_number', 'options'];
-  dataSource =  new MatTableDataSource<any>([]);;
+  dataSource: any;
   emptyEmployee = {photo: undefined,
   name: '', position: '', status: '',
   card_number: '', shift: '', access: ['']};
@@ -25,21 +24,23 @@ export class EmployeeTableComponent implements OnInit {
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService,
-    private infService: InformationService, private spinService: SpinnerService){ };
+    private infService: InformationService){ };
 
   ngOnInit(): void {
-    this.spinService.getSpinnerObserver().subscribe(status =>{
-      this.showSpinner = status === true;
-      this.cdRef.detectChanges();
-    })
 
+    this.getEmployees();
+  }
+
+  getEmployees(){
+    this.showSpinner = true;
     this.empService.getEmployees().subscribe(data => {
       this.apiData = data;
       this.dataSource = new MatTableDataSource(this.apiData.data);
-      this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.cdRef.detectChanges();
-    });
+      this.dataSource.paginator = this.paginator;
+      this.showSpinner = false;
+    })
   }
 
   onEmployeeSelect(rowData: any) {
@@ -64,13 +65,22 @@ export class EmployeeTableComponent implements OnInit {
   }
 
   onEmployeeCreate() {
-    this.infService.sendEmployee(this.emptyEmployee)
+    this.infService.sendEmployee(this.emptyEmployee);
     this.infService.sendEmployeeState(true);
     this.infService.sendType(false);
+  }
+
+  disableEmployee(rowData: any) {
+    let message = {id: rowData}
+    this.empService.disableEmployee(message).subscribe(data => {
+      console.log(data)
+    })
   }
 
   onImgError(event: any): void{
     event.target.src = './../../../../assets/no-photo-available.png'
    }
+
+
 }
 

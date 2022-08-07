@@ -1,4 +1,6 @@
-<div class="content">
+<div *ngIf="!cardActivation" class="placeholder">Click "Add Access Card" to register a Card</div>
+
+<div *ngIf="cardActivation" class="content">
     <div class="title">Register new Card</div>
     <div class="card">
         <svg xmlns="http://www.w3.org/2000/svg" width="362" height="222" fill="none" viewBox="0 0 362 222">
@@ -11,4 +13,5 @@
       </svg>
     </div>
     <div class="sub-title">To register the new card, put it in front of the sensor.</div>
+    <button type='button' mat-raised-button class="full-width" (click)="resetCard()" color="red">Cancel</button>
 </div>

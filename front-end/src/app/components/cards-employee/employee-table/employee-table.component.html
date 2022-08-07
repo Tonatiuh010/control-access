@@ -7,7 +7,7 @@
     <app-spinner></app-spinner>
 </div>
 
-<div *ngIf="!showSpinner" class="example-container">
+<div [hidden]="showSpinner" class="example-container">
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
@@ -48,15 +48,11 @@
         <ng-container matColumnDef="options">
             <th mat-header-cell *matHeaderCellDef> Options </th>
             <td mat-cell *matCellDef="let e">
-                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                <button *ngIf="e.status != 'DISABLED'" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                 <mat-icon>more_vert</mat-icon>
               </button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
-                  <mat-icon>delete_forever</mat-icon>
-                  <span>Delete Employee</span>
-                </button>
-                    <button mat-menu-item>
+                    <button mat-menu-item (click)="disableEmployee(e.id)">
                   <mat-icon>warning</mat-icon>
                   <span>Disable Employee</span>
                     </button>
@@ -75,8 +71,12 @@
 
     <mat-toolbar class="mat-paginator-sticky">
         <mat-toolbar-row style="background-color: #fff;">
-            <mat-paginator #examplePaginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
+            <mat-paginator #examplePaginator [pageSizeOptions]="[5, 25, 50]"></mat-paginator>
             <button mat-raised-button (click)="onEmployeeCreate()" color="blue">Add Employee</button>
+
+            <div class="margin"><button mat-icon-button (click)="getEmployees()" color="blue">
+              <mat-icon class="material-icons">refresh</mat-icon>
+          </button></div>
         </mat-toolbar-row>
     </mat-toolbar>
 </div>

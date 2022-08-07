@@ -53,3 +53,15 @@ table {
 .options {
     cursor: pointer;
 }
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+}
+
+.margin {
+    margin-left: auto;
+    margin-right: 0;
+}
