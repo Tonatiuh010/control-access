@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.Json.Serialization;
+using Engine.Constants;
 
 namespace Engine.BO {
 
@@ -38,6 +39,8 @@ namespace Engine.BO {
 
         public ImageData(string? b64) => 
             Bytes = string.IsNullOrEmpty(b64) ? null : Convert.FromBase64String(RemoveHeaderB64(b64));
+
+        public static byte[] GetBytesFromUrl(string url) => Utils.GetImage(url);
 
         private static string RemoveHeaderB64(string b64)
         {

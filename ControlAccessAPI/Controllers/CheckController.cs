@@ -15,6 +15,13 @@ namespace ControlAccess.Controllers;
 [ApiController]
 public class CheckController : CustomController
 {
+    private readonly IHubContext<CheckHub> _hub;
+
+    public CheckController(IHubContext<CheckHub> hub) : base()
+    {
+        _hub = hub;
+    }
+
     [HttpGet]
     public Result Get() => RequestResponse(() => bl.GetChecks());
 

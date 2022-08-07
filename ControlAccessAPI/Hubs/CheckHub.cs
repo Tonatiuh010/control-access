@@ -9,5 +9,8 @@ namespace ControlAccess.Hubs
         public async Task BroadcastCheck(Check check)
             => await Clients.All.SendAsync("CheckMonitor", check);
 
+        public async Task BroadcastGreeting(string urName) =>
+            await Clients.All.SendAsync("test", $"Hello, {urName}");
+
     }
 }

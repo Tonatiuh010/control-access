@@ -26,6 +26,22 @@ public class EmployeeController : CustomController
     public Result SetEmployee(dynamic obj) => RequestResponse(() => {       
         JObject jObj = JObject.Parse(obj.ToString());
 
+        ImageData? img = null;
+
+        var imgString = JsonProperty<string>.GetValue("image", jObj);
+
+        if (!string.IsNullOrEmpty(imgString))
+        {
+            if (Uri.TryCreate(imgString, UriKind.Absolute, out Uri uri))
+            {
+                img = new ImageData(ImageData.GetBytesFromUrl(uri.AbsoluteUri));
+            }
+            else
+            {
+                img = imgString.Contains("base64") ? new ImageData(imgString) : new ImageData();
+            }
+        }
+
         Engine.BO.ControlAccess employee = new Engine.BO.ControlAccess() {
             Id = JsonProperty<int?>.GetValue("id", jObj),
             Name = JsonProperty<string>.GetValue("name", jObj, OnMissingProperty),
@@ -36,7 +52,7 @@ public class EmployeeController : CustomController
             Shift = new Shift() {
                 Id = JsonProperty<int?>.GetValue("shift", jObj),
             },
-            Image = new ImageData(JsonProperty<string>.GetValue("image", jObj)),
+            Image = img,
             Card = new Card()
             {
                 Id = JsonProperty<int?>.GetValue("card", jObj)

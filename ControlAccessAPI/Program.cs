@@ -18,6 +18,14 @@ var builder = WebApplication.CreateBuilder(args);
 //});
 
 // Add services to the container.
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:4200")
+                   .AllowAnyMethod()
+                   .SetIsOriginAllowed((host) => true)
+                   .AllowCredentials();
+        }));
 builder.Services.AddControllers();
 builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
@@ -35,7 +43,6 @@ builder.Services.AddSwaggerGen(config =>
 var app = builder.Build();
 
 app.MapGet("/", () => "Control Access API is working...");
-app.MapHub<CheckHub>("/CheckMonitor");
 
 ControlAccessDAL.ConnString = builder.Configuration.GetConnectionString(C.CTL_ACC);
 ControlAccessDAL.SetOnConnectionException((ex, msg) => Console.WriteLine($"Error Opening connection {msg} - {ex.Message}"));
@@ -55,15 +62,17 @@ if (app.Environment.IsDevelopment())
 app.UseRouting();
 
 app.UseCors( builder => builder
-     .AllowAnyOrigin()
-     .AllowAnyMethod()
-     .AllowAnyHeader());
+.AllowAnyOrigin()
+.AllowAnyMethod()
+.AllowAnyHeader());
 
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
+    endpoints.MapHub<CheckHub>("/CheckMonitor").RequireCors("CorsPolicy");
+
 });
 
 app.Run();

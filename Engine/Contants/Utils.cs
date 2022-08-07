@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataSet.Classes
+namespace Engine.Constants
 {
     public class Utils
     {
@@ -21,7 +20,7 @@ namespace DataSet.Classes
                     {
                         response.Wait();
                         var stream = response.Result.Content.ReadAsStream();
-                        using(var memo = new MemoryStream())
+                        using (var memo = new MemoryStream())
                         {
                             stream.CopyTo(memo);
                             imageBytes = memo.ToArray();
@@ -30,7 +29,8 @@ namespace DataSet.Classes
                         }
                     }
                 }
-            } catch
+            }
+            catch
             {
                 imageBytes = Array.Empty<byte>();
             }

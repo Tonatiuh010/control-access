@@ -10,6 +10,7 @@ select * from employee_accesS_level;
 select * from job;
 select * FROM POSITION;
 SELECT * FROM SHIFT;
+SELECT * FROM DEVICE;
 
 	SET @RESULT = '';
 	CALL SET_DEPARTAMENT(
@@ -78,9 +79,9 @@ SELECT * FROM SHIFT;
     
     SET @RESULT = '';
 	CALL SET_CARD(
-		1,
-		'TXN-JD-CD-2',
-		1,
+		NULL,
+		'TXN-ISS-X001',
+		NULL,
 		'API_TEST',
 		@RESULT
 	);
