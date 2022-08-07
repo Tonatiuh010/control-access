@@ -133,15 +133,24 @@ namespace Engine.BL {
 
         public List<Departament> GetDepartaments(int? deptoId = null) => DAL.GetDepartaments(deptoId);
 
+        public List<Device> GetDevices(int? deviceId = null) => DAL.GetDevices(deviceId);
+
         public List<Check> GetChecks(int? checkId = null, int? cardId = null, int? employeeId = null) {
             var checks = DAL.GetChecks(checkId, cardId, employeeId);
 
             foreach(var ch in checks)
             {
                 var card = ch.Card;
+                var device = ch.Device;
+
                 if(card?.GetType() == typeof(CardEmployee))
                 {
                     ((CardEmployee)card).SetEmployeeFinder(GetEmployee);
+                }
+
+                if(device != null)
+                {
+                    ch.SetDeviceFinder(GetDevice);
                 }
             }
 
@@ -156,14 +165,22 @@ namespace Engine.BL {
 
         public ResultInsert SetShift(Shift shift, string txnUser) => DAL.SetShift(shift, txnUser);
 
-        public ResultInsert SetPosition(Position position, string txnUser) => DAL.SetPosition(position, txnUser);
+        public ResultInsert SetPosition(Position position, string txnUser) => DAL.SetPosition(position, txnUser);      
 
         public AccessLevel? GetAccessLevel(string name) => GetAccessLevels().Find(x => x.Name == name);
+
+        public Device? GetDevice(string name) => GetDevices().Find(x => x.Name == name);
 
         private ControlAccess? GetEmployee(int? id )
         {
             var employees = GetEmployees(id);
             return employees != null && employees.Count > 0 ? employees[0] : null;
+        }
+
+        private Device? GetDevice(int? id)
+        {
+            var devices = GetDevices(id);
+            return devices != null && devices.Count > 0 ? devices[0] : null;
         }
         
     }

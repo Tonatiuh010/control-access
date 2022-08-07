@@ -167,9 +167,33 @@ namespace Engine.BO {
     }
 
     public class Check : BaseBO {
+        public delegate Device? FindDevice(int? deviceId);
+        private FindDevice? GetDevice { get; set; }
+
+        [JsonIgnore]
+        public int? Device { get; set; }
+
         public DateTime? CheckDt {get; set;}
         public string? Type {get; set;}
-        public Card? Card {get; set;}
+        public Card? Card {get; set;}        
+
+        [JsonPropertyName("device")]
+        public Device? DeviceDetails => GetDevice != null ? GetDevice(Device) : null;
+
+        public void SetDeviceFinder(FindDevice deviceCallback) => GetDevice = deviceCallback;
+    }
+
+    public class Device : BaseBO
+    {        
+
+        public string? Name { get; set; }
+        public string? Status { get; set; }
+
+        [JsonPropertyName("last_update")]
+        public DateTime? LastUpdate { get; set; }
+
+        public int? Activations { get; set; }
+        public int? Unsuccessful { get; set; }  
     }
 
     public class Shift : BaseBO {

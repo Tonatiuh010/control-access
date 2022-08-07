@@ -317,28 +317,37 @@ CREATE PROCEDURE SET_CARD_CHECK (
     IF VL_CARD IS NOT NULL THEN  
 		SET VL_CHECK_DT = NOW();
 		SET VL_TYPE = IF( VL_CHECK_DT > GET_CHECK(VL_EMPLOYEE, FALSE), 'OUT', 'IN');
-    
-		INSERT INTO CARD_CHECK 
-		(
-			EMPLOYEE_ID,
-			TIME_EXP,
-			CHECK_DT,
-			TYPE,
-			CARD_ID,
-			STATUS,
-			CREATED_ON,
-			CREATED_BY
-		) VALUES (
-			VL_EMPLOYEE,
-			DATE_FORMAT(VL_CHECK_DT, '%H%i%s'),
-			VL_CHECK_DT,
-			VL_TYPE,
-			VL_CARD,
-			'ENABLED',
-			NOW(),
-			IN_USER
-		);
-	ELSE 
+        
+        IF VERIFY_ACCESS(VL_EMPLOYEE, IN_DEVICE) THEN 
+			INSERT INTO CARD_CHECK 
+			(
+				EMPLOYEE_ID,
+				TIME_EXP,
+				CHECK_DT,
+				TYPE,
+				CARD_ID,
+				STATUS,
+				CREATED_ON,
+				CREATED_BY
+			) VALUES (
+				VL_EMPLOYEE,
+				DATE_FORMAT(VL_CHECK_DT, '%H%i%s'),
+				VL_CHECK_DT,
+				VL_TYPE,
+				VL_CARD,
+				'ENABLED',
+				NOW(),
+				IN_USER
+			);
+			
+			CALL SET_DEVICE(IN_DEVICE, NULL, TRUE, IN_USER, OUT_RESULT);
+            
+		ELSE 
+			CALL SET_DEVICE(IN_DEVICE, NULL, FALSE, IN_USER, OUT_RESULT);
+			SET OUT_RESULT = 'Empleado no autorizado';
+        END IF;		
+	ELSE
+		CALL SET_DEVICE(IN_DEVICE, NULL, FALSE, IN_USER, OUT_RESULT);
 		SET OUT_RESULT = 'Tarjeta no encontrada, o tarjeta en desuso.';
 	END IF;
 END //
@@ -348,18 +357,12 @@ DELIMITER ;
 	SET @RESULT = '';
 	CALL SET_CARD_CHECK(		
 		'TXN-JD-CD-2',		
+        1,
 		'API_TEST',
 		@RESULT
 	);
 	SELECT @RESULT;
 */
-
-CALL SET_CARD_CHECK(		
-	'TXN-JD-CD-2',		
-	'API_TEST',
-	@RESULT
-);
-SELECT @RESULT;
 
 /*#########################  SET_ACCESS_EMPLOYEE #########################*/
 DROP PROCEDURE IF EXISTS SET_ACCESS_EMPLOYEE;

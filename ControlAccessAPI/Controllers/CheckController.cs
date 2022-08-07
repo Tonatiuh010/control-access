@@ -20,6 +20,7 @@ public class CheckController : CustomController
     public CheckController(IHubContext<CheckHub> hub) : base()
     {
         _hub = hub;
+        
     }
 
     [HttpGet]
@@ -37,12 +38,15 @@ public class CheckController : CustomController
     public Result Set(dynamic obj) => RequestResponse(
         () => {
             var serial = JsonProperty<string>.GetValue( "serial", JObject.Parse(obj.ToString()));
+            var device = JsonProperty<string>.GetValue("device", JObject.Parse(obj.ToString()));
 
             ResultInsert result = bl.SetCheck(serial, C.GLOBAL_USER );
 
             if(result != null && result.Status != C.OK)
             {
-                result.Data = GetItem(bl.GetChecks(result.InsertDetails.Id));
+                var check = GetItem(bl.GetChecks(result.InsertDetails.Id));
+                result.Data = check;
+                _hub.Clients.All.SendAsync("CheckMonitor", check);
             }
 
             return result;

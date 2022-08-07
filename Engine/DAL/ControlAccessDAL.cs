@@ -64,7 +64,8 @@ namespace Engine.DAL {
                                 Status = Validate.getDefaultStringIfDBNull(reader["CARD_STATUS"])
                             },
                             CheckDt = Validate.getDefaultDateIfDBNull(reader["CHECK_DT"]),
-                            Type = Validate.getDefaultStringIfDBNull(reader["TYPE"])
+                            Type = Validate.getDefaultStringIfDBNull(reader["TYPE"]),
+                            Device = Validate.getDefaultIntIfDBNull(reader["DEVICE_ID"])
                         });
                     }
                 });
@@ -329,6 +330,38 @@ namespace Engine.DAL {
             return model;
         }                
 
+        public List<Device> GetDevices(int? deviceId)
+        {
+            List<Device> model = new();
+
+            TransactionBlock(this, txn =>
+            {
+                using var cmd = CreateCommand(SQL.GET_DEVICES, txn, CommandType.StoredProcedure);
+
+                IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
+                cmd.Parameters.Add(CreateParameter("IN_DEVICE", deviceId, MySqlDbType.Int32));
+                cmd.Parameters.Add(pResult);
+
+                ReaderBlock(cmd, reader =>
+                {
+                    while (reader.Read())
+                    {
+                        model.Add(new()
+                        {
+                            Id = Validate.getDefaultIntIfDBNull(reader["DEVICE_ID"]),
+                            Name = Validate.getDefaultStringIfDBNull(reader["NAME"]),
+                            Status = Validate.getDefaultStringIfDBNull(reader["STATUS"]),
+                            Unsuccessful = Validate.getDefaultIntIfDBNull(reader["ERROR_COUNT"]),
+                            Activations = Validate.getDefaultIntIfDBNull(reader["ACTIVATION_COUNT"]),
+                            LastUpdate = Validate.getDefaultDateIfDBNull(reader["UPDATED_ON"])
+                        });
+                    }
+                });
+            },(ex, msg) => SetExceptionResult("ControlAccessDAL.GetDevices", msg, ex));
+
+            return model;
+        }
+
         public List<AccessLevel> GetAccessLevels() {
             List<AccessLevel> model = new List<AccessLevel>();
 
@@ -352,7 +385,7 @@ namespace Engine.DAL {
             return model;
         }
 
-        public ResultInsert SetCheck(string cardSerial, string txnUser) {
+        public ResultInsert SetCheck(string cardSerial, int? device, string txnUser) {
             ResultInsert result = new();
             string sSp = SQL.SET_CARD_CHECK;
 
@@ -362,6 +395,7 @@ namespace Engine.DAL {
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
                 cmd.Parameters.Add(CreateParameter("IN_NUMBER", cardSerial, MySqlDbType.String));
                 cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
+                cmd.Parameters.Add(CreateParameter("IN_DEVICE", device, MySqlDbType.Int32));
                 cmd.Parameters.Add(pResult);
 
                 NonQueryBlock(cmd, () => GetResult(pResult, sSp, result));
