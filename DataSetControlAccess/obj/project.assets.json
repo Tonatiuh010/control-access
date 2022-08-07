@@ -1365,24 +1365,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\te-lopezk\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\sammy\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Develops\\control-access\\control-access\\DataSetControlAccess\\DataSet.csproj",
+      "projectUniqueName": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataSetControlAccess\\DataSet.csproj",
       "projectName": "DataSet",
-      "projectPath": "C:\\Develops\\control-access\\control-access\\DataSetControlAccess\\DataSet.csproj",
-      "packagesPath": "C:\\Users\\te-lopezk\\.nuget\\packages\\",
-      "outputPath": "C:\\Develops\\control-access\\control-access\\DataSetControlAccess\\obj\\",
+      "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataSetControlAccess\\DataSet.csproj",
+      "packagesPath": "C:\\Users\\sammy\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\DataSetControlAccess\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\te-lopezk\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\sammy\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1396,8 +1391,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Develops\\control-access\\control-access\\Engine\\Engine.csproj": {
-              "projectPath": "C:\\Develops\\control-access\\control-access\\Engine\\Engine.csproj"
+            "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\Engine\\Engine.csproj": {
+              "projectPath": "C:\\Users\\sammy\\Documents\\GitHub\\Frontdoor\\Engine\\Engine.csproj"
             }
           }
         }
@@ -1440,7 +1435,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.302\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }
