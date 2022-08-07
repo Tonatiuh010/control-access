@@ -21,10 +21,12 @@ import { AccessCardsEditComponent } from './components/cards-employee/access-car
 import { EntrancesDevicesComponent } from './components/entrances-devices/entrances-devices.component';
 import { HistoryComponent } from './components/history/history.component';
 import { IMqttServiceOptions, MqttModule } from 'ngx-mqtt';
+import { SpinnerComponent } from './components/spinner/spinner.component';
+import { httpInterceptProviders } from './components/spinner';
 
 export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-  hostname: 'broker.emqx.io',
-  port: 8083,
+  hostname: 'broker.hivemq.com',
+  port: 8000,
   protocol: 'ws',
   path: '/mqtt'
 };
@@ -40,7 +42,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AccessCardsTableComponent,
     AccessCardsEditComponent,
     EntrancesDevicesComponent,
-    HistoryComponent
+    HistoryComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -57,7 +60,7 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
       echarts
     }),
   ],
-  providers: [],
+  providers: [httpInterceptProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule {

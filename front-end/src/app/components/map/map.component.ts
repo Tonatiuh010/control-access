@@ -57,6 +57,7 @@ export class MapComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+
   }
 
   public unsafePublish(topic: string, message: string): void {
@@ -68,3 +69,4 @@ export class MapComponent implements OnInit {
   }
 
 }
+

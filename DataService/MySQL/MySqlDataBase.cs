@@ -25,7 +25,8 @@ namespace DataService.MySQL
 
         // Constructor
         public MySqlDataBase(string? connString) {
-            try {
+            try 
+            {
                 ConnectionString = connString;
                 OpenConnection();
             } catch (Exception ex) {

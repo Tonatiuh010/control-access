@@ -1,6 +1,6 @@
-<div *ngIf="!showCard" class="placeholder">Select an Employee from the table</div>
+<div *ngIf="!employeeInitial" class="placeholder">Select an Employee from the table</div>
 
-<div *ngIf="showCard" class="form">
+<div *ngIf="employeeInitial" class="form">
     <form [formGroup]="form">
         <div class="title">
             Employee Details
@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="image-upload">
-            <input type="file" class="upload" multiple style="height: 100%;" accept="image/*" formControlName="upload" (change)="imageUpload($event)">
+            <input type="file" class="upload" multiple style="height: 100%;" accept="image/*" (change)="imageUpload($event)">
         </div>
 
         <div class="selects">
@@ -35,20 +35,20 @@
                 <mat-grid-tile class="top-padding">
                     <mat-form-field appearance="outline">
                         <mat-label>Access</mat-label>
-                        <mat-select formControlName="access" [(ngModel)]="expectedEmployee.accessLevels" multiple required>
+                        <mat-select formControlName="accessLevels" [(ngModel)]="expectedEmployee.accessLevels" multiple required>
                             <mat-select-trigger>
                                 {{ getDepartmentCount() }}
                             </mat-select-trigger>
-                            <mat-option *ngFor="let acc of accessList" [value]="acc">{{acc}}</mat-option>
+                            <mat-option *ngFor="let access of accessList" [value]="access.name">{{access.name}}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="isValidField('access')">{{getErrorMessage('access')}}</mat-error>
+                        <mat-error *ngIf="isValidField('accessLevels')">{{getErrorMessage('accessLevels')}}</mat-error>
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile class="top-padding">
                     <mat-form-field appearance="outline">
                         <mat-label>Position</mat-label>
                         <mat-select formControlName="position" [(ngModel)]="expectedEmployee.position" required>
-                            <mat-option *ngFor="let pos of positionList" [value]="pos">{{pos}}</mat-option>
+                            <mat-option *ngFor="let job of jobList" [value]="job.id">{{job.name}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('position')">{{getErrorMessage('position')}}</mat-error>
                     </mat-form-field>
@@ -57,7 +57,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Shift</mat-label>
                         <mat-select formControlName="shift" [(ngModel)]="expectedEmployee.shift" required>
-                            <mat-option *ngFor="let sh of shiftList" [value]="sh">{{sh}}</mat-option>
+                            <mat-option *ngFor="let shift of shiftList" [value]="shift.id">{{shift.name}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('shift')">{{getErrorMessage('shift')}}</mat-error>
                     </mat-form-field>
@@ -66,7 +66,7 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Card Assigned</mat-label>
                         <mat-select formControlName="card" [(ngModel)]="expectedEmployee.card_number">
-                            <mat-option *ngFor="let card of cardList" [value]="card">{{card}}</mat-option>
+                            <mat-option *ngFor="let card of cardList" [value]="card.id">{{card.key}}</mat-option>
                         </mat-select>
                         <mat-error *ngIf="isValidField('card')">{{getErrorMessage('card')}}</mat-error>
                     </mat-form-field>
@@ -78,8 +78,8 @@
 
                 </mat-grid-tile>
                 <mat-grid-tile>
-                    <button type='button' *ngIf="!employeeInitial" (click)="updateEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Update Employee</button>
-                    <button type='button' *ngIf="employeeInitial" (click)="createEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Add Employee</button>
+                    <button type='button' *ngIf="employeeType" (click)="updateEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Update Employee</button>
+                    <button type='button' *ngIf="!employeeType" (click)="createEmployee(form)" [disabled]="form.invalid" mat-raised-button class="full-width" color="green">Add Employee</button>
                 </mat-grid-tile>
 
             </mat-grid-list>

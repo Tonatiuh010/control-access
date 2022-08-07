@@ -3,13 +3,17 @@
             <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
         </mat-form-field> -->
 
-<div class="example-container">
+<div class="spinner" *ngIf="showSpinner">
+    <app-spinner></app-spinner>
+</div>
+
+<div *ngIf="!showSpinner" class="example-container">
     <table mat-table [dataSource]="dataSource" matSort>
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
             <td mat-cell *matCellDef="let e">
                 <div class="image-name-container">
-                    <img (error)="onImgError($event)" class="pfp" [src]="e.image.b64" alt="Employee">
+                    <img (error)="onImgError($event)" class="pfp" [src]="e.image.url" alt="Employee">
                     <div style="margin-left: 10px;">
                         {{e.name + ' ' +e.lastName}}
                     </div>
@@ -26,7 +30,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
             <td mat-cell *matCellDef="let e">
                 <mat-chip-list aria-label="status">
-                    <mat-chip [color]="e.status == 'Active' ? 'green' : 'red'" selected>{{e.status}}</mat-chip>
+                    <mat-chip [color]="e.status == 'ENABLED' ? 'green' : 'red'" selected>{{e.status}}</mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>
@@ -35,7 +39,8 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Number </th>
             <td mat-cell *matCellDef="let e">
                 <mat-chip-list aria-label="card_number">
-                    <mat-chip color="violet" selected>{{e.card.key}}</mat-chip>
+                    <mat-chip color="violet" *ngIf="e.card" selected>{{ e.card.key }}</mat-chip>
+                    <mat-chip color="violet" *ngIf="!e.card" selected>{{ "No Card" }}</mat-chip>
                 </mat-chip-list>
             </td>
         </ng-container>
