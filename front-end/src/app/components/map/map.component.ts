@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
@@ -42,7 +42,7 @@ const employees: any[] = [
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnInit, OnDestroy {
   employeesArray = employees;
   private subscription!: Subscription;
   public message!: string;
@@ -64,7 +64,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this.signalRService.startConnection();
-    this.signalRService.addTransferChartDataListener();
+    this.signalRService.addTransferEmployeeDataListener();
   }
 
   private startHttpRequest = () => {
@@ -94,7 +94,7 @@ export class MapComponent implements OnInit {
   }
 
   public ngOnDestroy() {
-    this.subscription.unsubscribe();
+    //this.subscription.unsubscribe();
   }
 
 }

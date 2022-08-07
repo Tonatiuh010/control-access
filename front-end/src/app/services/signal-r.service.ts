@@ -18,7 +18,7 @@ export class SignalRService {
       .catch(err => console.log('Error while starting connection: ' + err))
     }
 
-    public addTransferChartDataListener = () => {
+    public addTransferEmployeeDataListener = () => {
       this.hubConnection.on('test', (data) => {
         this.data = data;
         console.log(data);
