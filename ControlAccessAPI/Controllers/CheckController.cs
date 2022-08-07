@@ -40,7 +40,7 @@ public class CheckController : CustomController
             var serial = JsonProperty<string>.GetValue( "serial", JObject.Parse(obj.ToString()));
             var device = JsonProperty<string>.GetValue("device", JObject.Parse(obj.ToString()));
 
-            ResultInsert result = bl.SetCheck(serial, C.GLOBAL_USER );
+            ResultInsert result = bl.SetCheck(serial,device, C.GLOBAL_USER);
 
             if(result != null && result.Status != C.OK)
             {
