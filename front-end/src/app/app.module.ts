@@ -43,7 +43,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
     AccessCardsEditComponent,
     EntrancesDevicesComponent,
     HistoryComponent,
-    SpinnerComponent
+    SpinnerComponent,
+
   ],
   imports: [
     BrowserModule,

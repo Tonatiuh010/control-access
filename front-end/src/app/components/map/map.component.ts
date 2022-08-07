@@ -45,11 +45,12 @@ export class MapComponent implements OnInit {
   private subscription: Subscription;
   public message!: string;
   apiData!: any[];
-
+  newArray!: any[];
+  condition: boolean = false;
   constructor(private _mqttService: MqttService, private empService: EmployeeServiceService) {
     this.subscription = this._mqttService.observe('esp32/rfid').subscribe((message: IMqttMessage) => {
       this.message = message.payload.toString();
-      console.log(JSON.parse(this.message))
+      console.log(this.message)
       this.empService.getEmployees().subscribe(data => {
         this.apiData = data;
         console.log(this.apiData);
@@ -60,6 +61,21 @@ export class MapComponent implements OnInit {
 
   }
 
+  displayNewEntry(): void{
+    this.condition = true
+    let myemp: any = {
+      photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-16-min.png',
+      name: 'Taylor Hawkins', position: 'HR', status: 'Active', time: '13:12:41',
+      card_number: '84 9C 73 AB', shift: 'Morning', access: ['Office']}
+    myemp.style = true
+    this.employeesArray.pop()
+    this.employeesArray.unshift(myemp)
+    console.log(this.employeesArray)
+    setTimeout(()=>{
+      this.condition = false
+    },2000)
+  }
+
   public unsafePublish(topic: string, message: string): void {
     this._mqttService.unsafePublish(topic, message, {qos: 0, retain: true});
   }
@@ -68,5 +84,9 @@ export class MapComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+}
+
+interface LooseObject {
+  [key: string]: any
 }
 

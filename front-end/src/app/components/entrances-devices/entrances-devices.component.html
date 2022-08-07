@@ -1,25 +1,25 @@
 <div class="card-container">
-    <mat-card class="card" *ngFor="let _ of [].constructor(8)">
-        <div class="title">Entrance A</div>
+    <mat-card class="card" *ngFor="let dev of propiedadChafa">
+        <div class="title">{{dev.name}}</div>
 
         <div class="icon-container">
             <div class="background">
-                <i class="fa-solid fa-door-closed"></i>
+                <div [innerHTML]="getIcon(dev.name)"><i class="fa-solid fa-door-closed"></i></div>
             </div>
         </div>
 
         <div class="controls">
             <div class="toggle-text">Device Active</div>
             <div class="slider">
-                <mat-slide-toggle></mat-slide-toggle>
+                <mat-slide-toggle #slider [checked]="dev.status" (change)="sendMQTT(slider.checked)"></mat-slide-toggle>
             </div>
         </div>
 
         <div class="controls">
-            <div class="toggle-text">Uptime</div>
+            <div class="toggle-text">Last Update</div>
             <div class="slider">
                 <mat-chip-list aria-label="status">
-                    <mat-chip color="blue" selected>01:00:01</mat-chip>
+                    <mat-chip color="blue" selected>{{dev.last_update}}</mat-chip>
                 </mat-chip-list>
             </div>
         </div>
@@ -27,7 +27,7 @@
             <div class="toggle-text">Activations Today</div>
             <div class="slider">
                 <mat-chip-list aria-label="status">
-                    <mat-chip color="blue" selected>207</mat-chip>
+                    <mat-chip color="blue" selected>{{dev.activations}}</mat-chip>
                 </mat-chip-list>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="toggle-text">Unsuccessful Activations</div>
             <div class="slider">
                 <mat-chip-list aria-label="status">
-                    <mat-chip color="blue" selected>2</mat-chip>
+                    <mat-chip color="blue" selected>{{dev.unsuccessful}}</mat-chip>
                 </mat-chip-list>
             </div>
         </div>
