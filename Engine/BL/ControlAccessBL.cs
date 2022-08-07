@@ -129,7 +129,7 @@ namespace Engine.BL {
 
         public List<EmployeeAccessLevel> GetEmployeeAccessLevels(int? employeeId) => DAL.GetEmployeeAccessLevels(employeeId);
 
-        public Result SetCheck(string cardSerial, string txnUser) => DAL.SetCheck(cardSerial, txnUser);
+        public Result SetCheck(string cardSerial,int? device, string txnUser) => DAL.SetCheck(cardSerial, device, txnUser);
 
         public List<Departament> GetDepartaments(int? deptoId = null) => DAL.GetDepartaments(deptoId);
 
