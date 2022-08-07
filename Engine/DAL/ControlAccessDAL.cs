@@ -12,19 +12,22 @@ using Engine.BL.Delegates;
 namespace Engine.DAL {
     public class ControlAccessDAL : MySqlDataBase
     {
+        public delegate void DALCallback(ControlAccessDAL dal);
         public static string? ConnString { get; set; }
         public static ControlAccessDAL Instance { get {
-                if(_DAL == null)
-                {
-                    _DAL = new ControlAccessDAL();
-                } else if (!_DAL.IsOpen())
-                {
-                    _DAL.OpenConnection();
-                }
-                return _DAL;
+                //if(_DAL == null)
+                //{
+                //    _DAL = new ControlAccessDAL();
+                //} else if (!_DAL.IsOpen())
+                //{
+                //    _DAL.OpenConnection();
+                //}
+                //return _DAL;
+
+                return new ControlAccessDAL();
             }
         }
-        private static ControlAccessDAL _DAL { get; set; }
+        //private static ControlAccessDAL _DAL { get; set; }
 
 
         private readonly Validate Validate;
@@ -688,6 +691,15 @@ namespace Engine.DAL {
 
         private void SetExceptionResult(string actionName, string msg, Exception ex) => 
             OnDALError?.Invoke(ex, $"Error on ({actionName}) - {msg}");
+
+        public static void UsingDAL(DALCallback callback)
+        {
+            using (var dal = Instance)
+            {
+                callback(dal);
+                //dal.Dispose();
+            }
+        }
         
         public static void SetExceptionResult(string actionName, string msg, Exception ex, Result result) 
         {
