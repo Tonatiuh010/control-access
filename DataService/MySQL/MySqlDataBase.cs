@@ -31,7 +31,7 @@ namespace DataService.MySQL
             {
                 ConnectionString = connString;
                 CreateConnection();
-                OpenConnection();
+                OpenConnection();                
             }
             catch (Exception ex)
             {
@@ -71,12 +71,9 @@ namespace DataService.MySQL
         }
 
         public void CloseConnection()
-        {
-            if (Connection.State == ConnectionState.Open)
-            {
-                Connection.Close();
-                Connection.Dispose();
-            }
+        {          
+            Connection.Close();
+            Connection.Dispose();
         }
 
         public MySqlCommand CreateCommand(string cmdText, MySqlTransaction txn, CommandType type)
@@ -152,11 +149,6 @@ namespace DataService.MySQL
 
             try
             {
-                if (conn.State == ConnectionState.Closed)
-                {
-                    OpenConnection(db);
-                }
-
                 db.BeginTransaction();
                 action(db.Txn);
                 db.CommitTransaction();

@@ -15,19 +15,19 @@ namespace Engine.DAL {
         public delegate void DALCallback(ControlAccessDAL dal);
         public static string? ConnString { get; set; }
         public static ControlAccessDAL Instance { get {
-                //if(_DAL == null)
-                //{
-                //    _DAL = new ControlAccessDAL();
-                //} else if (!_DAL.IsOpen())
-                //{
-                //    _DAL.OpenConnection();
-                //}
-                //return _DAL;
+                if(_DAL == null)
+                {
+                    _DAL = new ControlAccessDAL();
+                } else if (_DAL.Connection.State == ConnectionState.Closed)
+                {
+                    _DAL.OpenConnection();
+                }
+                return _DAL;
 
-                return new ControlAccessDAL();
+                //return new ControlAccessDAL();
             }
         }
-        //private static ControlAccessDAL _DAL { get; set; }
+        private static ControlAccessDAL _DAL { get; set; }
 
 
         private readonly Validate Validate;

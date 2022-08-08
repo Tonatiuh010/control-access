@@ -12,15 +12,7 @@ namespace Engine.BL {
         public delegate object ActionDAL(ControlAccessDAL dal);
         public D.Delegates.CallbackExceptionMsg? OnError { get; set; } = null;
         private ControlAccessDAL DAL { get {
-                //var dal = ControlAccessDAL.Instance;
-                //if (OnError != null)
-                //{
-                //    dal.OnDALError = OnError;
-                //}
-
-                //return dal;
-
-                using var dal = ControlAccessDAL.Instance;
+                var dal = ControlAccessDAL.Instance;
                 if (OnError != null)
                 {
                     dal.OnDALError = OnError;
