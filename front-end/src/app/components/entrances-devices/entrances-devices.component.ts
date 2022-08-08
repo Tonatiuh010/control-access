@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MqttService } from 'ngx-mqtt';
-import { EmployeeServiceService } from 'src/app/services/employee-service.service';
-
+import { EmployeeService } from 'src/app/services/employee-service.service';
+import { UptimeService } from 'src/app/services/uptime.service';
 @Component({
   selector: 'app-entrances-devices',
   templateUrl: './entrances-devices.component.html',
@@ -10,7 +10,7 @@ import { EmployeeServiceService } from 'src/app/services/employee-service.servic
 export class EntrancesDevicesComponent implements OnInit {
   apiData!: any[];
   showSpinner!: boolean;
-  constructor(private _mqttService: MqttService, private empService: EmployeeServiceService) {}
+  constructor(private _mqttService: MqttService, private empService: EmployeeService, private uptimeService: UptimeService) {}
 
   ngOnInit() {
     this.getDevices();
@@ -46,36 +46,9 @@ export class EntrancesDevicesComponent implements OnInit {
   public unsafePublish(topic: string, message: string): void {
     this._mqttService.unsafePublish(topic, message, {qos: 0, retain: true});
   }
+
+  formatDate(date: string): string{
+    return this.uptimeService.sendDate(date)
+  }
 }
 
-const MOCK = [{
-  name: 'Entrance A',
-  status: true,
-  last_update: '2020-03-08 00:00:00',
-  activations: 103,
-  unsuccessful: 7
-},{
-  name: 'Entrance B',
-  status: true,
-  last_update: '2020-03-08 00:00:00',
-  activations: 364,
-  unsuccessful: 11
-},{
-  name: 'Warehouse',
-  status: true,
-  last_update: '2020-03-08 00:00:00',
-  activations: 52,
-  unsuccessful: 1
-},{
-  name: 'Office',
-  status: true,
-  last_update: '2020-03-08 00:00:00',
-  activations: 14,
-  unsuccessful: 0
-},{
-  name: 'Admin',
-  status: true,
-  last_update: '2020-03-08 00:00:00',
-  activations: 3,
-  unsuccessful: 0
-},]

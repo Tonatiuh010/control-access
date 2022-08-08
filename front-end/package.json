@@ -23,6 +23,7 @@
         "@angular/router": "^14.0.0",
         "@microsoft/signalr": "^6.0.7",
         "echarts": "^5.3.3",
+        "moment": "^2.29.4",
         "ngx-echarts": "^14.0.0",
         "ngx-mqtt": "^9.0.5",
         "primeflex": "^3.2.1",

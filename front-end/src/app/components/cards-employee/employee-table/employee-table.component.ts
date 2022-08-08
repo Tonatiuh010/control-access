@@ -1,8 +1,8 @@
 import { ChangeDetectorRef, Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeServiceService } from 'src/app/services/employee-service.service';
+import { EmployeeService } from 'src/app/services/employee-service.service';
 import { InformationService } from 'src/app/services/information.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { InformationService } from 'src/app/services/information.service';
   styleUrls: ['./employee-table.component.css']
 })
 export class EmployeeTableComponent implements OnInit {
-  displayedColumns = ['name', 'position', 'status', 'card_number', 'options'];
+  displayedColumns = ['name', 'job.name', 'status', 'card.key', 'options'];
   dataSource: any;
   emptyEmployee = {photo: undefined,
   name: '', position: '', status: '',
@@ -23,13 +23,25 @@ export class EmployeeTableComponent implements OnInit {
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService,
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeService,
     private infService: InformationService){ };
 
   ngOnInit(): void {
 
     this.getEmployees();
   }
+
+  sortColumn($event: Sort): void {
+    this.dataSource.sortingDataAccessor = (item: any, property: any) => {
+      switch (property) {
+        case 'job.name': {
+          return item.job.name;
+        }
+        default: {
+          return item[property]; }
+      }
+    };
+}
 
   getEmployees(){
     this.showSpinner = true;
@@ -80,7 +92,6 @@ export class EmployeeTableComponent implements OnInit {
   onImgError(event: any): void{
     event.target.src = './../../../../assets/no-photo-available.png'
    }
-
 
 }
 

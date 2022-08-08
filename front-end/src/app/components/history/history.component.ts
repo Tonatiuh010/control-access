@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { History } from 'src/app/models/history-model';
+import { EmployeeService } from 'src/app/services/employee-service.service';
+import { UptimeService } from 'src/app/services/uptime.service';
 
 @Component({
   templateUrl: './history.component.html',
@@ -10,30 +12,80 @@ import { History } from 'src/app/models/history-model';
 })
 export class HistoryComponent implements OnInit {
   dataSource: any;
-  displayedColumns = ['name', 'position', 'employee_status', 'card_number',
-  'card_status', 'message', 'registered_on', 'entrance_type', 'options'];
+  showSpinner!: boolean;
+  displayedColumns = ['card.employee.name', 'device.name', 'card.employee.status', 'card.key',
+  'card.status', 'checkDt', 'type', 'options'];
 
   @ViewChild('examplePaginator') paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  constructor(private cdRef: ChangeDetectorRef) { }
+  constructor(private cdRef: ChangeDetectorRef,
+    private empService: EmployeeService,
+    private uptimeService: UptimeService) { }
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(data);
-    this.cdRef.detectChanges();
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.showSpinner = true;
+    this.empService.getChecks().subscribe(data => {
+      this.dataSource = new MatTableDataSource(data.data);
+      console.log(this.dataSource.data)
+      this.dataSource.sort = this.sort;
+      this.cdRef.detectChanges();
+      this.dataSource.paginator = this.paginator;
+      this.showSpinner = false;
+    });
   }
+
+  sortColumn($event: Sort): void {
+    this.dataSource.sortingDataAccessor = (item: any, property: any) => {
+      switch (property) {
+        case 'card.employee.name': {
+          return item.card.employee.name;
+        }
+        case 'device.name': {
+          return item.device.name;
+        }
+        case 'card.employee.status': {
+          return item.card.employee.status;
+        }
+        case 'card.key': {
+          return item.card.key;
+        }
+        case 'card.status': {
+          return item.card.status;
+        }
+        case 'checkDt': {
+          return item.checkDt;
+        }
+        case 'type': {
+          return item.type;
+        }
+        default: {
+          return item[property]; }
+      }
+    };
+}
 
   getChipColor(status: string):string{
     switch(status){
-      case 'Active': return 'green';
-      case 'Suspended': return 'red';
+      case 'ENABLED': return 'green';
+      case 'DISABLED': return 'red';
       case 'Disabled': return 'red';
-      case 'Clock-In': return 'blue';
-      case 'Clock-Out': return 'orange';
+      case 'IN': return 'blue';
+      case 'OUT': return 'orange';
       case 'Lunch': return 'violet';
       default: return 'primary'
     }
+  }
+
+  entranceType(value: string): string{
+    switch(value){
+      case 'IN': return 'CHECK-IN'
+      case 'OUT': return 'CHECK-OUT'
+      default: return 'UNKNOWN'
+    }
+  }
+
+  formatDate(date: string): string{
+    return this.uptimeService.sendDate(date)
   }
 }
 

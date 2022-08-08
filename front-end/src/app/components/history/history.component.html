@@ -1,86 +1,85 @@
-<mat-card class="example-container">
-    <table mat-table [dataSource]="dataSource" matSort>
-        <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-            <td mat-cell *matCellDef="let e">
-                <div class="image-name-container">
-                    <img class="pfp" [src]="e.photo" alt="Employee">
-                    <div style="margin-left: 10px;">
-                        {{e.name}}
+<div class="spinner" *ngIf="showSpinner">
+    <app-spinner></app-spinner>
+</div>
+<div [hidden]="showSpinner">
+    <mat-card class="example-container">
+        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortColumn($event)">
+            <ng-container matColumnDef="card.employee.name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <td mat-cell *matCellDef="let e">
+                    <div class="image-name-container">
+                        <img class="pfp" [src]="e.card.employee.image.url" alt="Employee">
+                        <div style="margin-left: 10px;">
+                            {{e.card.employee.name + ' ' + e.card.employee.lastName}}
+                        </div>
                     </div>
-                </div>
-            </td>
-        </ng-container>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="position">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Position </th>
-            <td mat-cell *matCellDef="let e"> {{e.position}} </td>
-        </ng-container>
+            <ng-container matColumnDef="device.name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Device </th>
+                <td mat-cell *matCellDef="let e"> {{e.device.name}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="employee_status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Status </th>
-            <td mat-cell *matCellDef="let e">
-                <mat-chip-list aria-label="employee_status">
-                    <mat-chip [color]="getChipColor(e.employee_status)" selected>{{e.employee_status}}</mat-chip>
-                </mat-chip-list>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="card.employee.status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Employee Status </th>
+                <td mat-cell *matCellDef="let e">
+                    <mat-chip-list aria-label="employee_status">
+                        <mat-chip [color]="getChipColor(e.card.employee.status)" selected>{{e.card.employee.status}}</mat-chip>
+                    </mat-chip-list>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="card_number">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Number </th>
-            <td mat-cell *matCellDef="let e">
-                {{e.card_number}}
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="card.key">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Number </th>
+                <td mat-cell *matCellDef="let e">
+                    {{e.card.key}}
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="card_status">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Status </th>
-            <td mat-cell *matCellDef="let e">
-                <mat-chip-list aria-label="card_status">
-                    <mat-chip [color]="getChipColor(e.card_status)" selected>{{e.card_status}}</mat-chip>
-                </mat-chip-list>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="card.status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Card Status </th>
+                <td mat-cell *matCellDef="let e">
+                    <mat-chip-list aria-label="card_status">
+                        <mat-chip [color]="getChipColor(e.card.status)" selected>{{e.card.status}}</mat-chip>
+                    </mat-chip-list>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="message">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Message </th>
-            <td mat-cell *matCellDef="let e"> {{e.message}} </td>
-        </ng-container>
+            <ng-container matColumnDef="checkDt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Registered On </th>
+                <td mat-cell *matCellDef="let e"> {{formatDate(e.checkDt)}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="registered_on">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Registered On </th>
-            <td mat-cell *matCellDef="let e"> {{e.registered_on}} </td>
-        </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Entrance Type </th>
+                <td mat-cell *matCellDef="let e">
+                    <mat-chip-list aria-label="entrance_type">
+                        <mat-chip [color]="getChipColor(e.type)" selected>{{entranceType(e.type)}}</mat-chip>
+                    </mat-chip-list>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="entrance_type">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Entrance Type </th>
-            <td mat-cell *matCellDef="let e">
-                <mat-chip-list aria-label="entrance_type">
-                    <mat-chip [color]="getChipColor(e.entrance_type)" selected>{{e.entrance_type}}</mat-chip>
-                </mat-chip-list>
-            </td>
-        </ng-container>
+            <ng-container matColumnDef="options">
+                <th mat-header-cell *matHeaderCellDef> Options </th>
+                <td mat-cell *matCellDef="let e">
+                    <mat-icon class="options">more_vert</mat-icon>
+                </td>
+            </ng-container>
 
-        <ng-container matColumnDef="options">
-            <th mat-header-cell *matHeaderCellDef> Options </th>
-            <td mat-cell *matCellDef="let e">
-                <mat-icon class="options">more_vert</mat-icon>
-            </td>
-        </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+            <tr mat-row class="hover-row" *matRowDef="let row; columns: displayedColumns;"></tr>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-        <tr mat-row class="hover-row" *matRowDef="let row; columns: displayedColumns;"></tr>
-
-        <!-- Row shown when there is no matching data. -->
-        <!-- <tr class="mat-row" *matNoDataRow>
+            <!-- Row shown when there is no matching data. -->
+            <!-- <tr class="mat-row" *matNoDataRow>
                         <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
                     </tr> -->
-    </table>
+        </table>
 
-    <mat-toolbar class="mat-paginator-sticky">
-        <mat-toolbar-row style="background-color: #fff;">
-            <mat-paginator #examplePaginator [pageSizeOptions]="[10, 25, 50]"></mat-paginator>
-            <button mat-raised-button color="blue">Add Employee</button>
-        </mat-toolbar-row>
-    </mat-toolbar>
-</mat-card>
+        <mat-toolbar class="mat-paginator-sticky">
+            <mat-toolbar-row style="background-color: #fff;">
+                <mat-paginator #examplePaginator [pageSizeOptions]="[8, 25, 50]"></mat-paginator>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </mat-card>
+</div>

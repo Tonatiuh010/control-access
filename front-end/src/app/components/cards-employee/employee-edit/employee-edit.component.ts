@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/models/constants';
 import { Employee } from 'src/app/models/employee-model';
-import { EmployeeServiceService } from 'src/app/services/employee-service.service';
+import { EmployeeService } from 'src/app/services/employee-service.service';
 import { InformationService } from 'src/app/services/information.service';
 // import {} from './../../../../assets/no-photo-available.png';
 @Component({
@@ -31,7 +31,7 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
   showCard: boolean = false;
 
   constructor(private fb: FormBuilder, private infService: InformationService,
-    private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService) {
+    private cdRef: ChangeDetectorRef, private empService: EmployeeService) {
     // this.rstFormEventSubscription = this.rstService.getResetForm().subscribe(() =>
     //   this.showCard = true
     // )

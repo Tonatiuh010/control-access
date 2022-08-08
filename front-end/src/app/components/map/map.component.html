@@ -131,24 +131,48 @@
     <mat-card class="left-card">
         <div class="title">Recent Employee Access</div>
         <div class="card-container">
-            <button type="button" (click)="displayNewEntry()">New Emp</button>
-            <mat-card *ngFor="let item of employeesArray" class="material-card" [ngClass]="{'highlight': item.style, 'highlightUn': item.styleUn}">
-                <img class="photo" src="{{ item.photo }}" width="50px" height="50px" alt="Employee" />
-                <div class="card-text">
-                    <label>Employee: {{ item.name }} </label> <br>
+            <div class="message" *ngIf="employeesArray.length === 0">No new entries</div>
+            <!-- <button type="button" (click)="displayNewEntry()">New Emp</button> -->
+            <div *ngIf="employeesArray.length !== 0">
+                <mat-card *ngFor="let e of employeesArray; let i = index;" class="card-employees" [ngClass]="{'highlight': e.style, 'highlightUn': e.styleUn}">
 
-                    <label for="">Time: {{ item.time }}</label> <br>
+                    <div class="title-card">{{e.name + ' ' + e.lastName}}</div>
 
-                    <label for>Department: {{ item.position }}</label> <br>
-
-                    <label for="">Entry: {{ item.access[0] }}</label> <br>
-                </div>
-                <div class="icon-container">
-                    <div class="background">
-                        <mat-icon class="icon">person</mat-icon>
+                    <div class="container-photo">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ e.image.url }}" width="100px" height="100px" alt="Employee" />
+                        </div>
                     </div>
-                </div>
-            </mat-card>
+
+                    <div class="controls">
+                        <div class="toggle-text">Access Time</div>
+                        <div class="slider">
+
+                            <mat-chip-list aria-label="status">
+                                <mat-chip color="blue">{{formatDate(rawData[i].checkDt.toString())}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="toggle-text">Entry Device</div>
+                        <div class="slider">
+                            <mat-chip-list aria-label="status">
+                                <mat-chip color="blue">{{rawData[i].device.name}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <div class="toggle-text">Entry Status</div>
+                        <div class="slider">
+                            <mat-chip-list aria-label="status">
+                                <mat-chip [color]="status[i] == 'OK' ? 'green' : 'red'" selected>{{status[i]}}</mat-chip>
+                            </mat-chip-list>
+                        </div>
+                    </div>
+
+                </mat-card>
+            </div>
         </div>
     </mat-card>
 </div>

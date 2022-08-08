@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeServiceService } from 'src/app/services/employee-service.service';
+import { EmployeeService } from 'src/app/services/employee-service.service';
 import { InformationService } from 'src/app/services/information.service';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 
@@ -20,7 +20,7 @@ export class AccessCardsTableComponent implements OnInit {
   apiData!: any;
   showSpinner: boolean  = false;
 
-  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeServiceService,
+  constructor(private cdRef: ChangeDetectorRef, private empService: EmployeeService,
     private infService: InformationService, private _mqttService: MqttService) { }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeServiceService {
+export class EmployeeService {
   API_URL = 'https://controlaccessapp.azurewebsites.net/api/'
   constructor(private http: HttpClient) { }
 
@@ -35,6 +35,10 @@ export class EmployeeServiceService {
 
   getDevices(): Observable<any> {
     return this.http.get<any>(this.API_URL + 'Device')
+  }
+
+  getChecks(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'Check')
   }
 
 }

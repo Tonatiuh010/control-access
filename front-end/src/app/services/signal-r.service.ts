@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@microsoft/signalr"
+import { MapComponent } from '../components/map/map.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,14 +19,14 @@ export class SignalRService {
       .catch(err => console.log('Error while starting connection: ' + err))
     }
 
-    public addTransferEmployeeDataListener = () => {
-      this.hubConnection.on('test', (data) => {
+    public addTransferEmployeeDataListener(attr1 = (_: any, map: MapComponent) => {}, map: MapComponent){
+      this.hubConnection.on('CheckMonitor', (data) => {
         this.data = data;
-        console.log(data);
+        attr1(this.data, map);
       });
     }
 
     public stopConnection = () => {
-      this.hubConnection.off('test')
+      this.hubConnection.off('CheckMonitor')
     }
 }
