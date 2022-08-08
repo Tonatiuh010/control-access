@@ -21,15 +21,7 @@ namespace Engine.BL {
                 return dal;
             } 
         }
-
-        //private static T DAL_R<T>(ActionDAL action)
-        //{
-        //    T? result = default;
-
-        //    ControlAccessDAL.UsingDAL(dal => result = (T)action(dal));
-
-        //    return result;
-        //}
+    
 
         public string DomainUrl { get; set; }
 
@@ -39,18 +31,15 @@ namespace Engine.BL {
         }
 
         public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
-        {
-            //using (var dal = DAL)
-            //{
-                var cards = DAL.GetCards(cardId, assigned);
+        {            
+            var cards = DAL.GetCards(cardId, assigned);
 
-                foreach (var c in cards)
-                {
-                    c.SetEmployeeFinder(GetEmployee);
-                }
+            foreach (var c in cards)
+            {
+                c.SetEmployeeFinder(GetEmployee);
+            }
 
-                return cards;
-            //}
+            return cards;            
         }
 
         public List<Shift> GetShifts(int? shiftId = null) => DAL.GetShifts(shiftId);
@@ -62,48 +51,22 @@ namespace Engine.BL {
 
         public List<ControlAccess> GetEmployees(int? employeeId = null) 
         {
+            List<ControlAccess> employees = new();          
+            employees = DAL.GetEmployees(employeeId);
 
-            //return DAL_R<List<ControlAccess>>(dal =>
-            //{
-            //    var employees = dal.GetEmployees(employeeId);
+            foreach (var employee in employees)
+            {
+                employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
+                    GetEmployeeAccessLevels(employee.Id)
+                );
 
-            //    foreach (var employee in employees)
-            //    {
-            //        employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
-            //            dal.GetEmployeeAccessLevels(employee.Id)
-            //        );
-
-            //        if (employee.Image != null)
-            //            employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
-            //    }
-
-            //    return employees;
-            //});
-
-            List<ControlAccess> employees = new();
-            //using (var dal = DAL)
-            //{
-                employees = DAL.GetEmployees(employeeId);
-
-                foreach (var employee in employees)
-                {
-                    employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
-                        DAL.GetEmployeeAccessLevels(employee.Id)
-                    );
-
-                    if (employee.Image != null)
-                        employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
-                }
-            //}
+                if (employee.Image != null)
+                    employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
+            }
+            
 
             return employees;
         }
-
-        //public CardEmployee GetCard(string serial)
-        //{
-        //    var cards = GetCards(assigned: true);
-        //    return cards.Find(x => x.Key == serial);
-        //}
 
         public ResultInsert SetEmployee(ControlAccess employee, string txnUser) => DAL.SetEmployee(employee, txnUser);
 
@@ -159,6 +122,11 @@ namespace Engine.BL {
         public ResultInsert SetPosition(Position position, string txnUser) => DAL.SetPosition(position, txnUser);      
 
         public AccessLevel? GetAccessLevel(string name) => GetAccessLevels().Find(x => x.Name == name);
+
+        public List<CheckDetails> GetCheckDetails(DateTime from, DateTime to)
+        {
+            return DAL.GetCheckDetails(from, to);
+        }
 
         public Device? GetDevice(string name) => GetDevices().Find(x => x.Name == name);
 

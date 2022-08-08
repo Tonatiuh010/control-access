@@ -7,21 +7,15 @@ namespace DataService.MySQL
 {
     public class MySqlDataBase //: IDisposable
     {
-        /*
-        Pending to add 
-            Reconnect Feature, sets a timer to reconnect
-            Safe Block - transaction implementation (Should be complete right now)       
-        */
-
+        
         // Delegates
-        public delegate void TransactionCallback(MySqlTransaction txn);
+        public delegate void TransactionCallback(/*MySqlTransaction txn*/);
         public delegate void DataException(Exception e, string customMsg = "");
         public delegate void ReaderAction(IDataReader reader);
 
         // Properties
         public static DataException? OnException { get; set; }
-        public MySqlConnection Connection { get; set; } = new MySqlConnection();
-        public MySqlTransaction? Txn { get; set; }
+        public MySqlConnection Connection { get; set; } = new MySqlConnection();        
         private string? ConnectionString { get; set; }
 
         // Constructor
@@ -30,8 +24,7 @@ namespace DataService.MySQL
             try
             {
                 ConnectionString = connString;
-                CreateConnection();
-                OpenConnection();                
+                CreateConnection();                    
             }
             catch (Exception ex)
             {
@@ -79,8 +72,8 @@ namespace DataService.MySQL
             }            
         }
 
-        public MySqlCommand CreateCommand(string cmdText, MySqlTransaction txn, CommandType type)
-        => CreateCommand(cmdText, Connection, txn, type);
+        public MySqlCommand CreateCommand(string cmdText, CommandType type)
+        => CreateCommand(cmdText, Connection, type);
 
         // Static Methods
         private void OnStateChange(object obj, StateChangeEventArgs args)
@@ -89,20 +82,10 @@ namespace DataService.MySQL
             {
                 //OpenConnection();
             }
-        }
+        }      
 
-        private void BeginTransaction() => Txn = Connection.BeginTransaction();
-
-        private void RollbackTransaction() {             
-            Txn?.Rollback(); 
-        }
-
-        private void CommitTransaction() => Txn?.Commit();
-
-        private void DisposeTransaction() => Txn?.Dispose();
-
-        public static MySqlCommand CreateCommand(string cmdText, MySqlConnection conn, MySqlTransaction txn, CommandType type)
-        => new MySqlCommand(cmdText, conn, txn)
+        public static MySqlCommand CreateCommand(string cmdText, MySqlConnection conn, CommandType type) 
+        => new (cmdText, conn)
         {
             CommandType = type
         };
@@ -128,18 +111,16 @@ namespace DataService.MySQL
 
         public static void ReaderBlock(MySqlCommand cmd, ReaderAction action)
         {
-            using (var reader = cmd.ExecuteReader())
-            {
-                action(reader);
-                //reader.Close();
-            }
+            using var reader = cmd.ExecuteReader();
+            action(reader);
+            reader.Close();
             //cmd.Dispose();
         }
 
         public static void NonQueryBlock(MySqlCommand cmd, Action action)
         {
             cmd.ExecuteNonQuery();
-            action();
+            action();           
         }
 
         public static void TransactionBlock(
@@ -151,17 +132,19 @@ namespace DataService.MySQL
         {
             MySqlConnection conn = db.Connection;
             bool isTxnSuccess;
+            
+            if(db.Connection.State == ConnectionState.Closed)
+            {
+                db.OpenConnection();
+            }
 
             try
-            {
-                db.BeginTransaction();
-                action(db.Txn);
-                db.CommitTransaction();
+            {                
+                action();                
                 isTxnSuccess = true;
             }
             catch (Exception e)
-            {                
-                db.RollbackTransaction();
+            {                                
                 onException(e);
                 isTxnSuccess = false;
             }
@@ -169,6 +152,8 @@ namespace DataService.MySQL
             if (isTxnSuccess)
                 onProcess?.Invoke();
 
+            db.Connection.Dispose();
+            db.Connection.Close();
         }
 
         //void IDisposable.Dispose()

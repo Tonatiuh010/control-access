@@ -166,20 +166,23 @@ namespace Engine.BO {
 
     }
 
-    public class Check : BaseBO {
+    public class CheckBase : BaseBO
+    {
+        public DateTime? CheckDt { get; set; }
+        public string? Type { get; set; }        
+        
+    }
+
+    public class Check : CheckBase {
         public delegate Device? FindDevice(int? deviceId);
         private FindDevice? GetDevice { get; set; }
+        public CardEmployee? Card {get; set;}        
 
         [JsonIgnore]
         public int? Device { get; set; }
 
-        public DateTime? CheckDt {get; set;}
-        public string? Type {get; set;}
-        public CardEmployee? Card {get; set;}        
-
         [JsonPropertyName("device")]
         public Device? DeviceDetails => GetDevice != null ? GetDevice(Device) : null;
-
         public void SetDeviceFinder(FindDevice deviceCallback) => GetDevice = deviceCallback;
     }
 
@@ -190,6 +193,96 @@ namespace Engine.BO {
         public string? Message { get; set; }
         public string? Status { get; set; }
     }
+
+    public class CheckDetails : CheckBase
+    {        
+        public Position? Position { get; set; }
+
+
+        public static List<IntervalDepto> GetChecksByDepto(List<CheckDetails> checks, DateTime pivot)
+        {
+            List<IntervalDepto> intervalDeptos = new ();          
+
+            List<Period> periods = new()
+            {
+                new Period()
+                {
+                    From = pivot.AddHours(6),
+                    To = pivot.AddHours(10)
+                },
+                new Period()
+                {
+                    From = pivot.AddHours(10),
+                    To = pivot.AddHours(16)
+                },
+                new Period()
+                {
+                    From = pivot.AddHours(16),
+                    To = pivot.AddHours(20)
+                }
+            };            
+
+            foreach(var x in checks.GroupBy(x => x.Position.Departament.Code)) 
+            {
+                var list = x.ToList();
+                var deptoInterval = new IntervalDepto()
+                {
+                    Name = x.Key
+                };
+
+                foreach(var p in periods)
+                {
+                    DeptoCounter deptoStats = new ();
+
+                    var periodChecks = list.Where(
+                        x => p.IsRange((DateTime)x.CheckDt)
+                    ).ToList();
+
+                    if(periodChecks.Count > 0)
+                    {
+                        var depto = periodChecks[0].Position?.Departament;
+
+                        deptoStats.Period = p;
+                        deptoStats.Departament = depto;
+                        deptoStats.Checks = periodChecks.Count;
+                    }
+
+                    deptoInterval.Sets.Add(deptoStats);
+                }
+
+                intervalDeptos.Add(deptoInterval);
+            }
+
+            return intervalDeptos;
+        }
+
+    }
+
+    public class Period
+    {
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
+
+        public bool IsRange(DateTime dt) => dt >= From && dt <= To;
+    }
+
+    public class IntervalDepto
+    {
+        public string? Name { get; set; }
+        public List<DeptoCounter> Sets { get; set; } = new ();
+
+        public Period Period => new() {
+            From = Sets.Min(x => x.Period.From),
+            To = Sets.Max(x => x.Period.To)
+        };        
+    }
+
+    public class DeptoCounter { 
+        public Departament? Departament { get; set; }
+        public Period Period { get; set; } = new();
+        public int Checks { get; set; }
+    }
+
 
     public class Device : BaseBO
     {        

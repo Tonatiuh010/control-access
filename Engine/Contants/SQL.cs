@@ -26,6 +26,7 @@ namespace Engine.Constants {
         public const string GET_POSITIONS = "GET_POSITIONS";
         public const string GET_CHECKS = "GET_CHECKS";
         public const string GET_DEVICES = "GET_DEVICES";
+        public const string GET_CHECK_DETAILS = "GET_CHECK_DETAILS";
 
         public const string WEIRD_QRY = @"
             SELECT 

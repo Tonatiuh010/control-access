@@ -22,6 +22,11 @@ public class CheckController : CustomController
     [HttpGet]
     public Result Get() => RequestResponse(() => bl.GetChecks());
 
+    [HttpGet("chartView")]
+    public Result GetCheckDetails() => RequestResponse(() => {
+        return CheckDetails.GetChecksByDepto(bl.GetCheckDetails(DateTime.Today.AddDays(-1), DateTime.Now), DateTime.Today.AddDays(-1));
+    });
+
     [HttpGet("employee/{id:int?}")]
     public Result GetWeeklyChecks(int? id) => RequestResponse(() => $"Getting checks of employee ({id})");
 
@@ -70,6 +75,19 @@ public class CheckController : CustomController
                 } else
                 {
                     CardEmployee? card = bl.GetCards(assigned: true).Find(x => x.Key == serial);
+                    var ch = new Check()
+                    {
+                        Id = null,
+                        CheckDt = DateTime.Now,
+                        Device = deviceObj.Id,
+                        Type = C.ERROR,
+                        Card = card
+                    };
+
+                    ch.SetDeviceFinder(id => {
+                        var devices = bl.GetDevices(id);
+                        return devices != null && devices.Count > 0 ? devices[0] : null;
+                    });
 
                     string? msg = string.Empty;
 
@@ -90,14 +108,7 @@ public class CheckController : CustomController
                         IsValid = false,
                         Message = msg,
                         Status = C.ERROR,
-                        Check = new Check()
-                        {
-                            Id = null,
-                            CheckDt = DateTime.Now,
-                            Device = deviceObj.Id,
-                            Type = C.ERROR,
-                            Card = card
-                        }
+                        Check = ch
                     };
                 }
 

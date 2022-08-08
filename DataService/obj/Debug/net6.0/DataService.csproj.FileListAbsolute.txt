@@ -10,3 +10,15 @@ C:\Users\sammy\Documents\GitHub\Frontdoor\DataService\obj\Debug\net6.0\DataServi
 C:\Users\sammy\Documents\GitHub\Frontdoor\DataService\obj\Debug\net6.0\refint\DataService.dll
 C:\Users\sammy\Documents\GitHub\Frontdoor\DataService\obj\Debug\net6.0\DataService.pdb
 C:\Users\sammy\Documents\GitHub\Frontdoor\DataService\obj\Debug\net6.0\ref\DataService.dll
+C:\Develops\control-access\control-access\DataService\bin\Debug\net6.0\DataService.deps.json
+C:\Develops\control-access\control-access\DataService\bin\Debug\net6.0\DataService.dll
+C:\Develops\control-access\control-access\DataService\bin\Debug\net6.0\DataService.pdb
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.csproj.AssemblyReference.cache
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.GeneratedMSBuildEditorConfig.editorconfig
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.AssemblyInfoInputs.cache
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.AssemblyInfo.cs
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.csproj.CoreCompileInputs.cache
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.dll
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\refint\DataService.dll
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\DataService.pdb
+C:\Develops\control-access\control-access\DataService\obj\Debug\net6.0\ref\DataService.dll

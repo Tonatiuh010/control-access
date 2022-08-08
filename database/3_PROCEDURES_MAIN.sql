@@ -346,7 +346,7 @@ CREATE PROCEDURE SET_CARD_CHECK (
             
 		ELSE 
 			CALL SET_DEVICE(IN_DEVICE, NULL, FALSE, IN_USER, OUT_RESULT);
-			SET OUT_RESULT = 'Empleado no autorizado';
+			SET OUT_RESULT = 'Empleado no autorizado.';
         END IF;		
 	ELSE
 		CALL SET_DEVICE(IN_DEVICE, NULL, FALSE, IN_USER, OUT_RESULT);
