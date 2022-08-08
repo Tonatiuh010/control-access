@@ -722,14 +722,14 @@ namespace Engine.DAL {
         private void SetExceptionResult(string actionName, string msg, Exception ex) => 
             OnDALError?.Invoke(ex, $"Error on ({actionName}) - {msg}");
 
-        public static void UsingDAL(DALCallback callback)
-        {
-            using (var dal = Instance)
-            {
-                callback(dal);
-                //dal.Dispose();
-            }
-        }
+        //public static void UsingDAL(DALCallback callback)
+        //{
+        //    using (var dal = Instance)
+        //    {
+        //        callback(dal);
+        //        //dal.Dispose();
+        //    }
+        //}
         
         public static void SetExceptionResult(string actionName, string msg, Exception ex, Result result) 
         {

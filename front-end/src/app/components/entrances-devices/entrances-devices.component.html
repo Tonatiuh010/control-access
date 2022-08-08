@@ -1,5 +1,9 @@
-<div class="card-container">
-    <mat-card class="card" *ngFor="let dev of propiedadChafa">
+<div class="spinner" *ngIf="showSpinner">
+    <app-spinner></app-spinner>
+</div>
+
+<div [hidden]="showSpinner" class="card-container">
+    <mat-card class="card" *ngFor="let dev of apiData">
         <div class="title">{{dev.name}}</div>
 
         <div class="icon-container">

@@ -22,17 +22,16 @@ namespace Engine.BL {
             } 
         }
 
-        private static T DAL_R<T>(ActionDAL action)
-        {
-            T? result = default;
+        //private static T DAL_R<T>(ActionDAL action)
+        //{
+        //    T? result = default;
 
-            ControlAccessDAL.UsingDAL(dal => result = (T)action(dal));
+        //    ControlAccessDAL.UsingDAL(dal => result = (T)action(dal));
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public string DomainUrl { get; set; }
-
 
         public ControlAccessBL(D.Delegates.CallbackExceptionMsg onError) { 
             OnError = onError;
@@ -41,9 +40,9 @@ namespace Engine.BL {
 
         public List<CardEmployee> GetCards(int? cardId = null, bool? assigned = null)
         {
-            using (var dal = DAL)
-            {
-                var cards = dal.GetCards(cardId, assigned);
+            //using (var dal = DAL)
+            //{
+                var cards = DAL.GetCards(cardId, assigned);
 
                 foreach (var c in cards)
                 {
@@ -51,7 +50,7 @@ namespace Engine.BL {
                 }
 
                 return cards;
-            }
+            //}
         }
 
         public List<Shift> GetShifts(int? shiftId = null) => DAL.GetShifts(shiftId);
@@ -82,20 +81,20 @@ namespace Engine.BL {
             //});
 
             List<ControlAccess> employees = new();
-            using (var dal = DAL)
-            {
-                employees = dal.GetEmployees(employeeId);
+            //using (var dal = DAL)
+            //{
+                employees = DAL.GetEmployees(employeeId);
 
                 foreach (var employee in employees)
                 {
                     employee.AccessLevels = EmployeeAccessLevel.GetAccessLevels(
-                        dal.GetEmployeeAccessLevels(employee.Id)
+                        DAL.GetEmployeeAccessLevels(employee.Id)
                     );
 
                     if (employee.Image != null)
                         employee.Image.Url = $"{DomainUrl}/api/employee/image/{employee.Id}";
                 }
-            }
+            //}
 
             return employees;
         }

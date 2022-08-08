@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace DataService.MySQL
 {
-    public class MySqlDataBase : IDisposable
+    public class MySqlDataBase //: IDisposable
     {
         /*
         Pending to add 
@@ -72,8 +72,11 @@ namespace DataService.MySQL
 
         public void CloseConnection()
         {          
-            Connection.Close();
-            Connection.Dispose();
+            if (Connection != null && Connection.State == ConnectionState.Open)
+            {
+                Connection.Close();
+                Connection.Dispose();
+            }            
         }
 
         public MySqlCommand CreateCommand(string cmdText, MySqlTransaction txn, CommandType type)
@@ -90,7 +93,9 @@ namespace DataService.MySQL
 
         private void BeginTransaction() => Txn = Connection.BeginTransaction();
 
-        private void RollbackTransaction() => Txn?.Rollback();
+        private void RollbackTransaction() {             
+            Txn?.Rollback(); 
+        }
 
         private void CommitTransaction() => Txn?.Commit();
 
@@ -126,9 +131,9 @@ namespace DataService.MySQL
             using (var reader = cmd.ExecuteReader())
             {
                 action(reader);
-                reader.Close();
+                //reader.Close();
             }
-            cmd.Dispose();
+            //cmd.Dispose();
         }
 
         public static void NonQueryBlock(MySqlCommand cmd, Action action)
@@ -155,7 +160,7 @@ namespace DataService.MySQL
                 isTxnSuccess = true;
             }
             catch (Exception e)
-            {
+            {                
                 db.RollbackTransaction();
                 onException(e);
                 isTxnSuccess = false;
@@ -166,12 +171,9 @@ namespace DataService.MySQL
 
         }
 
-        void IDisposable.Dispose()
-        {
-            Connection.Close();
-            Connection.Dispose();
-            DisposeTransaction();
-            GC.SuppressFinalize(this);
-        }
+        //void IDisposable.Dispose()
+        //{
+        //    CloseConnection();
+        //}
     }
 }
