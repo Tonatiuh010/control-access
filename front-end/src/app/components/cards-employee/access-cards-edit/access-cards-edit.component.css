@@ -16,7 +16,24 @@
 .sub-title {
     width: 100%;
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     color: #464646;
     font-size: 20px;
+}
+
+.placeholder {
+    margin: 0 auto;
+    justify-content: center;
+    text-align: center;
+    color: 464646;
+    font-size: 24px;
+    align-items: center;
+    padding: 150px 0;
+    line-height: 60px;
+}
+
+.mat-red {
+    background-color: #e58f8f;
+    color: #fff;
 }

@@ -67,3 +67,8 @@ table {
     height: 100%;
     align-items: center;
 }
+
+.margin {
+    margin-left: auto;
+    margin-right: 0;
+}

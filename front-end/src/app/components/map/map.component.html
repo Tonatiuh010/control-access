@@ -131,10 +131,9 @@
     <mat-card class="left-card">
         <div class="title">Recent Employee Access</div>
         <div class="card-container">
-            <mat-card *ngFor="let item of employeesArray" class="material-card">
-
+            <button type="button" (click)="displayNewEntry()">New Emp</button>
+            <mat-card *ngFor="let item of employeesArray" class="material-card" [ngClass]="{'highlight': item.style}">
                 <img class="photo" src="{{ item.photo }}" width="50px" height="50px" alt="Employee" />
-
                 <div class="card-text">
                     <label>Employee: {{ item.name }} </label> <br>
 

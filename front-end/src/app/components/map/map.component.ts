@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { IMqttMessage, MqttService } from 'ngx-mqtt';
 import { Subscription } from 'rxjs';
 import { EmployeeServiceService } from 'src/app/services/employee-service.service';
+import * as signalR from '@microsoft/signalr';
+import { SignalRService } from 'src/app/services/signal-r.service';
+import { HttpClient } from '@angular/common/http';
 
 const employees: any[] = [
   {
@@ -27,12 +30,11 @@ const employees: any[] = [
     name: 'Taylor Hawkins', position: 'HR', status: 'Active', time: '13:12:41',
     card_number: '84 9C 73 AB', shift: 'Morning', access: ['Office']
   },
-
-  // {
-  //   photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-20-min.png',
-  //   name: 'Tyrone Skinner', position: 'Security', status: 'Suspended', time: '13:11:29',
-  //   card_number: 'E8 F6 FF 42', shift: 'Morning', access: ['Office #1'],
-  // },
+  {
+    photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-20-min.png',
+    name: 'Tyrone Skinner', position: 'Security', status: 'Suspended', time: '13:11:29',
+    card_number: 'E8 F6 FF 42', shift: 'Morning', access: ['Office #1'],
+  },
 ];
 
 @Component({
@@ -42,22 +44,49 @@ const employees: any[] = [
 })
 export class MapComponent implements OnInit {
   employeesArray = employees;
-  private subscription: Subscription;
+  private subscription!: Subscription;
   public message!: string;
   apiData!: any[];
+  newArray!: any[];
+  condition: boolean = false;
 
-  constructor(private _mqttService: MqttService, private empService: EmployeeServiceService) {
-    this.subscription = this._mqttService.observe('esp32/rfid').subscribe((message: IMqttMessage) => {
-      this.message = message.payload.toString();
-      console.log(JSON.parse(this.message))
-      this.empService.getEmployees().subscribe(data => {
-        this.apiData = data;
-        console.log(this.apiData);
-      });
-    });
+  constructor(private _mqttService: MqttService, private empService: EmployeeServiceService,
+    public signalRService: SignalRService, private http: HttpClient) {
+    // this.subscription = this._mqttService.observe('esp32/rfid').subscribe((message: IMqttMessage) => {
+    //   this.message = message.payload.toString();
+    //   console.log(this.message)
+    //   this.empService.getEmployees().subscribe(data => {
+    //     this.apiData = data;
+    //     console.log(this.apiData);
+    //   });
+    // });
   }
-  ngOnInit(): void {
 
+  ngOnInit(): void {
+    this.signalRService.startConnection();
+    this.signalRService.addTransferChartDataListener();
+  }
+
+  private startHttpRequest = () => {
+    this.http.get('https://controlaccessapp.azurewebsites.net/CheckMonitor')
+      .subscribe(res => {
+        console.log(res);
+      })
+  }
+
+  displayNewEntry(): void{
+    this.condition = true
+    let myemp: any = {
+      photo: 'https://cdn-blbpl.nitrocdn.com/yERRkNKpiDCoDrBCLMpaauJAEtjVyDjw/assets/static/optimized/rev-4899aa8/wp-content/uploads/2021/03/25-Famous-People-Who-Speak-Spanish-as-a-Second-Language-16-min.png',
+      name: 'Taylor Hawkins', position: 'HR', status: 'Active', time: '13:12:41',
+      card_number: '84 9C 73 AB', shift: 'Morning', access: ['Office']}
+    myemp.style = true
+    this.employeesArray.pop()
+    this.employeesArray.unshift(myemp)
+    console.log(this.employeesArray)
+    setTimeout(()=>{
+      this.condition = false
+    },2000)
   }
 
   public unsafePublish(topic: string, message: string): void {
@@ -68,5 +97,9 @@ export class MapComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
+}
+
+interface LooseObject {
+  [key: string]: any
 }
 

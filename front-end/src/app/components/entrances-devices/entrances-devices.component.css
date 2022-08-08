@@ -72,3 +72,8 @@ i {
     font-size: 35px;
     padding: initial;
 }
+
+::ng-deep .iconSize {
+    font-size: 35px;
+    padding: initial;
+}

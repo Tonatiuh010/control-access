@@ -25,7 +25,12 @@ export class EmployeeServiceService {
     return this.http.post<any>(this.API_URL + 'Employee', data)
   }
 
+  disableEmployee(data: any): Observable<any> {
+    return this.http.post<any>(this.API_URL + 'Employee/downEmployee', data)
+  }
+
   getCards(): Observable<any> {
     return this.http.get<any>(this.API_URL + 'Card')
   }
+
 }
