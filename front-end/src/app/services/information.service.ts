@@ -24,7 +24,7 @@ export class InformationService {
   employeeType$ = this.sendType$.asObservable();
 
   private sendCardActivation$ = new BehaviorSubject<boolean>(false);
-  cardActivion$ = this.sendType$.asObservable();
+  cardActivation$ = this.sendCardActivation$.asObservable();
 
   constructor() {}
 
@@ -41,6 +41,6 @@ export class InformationService {
   }
 
   sendActivation(state: boolean) {
-    this.sendType$.next(state);
+    this.sendCardActivation$.next(state);
   }
 }

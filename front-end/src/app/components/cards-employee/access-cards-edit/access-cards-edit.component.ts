@@ -16,7 +16,7 @@ export class AccessCardsEditComponent implements OnInit {
   constructor(private infService: InformationService, private _mqttService: MqttService) { }
 
   ngOnInit(): void {
-    this.subscription1$ = this.infService.cardActivion$.subscribe((value) => {
+    this.subscription1$ = this.infService.cardActivation$.subscribe((value) => {
       this.cardActivation = value;
     });
   }

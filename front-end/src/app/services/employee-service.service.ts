@@ -33,4 +33,8 @@ export class EmployeeServiceService {
     return this.http.get<any>(this.API_URL + 'Card')
   }
 
+  getDevices(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'Device')
+  }
+
 }

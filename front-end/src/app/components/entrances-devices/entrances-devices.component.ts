@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MqttService } from 'ngx-mqtt';
+import { EmployeeServiceService } from 'src/app/services/employee-service.service';
 
 @Component({
   selector: 'app-entrances-devices',
@@ -7,11 +8,20 @@ import { MqttService } from 'ngx-mqtt';
   styleUrls: ['./entrances-devices.component.css']
 })
 export class EntrancesDevicesComponent implements OnInit {
-  propiedadChafa: any;
-  constructor(private _mqttService: MqttService) {}
+  apiData!: any[];
+  showSpinner!: boolean;
+  constructor(private _mqttService: MqttService, private empService: EmployeeServiceService) {}
 
   ngOnInit() {
-    this.propiedadChafa = MOCK
+    this.getDevices();
+  }
+
+  getDevices(){
+    this.showSpinner = true;
+    this.empService.getDevices().subscribe(data => {
+      this.apiData = data.data;
+      this.showSpinner = false;
+    });
   }
 
   getIcon(name: string): string{
