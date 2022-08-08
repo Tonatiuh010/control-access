@@ -175,12 +175,20 @@ namespace Engine.BO {
 
         public DateTime? CheckDt {get; set;}
         public string? Type {get; set;}
-        public Card? Card {get; set;}        
+        public CardEmployee? Card {get; set;}        
 
         [JsonPropertyName("device")]
         public Device? DeviceDetails => GetDevice != null ? GetDevice(Device) : null;
 
         public void SetDeviceFinder(FindDevice deviceCallback) => GetDevice = deviceCallback;
+    }
+
+    public class AccessCheck
+    {
+        public Check? Check { get; set; }
+        public bool IsValid { get; set; }
+        public string? Message { get; set; }
+        public string? Status { get; set; }
     }
 
     public class Device : BaseBO

@@ -101,14 +101,14 @@ public abstract class CustomController : ControllerBase
         }
     }
 
-    public static object? GetItem<T>(List<T> list, string? emptyMsg = null)
+    public static T? GetItem<T>(List<T> list, string? emptyMsg = null)
     {
         if (list != null && list.Count > 0)
         {
             return list[0];
         }
 
-        return emptyMsg;
+        return default;
     }
     
 }

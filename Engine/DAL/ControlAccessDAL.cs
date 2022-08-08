@@ -394,20 +394,16 @@ namespace Engine.DAL {
 
                 IDataParameter pResult = CreateParameterOut("OUT_RESULT", MySqlDbType.String);
                 cmd.Parameters.Add(CreateParameter("IN_NUMBER", cardSerial, MySqlDbType.String));
-                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));
                 cmd.Parameters.Add(CreateParameter("IN_DEVICE", device, MySqlDbType.Int32));
+                cmd.Parameters.Add(CreateParameter("IN_USER", txnUser, MySqlDbType.String));                
                 cmd.Parameters.Add(pResult);
 
                 NonQueryBlock(cmd, () => GetResult(pResult, sSp, result));
 
             }, 
                 (ex, msg) => SetExceptionResult("ControlAccessDAL.SetCheck", msg, ex, result),
-                () => SetResultInsert(result, new Check()
-                {
-                    Card = new Card()
-                    {
-                        Key = cardSerial
-                    }
+                () => SetResultInsert(result, new Check() {
+                    Card = new CardEmployee() { Key = cardSerial }
                 })
             );
 

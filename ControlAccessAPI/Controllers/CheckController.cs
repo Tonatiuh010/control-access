@@ -17,11 +17,7 @@ public class CheckController : CustomController
 {
     private readonly IHubContext<CheckHub> _hub;
 
-    public CheckController(IHubContext<CheckHub> hub) : base()
-    {
-        _hub = hub;
-        
-    }
+    public CheckController(IHubContext<CheckHub> hub) : base() => _hub = hub;
 
     [HttpGet]
     public Result Get() => RequestResponse(() => bl.GetChecks());
@@ -35,20 +31,84 @@ public class CheckController : CustomController
     );
 
     [HttpPost]
-    public Result Set(dynamic obj) => RequestResponse(
-        () => {
-            var serial = JsonProperty<string>.GetValue( "serial", JObject.Parse(obj.ToString()));
-            var device = JsonProperty<string>.GetValue("device", JObject.Parse(obj.ToString()));
+    public Result Set(dynamic obj) => RequestResponse(() => 
+        {
+            JObject jObj = JObject.Parse(obj.ToString());
+            ResultInsert result = new ();
 
-            ResultInsert result = bl.SetCheck(serial,device, C.GLOBAL_USER);
+            var serial = JsonProperty<string>.GetValue("serial", jObj, 
+                OnMissingProperty
+            );
+            var device = JsonProperty<string>.GetValue("device", jObj, 
+                OnMissingProperty
+            );
 
-            if(result != null && result.Status != C.OK)
+            var deviceObj = bl.GetDevice(device);
+
+            if (deviceObj != null && deviceObj.IsValid())
             {
-                var check = GetItem(bl.GetChecks(result.InsertDetails.Id));
-                result.Data = check;
-                _hub.Clients.All.SendAsync("CheckMonitor", check);
-            }
+                AccessCheck checkStats;
 
+                result = bl.SetCheck(
+                    serial,
+                    deviceObj.Id,
+                    C.GLOBAL_USER
+                );
+
+                if (result != null && result.Status == C.OK)
+                {
+                    var check = GetItem(bl.GetChecks(result.InsertDetails.Id));
+                    checkStats = new AccessCheck()
+                    {
+                        Check = check,
+                        IsValid = true,
+                        Status = C.OK,
+                        Message = C.COMPLETE
+                    };
+                    result.Data = check;
+
+                } else
+                {
+                    CardEmployee? card = bl.GetCards(assigned: true).Find(x => x.Key == serial);
+
+                    string? msg = string.Empty;
+
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(result?.Message))
+                        {
+                            int index = result.Message.IndexOf("Says:");
+                            msg = result.Message.Substring(index, (result.Message.Length - 1) - index);
+                        }
+                    } catch
+                    {
+                        msg = result.Message;
+                    }                
+
+                    checkStats = new AccessCheck()
+                    {
+                        IsValid = false,
+                        Message = msg,
+                        Status = C.ERROR,
+                        Check = new Check()
+                        {
+                            Id = null,
+                            CheckDt = DateTime.Now,
+                            Device = deviceObj.Id,
+                            Type = C.ERROR,
+                            Card = card
+                        }
+                    };
+                }
+
+                _hub.Clients.All.SendAsync("CheckMonitor", checkStats);
+
+            } else
+            {
+                result.Status = C.ERROR;
+                result.Message = "Device no existe";
+            }
+            
             return result;
         }
     );
