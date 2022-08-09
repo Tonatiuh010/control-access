@@ -1,5 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import {  EChartsOption } from 'echarts';
+import { EmployeeService } from 'src/app/services/employee-service.service';
 
 
 
@@ -10,30 +11,8 @@ import {  EChartsOption } from 'echarts';
 })
 export class DashboardComponent implements OnInit {
 
-  chartOption2: EChartsOption = {
-    title: {
-      text: 'Hourly Attendance'
-    },
-    legend: {
-      left: 'right'
-    },
-    tooltip: {},
-    dataset: {
-      source: [
-        ['7:00 AM', '10:00 AM', '2:00 PM', '5:00 PM'],
-        ['Security', 43, 85, 93, 10],
-        ['RH', 43, 23, 25, 10],
-        ['Production', 12, 45, 83, 10],
-        ['Sales ', 72, 53, 39, 10],
-        ['Warehouse', 23, 23, 32, 10]
-      ]
-    },
-    xAxis: { type: 'category' },
-    yAxis: {},
-    // Declare several bar series, each will be mapped
-    // to a column of dataset.source by default.
-    series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }]
-  };
+  hourlyDataSet!: any[];
+  chartOption2!: EChartsOption;
 
   chartOption3: EChartsOption = {
     title: {
@@ -64,19 +43,7 @@ export class DashboardComponent implements OnInit {
     },
     series: [
       {
-        name: 'Security',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: [32, 30, 30, 33, 39, 33, 32]
-      },
-      {
-        name: 'RH',
+        name: 'Engineering',
         type: 'bar',
         stack: 'total',
         label: {
@@ -88,7 +55,7 @@ export class DashboardComponent implements OnInit {
         data: [12, 13, 10, 13, 9, 23, 21]
       },
       {
-        name: 'Production',
+        name: 'Human Resources',
         type: 'bar',
         stack: 'total',
         label: {
@@ -112,7 +79,7 @@ export class DashboardComponent implements OnInit {
         data: [15, 22, 21, 15, 19, 33, 41]
       },
       {
-        name: 'Warehouse',
+        name: 'Engineering',
         type: 'bar',
         stack: 'total',
         label: {
@@ -126,9 +93,56 @@ export class DashboardComponent implements OnInit {
     ]
   };
 
-  constructor() { }
+  constructor(private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
+    this.employeeService.getDashboardInfo().subscribe(data =>{
+      this.hourlyDataSet = this.buildHourlyDataset(data.data);
+      this.buildHourlyChart();
+    })
+  }
+
+  buildHourlyDataset(data: any): any[]{
+    let dataSet: any[] = []
+    let temporaryArray: any[] = []
+    data.forEach((element: any) => {
+      temporaryArray.unshift(element.sets[0].departament.name)
+      element.sets.forEach((element: any) => {
+        temporaryArray.push(element.checks)
+      });
+      dataSet.push(temporaryArray)
+      temporaryArray = []
+    });
+    return dataSet;
+  }
+
+  buildHourlyChart(){
+    console.log(this.hourlyDataSet)
+    this.chartOption2 = {
+      width: '83%',
+      title: {
+        text: 'Hourly Attendance'
+      },
+      legend: {
+        left: 'right'
+      },
+      tooltip: {},
+      dataset: {
+        source: [
+          ['','6:00 AM - 10:00 AM', '10:00 AM - 4:00 PM', '4:00 PM - 8:00 PM'],
+          this.hourlyDataSet[0],
+          this.hourlyDataSet[1],
+          this.hourlyDataSet[2],
+          this.hourlyDataSet[3],
+        ]
+      },
+      xAxis: { type: 'category' },
+      yAxis: {},
+      // Declare several bar series, each will be mapped
+      // to a column of dataset.source by default.
+      series: [{ type: 'bar' }, { type: 'bar' }, { type: 'bar' }],
+
+    };
   }
 
 }

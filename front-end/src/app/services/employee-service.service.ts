@@ -41,4 +41,12 @@ export class EmployeeService {
     return this.http.get<any>(this.API_URL + 'Check')
   }
 
+  postCardDisable(data: any): Observable<any> {
+    return this.http.post<any>(this.API_URL + 'Card/DownCard', data)
+  }
+
+  getDashboardInfo(): Observable<any> {
+    return this.http.get<any>(this.API_URL + 'check/chartView')
+  }
+
 }

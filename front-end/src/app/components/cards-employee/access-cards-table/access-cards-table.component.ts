@@ -30,8 +30,8 @@ export class AccessCardsTableComponent implements OnInit {
   getCards(){
     this.showSpinner = true;
     this.empService.getCards().subscribe(data =>{
-      this.apiData = data;
-      this.dataSource = new MatTableDataSource(this.apiData.data);
+      this.apiData = data.data;
+      this.dataSource = new MatTableDataSource(this.apiData);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.cdRef.detectChanges();
@@ -46,5 +46,15 @@ export class AccessCardsTableComponent implements OnInit {
 
   public unsafePublish(topic: string, message: string): void {
     this._mqttService.unsafePublish(topic, message, {qos: 0, retain: true});
+  }
+
+  disableCard(cardId: number){
+    let postData = {
+      id: cardId
+    }
+
+    this.empService.postCardDisable(postData).subscribe(data =>{
+      console.log(data);
+    })
   }
 }

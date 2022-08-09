@@ -13,7 +13,7 @@ export class AppComponent implements OnInit{
   icon = '';
   constructor(private router: Router){}
   ngOnInit(): void {
-    this.router.navigate(['/map']);
+    this.router.navigate(['/dashboard']);
     this.activeLink = links[0].displayName;
   }
 

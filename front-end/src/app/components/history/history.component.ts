@@ -76,10 +76,19 @@ export class HistoryComponent implements OnInit {
     }
   }
 
-  entranceType(value: string): string{
-    switch(value){
+  entranceType(type: string, device: string): string{
+    switch(type){
       case 'IN': return 'CHECK-IN'
       case 'OUT': return 'CHECK-OUT'
+      case 'ACCESS': return this.deviceType(device)
+      default: return 'UNKNOWN'
+    }
+  }
+
+  deviceType(device: string): string{
+    switch(device){
+      case 'Office': return 'OFFICE'
+      case 'Warehouse': return 'WAREHOUSE'
       default: return 'UNKNOWN'
     }
   }

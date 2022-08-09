@@ -39,13 +39,9 @@
               <mat-icon>more_vert</mat-icon>
             </button>
                 <mat-menu #menu="matMenu">
-                    <button mat-menu-item>
-                <mat-icon>delete_forever</mat-icon>
-                <span>Delete Card</span>
-              </button>
-                    <button mat-menu-item>
-                <mat-icon>warning</mat-icon>
-                <span>Disable Card</span>
+                    <button (click)="disableCard(e.id)" mat-menu-item>
+                      <mat-icon>warning</mat-icon>
+                      <span>Disable Card</span>
                   </button>
                 </mat-menu>
             </td>
