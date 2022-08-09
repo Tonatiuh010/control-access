@@ -85,7 +85,6 @@ export class EmployeeTableComponent implements OnInit {
   disableEmployee(rowData: any) {
     let message = {id: rowData}
     this.empService.disableEmployee(message).subscribe(data => {
-      console.log(data)
     })
   }
 

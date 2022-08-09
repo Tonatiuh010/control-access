@@ -54,7 +54,6 @@ export class AccessCardsTableComponent implements OnInit {
     }
 
     this.empService.postCardDisable(postData).subscribe(data =>{
-      console.log(data);
     })
   }
 }

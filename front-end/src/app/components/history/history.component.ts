@@ -26,7 +26,6 @@ export class HistoryComponent implements OnInit {
     this.showSpinner = true;
     this.empService.getChecks().subscribe(data => {
       this.dataSource = new MatTableDataSource(data.data);
-      console.log(this.dataSource.data)
       this.dataSource.sort = this.sort;
       this.cdRef.detectChanges();
       this.dataSource.paginator = this.paginator;
@@ -68,10 +67,9 @@ export class HistoryComponent implements OnInit {
     switch(status){
       case 'ENABLED': return 'green';
       case 'DISABLED': return 'red';
-      case 'Disabled': return 'red';
       case 'IN': return 'blue';
       case 'OUT': return 'orange';
-      case 'Lunch': return 'violet';
+      case 'ACCESS': return 'violet';
       default: return 'primary'
     }
   }
@@ -89,6 +87,8 @@ export class HistoryComponent implements OnInit {
     switch(device){
       case 'Office': return 'OFFICE'
       case 'Warehouse': return 'WAREHOUSE'
+      case 'Entrance A': return 'LUNCH'
+      case 'Entrance B': return 'LUNCH'
       default: return 'UNKNOWN'
     }
   }

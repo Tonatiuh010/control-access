@@ -79,9 +79,9 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
 
     this.form = this.fb.group({
       id: [null],
-      name: [null, [Validators.required, Validators.minLength(2)]],
+      name: [null, [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u)]],
       image: [null],
-      lastName: [null, [Validators.required, Validators.minLength(2)]],
+      lastName: [null, [Validators.required, Validators.minLength(2), Validators.pattern(/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u)]],
       accessLevels: [null, [Validators.required, Validators.minLength(1)]],
       position: [null, [Validators.required]],
       shift: [null, [Validators.required]],
@@ -141,7 +141,6 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
     } else{
       form.value.image = Constants['no-image-found']
     }
-    console.log(form.value)
 
     this.empService.postEmployee(form.value).subscribe(data => {
       this.resetForm();
@@ -159,15 +158,12 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
       }
     }
 
-    console.log(form.value.card)
     if (this.employeePhoto){
       form.value.image = this.employeePhoto
     } else{
       form.value.image = Constants['no-image-found']
     }
-    console.log(form.value)
     this.empService.updateEmployee(form.value).subscribe(data => {
-      console.log(data)
       this.resetForm();
     })
   }

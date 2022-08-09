@@ -71,7 +71,6 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     let myemp: any = data.card.employee
     this.employeesArray.unshift(myemp)
-    console.log(this.employeesArray)
     if(isValid){
       switch(device){
         case 'Entrance A': { myemp.style = true; this.cardA_Activation = true; setTimeout(()=>{ this.cardA_Activation = false; myemp.style = false; this.cdRef.detectChanges();},500); } break;

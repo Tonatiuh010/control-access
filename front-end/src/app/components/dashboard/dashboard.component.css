@@ -51,3 +51,15 @@
     color: #464646;
     text-align: center;
 }
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+.mat-blue {
+    background-color: #0090FD;
+    color: #fff;
+}

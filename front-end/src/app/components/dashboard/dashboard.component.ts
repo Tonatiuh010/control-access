@@ -2,8 +2,6 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import {  EChartsOption } from 'echarts';
 import { EmployeeService } from 'src/app/services/employee-service.service';
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -67,7 +65,7 @@ export class DashboardComponent implements OnInit {
         data: [22, 18, 19, 23, 29, 33, 31]
       },
       {
-        name: 'Sales',
+        name: 'Production',
         type: 'bar',
         stack: 'total',
         label: {
@@ -79,7 +77,7 @@ export class DashboardComponent implements OnInit {
         data: [15, 22, 21, 15, 19, 33, 41]
       },
       {
-        name: 'Engineering',
+        name: 'Design',
         type: 'bar',
         stack: 'total',
         label: {
@@ -92,13 +90,22 @@ export class DashboardComponent implements OnInit {
       }
     ]
   };
+  showSpinner: boolean = false;
+  cardArray: any;
 
   constructor(private employeeService: EmployeeService) { }
 
   ngOnInit(): void {
+    this.initializeDashboard()
+  }
+
+  initializeDashboard(){
+    this.showSpinner = true;
     this.employeeService.getDashboardInfo().subscribe(data =>{
       this.hourlyDataSet = this.buildHourlyDataset(data.data);
+      this.cardArray = data.data2;
       this.buildHourlyChart();
+      this.showSpinner = false;
     })
   }
 
@@ -117,7 +124,6 @@ export class DashboardComponent implements OnInit {
   }
 
   buildHourlyChart(){
-    console.log(this.hourlyDataSet)
     this.chartOption2 = {
       width: '83%',
       title: {
