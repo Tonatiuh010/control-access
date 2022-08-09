@@ -1,36 +1,21 @@
 #include <ArduinoJson.h>
 #include <SPI.h>
-#include <PubSubClient.h>
 #include <MFRC522.h>
-#include <WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <ESP8266WiFi.h>
+#define RST_PIN         D0           // Configurable, see typical pin layout above
+#define SS_PIN          D8          // Configurable, see typical pin layout above
 
-//Vcc <-> 3V3 (o Vin(5V) según la versión del módulo)
-//RST (Reset) <-> D0
-//GND (Masse) <-> GND
-//MISO (Master Input Slave Output) <-> 19
-//MOSI (Master Output Slave Input) <-> 23
-//SCK (Serial Clock) <-> 18
-//SS/SDA (Slave select) <-> 5
-
-#define RST_PIN         22           // Configurable, see typical pin layout above
-#define SS_PIN          5          // Configurable, see typical pin layout above
-
-MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
-
-WiFiClient esp32Client;
-PubSubClient mqttClient(esp32Client);
 
 const char* ssid     = "Sheesh";
 const char* password = "Gtorrecillas1435";
-const char* topic = "esp32/rfid";
-const int BUZZER = 4;
-const int BUZZER2 = 2;
-char *server = "broker.emqx.io";
-int port = 1883;
 char myBuffer;
 String bufferString;
+String serverName = "https://controlaccess20220725234915.azurewebsites.net/api/card";
 char cardNumber[0];
-boolean statusP;
+HTTPClient http;
+
+MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance
 StaticJsonDocument<200> doc;
 JsonObject message = doc.to<JsonObject>();
 
@@ -49,35 +34,7 @@ void wifiInit() {
     Serial.println(ssid);
   }
 
-void callback(char* topic, byte* payload, unsigned int length) {
- String response;
 
-  for (int i = 0; i < length; i++) {
-    response += (char)payload[i];
-}
-
-}
-
-
-
-void reconnect() {
-  while (!mqttClient.connected()) {
-    Serial.print("Intentando conectarse MQTT...");
-
-    if (mqttClient.connect("arduinoClient")) {
-      Serial.println("Conectado");
-
-      mqttClient.subscribe("esp32/rfid");
-      
-    } else {
-      Serial.print("Fallo, rc=");
-      Serial.print(mqttClient.state());
-      Serial.println(" intentar de nuevo en 5 segundos");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
-}
 
 void setup()
 {
@@ -85,18 +42,12 @@ void setup()
   SPI.begin();                                                  // Init SPI bus
   mfrc522.PCD_Init();                                              // Init MFRC522 
   wifiInit();
-  mqttClient.setServer(server, port);
-  pinMode(BUZZER,OUTPUT);
-  digitalWrite(BUZZER, LOW);
+  http.begin(serverName);
 }
 
 void loop()
 {
-
-// cardNumber[0] = (char)0;
-
-
-
+http.addHeader("Content-Type", "application/json");
 MFRC522::MIFARE_Key key;
   for (byte i = 0; i < 6; i++) key.keyByte[i] = 0xFF;
 
@@ -147,7 +98,7 @@ MFRC522::MIFARE_Key key;
   if (status != MFRC522::STATUS_OK) {
     Serial.print(F("Reading failed: "));
     Serial.println(mfrc522.GetStatusCodeName(status));
-
+    return;
   }
 
   //PRINT CARD NUMBER
@@ -162,36 +113,37 @@ MFRC522::MIFARE_Key key;
     }
   }
     
-    bufferString.toCharArray(cardNumber,11);
-    
-    
- if (!mqttClient.connected()) {
-    reconnect();
-  }
- Serial.print("publicando mtqq: ");
- 
- Serial.println(cardNumber);
+ bufferString.toCharArray(cardNumber,11);
  message["serial"] = cardNumber;
- message["device"] = "Office";
  char json[100];
  serializeJson(message,json);
+ Serial.print("Posting to API: ");
  Serial.println(json);
- statusP = mqttClient.publish("esp32/rfid", json );
- Serial.println(statusP);
- if (statusP == true){
-   Serial.println("uwu");
-   tone(BUZZER, 9,500);
-   delay(200);
-   digitalWrite(BUZZER, LOW);
- }
- 
- statusP = false;
- Serial.println(statusP);
- mfrc522.PICC_HaltA();
- mfrc522.PCD_StopCrypto1();
- bufferString = "";
- mqttClient.loop();
 
+ // Initialize http client
+
+
+
+
+ int httpCode = http.POST(json);
+
+ if (httpCode > 0 ){
+  String payload = http.getString();
+  Serial.println("\nStatus code: " + String(httpCode));
+  Serial.println(payload);
+ }
+ else {
+  String payload = http.getString();
+  Serial.print("Eror code: ");
+  Serial.println(payload);
+ }
+// Free resources
+ 
+
+  mfrc522.PICC_HaltA();
+  mfrc522.PCD_StopCrypto1();
+  bufferString = "";
+  http.end();
   
  
 //  delay(1000);
