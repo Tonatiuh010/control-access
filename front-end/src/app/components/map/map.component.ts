@@ -49,11 +49,9 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   displayNewEntry(status: string, isValid: boolean, data: Check): void{
-    this.status.unshift(status);
-    this.rawData.unshift(data);
     let device = data.device.name;
-
     if (!data.card) {
+
       const config = new MatSnackBarConfig();
       config.horizontalPosition = 'center';
       config.verticalPosition = 'bottom';
@@ -72,6 +70,8 @@ export class MapComponent implements OnInit, OnDestroy {
     let myemp: any = data.card.employee
     this.employeesArray.unshift(myemp)
     if(isValid){
+      this.status.unshift(status);
+      this.rawData.unshift(data);
       switch(device){
         case 'Entrance A': { myemp.style = true; this.cardA_Activation = true; setTimeout(()=>{ this.cardA_Activation = false; myemp.style = false; this.cdRef.detectChanges();},500); } break;
         case 'Entrance B': { myemp.style = true; this.cardB_Activation = true; setTimeout(()=>{ this.cardB_Activation = false; myemp.style = false; this.cdRef.detectChanges();},500)} break;
@@ -79,6 +79,8 @@ export class MapComponent implements OnInit, OnDestroy {
         case 'Office': { myemp.style = true; this.office_Activation = true; setTimeout(()=>{ this.office_Activation = false; myemp.style = false; this.cdRef.detectChanges();},500)} break;
       }
     }else{
+      this.status.unshift(status);
+      this.rawData.unshift(data);
       switch(device){
         case 'Entrance A': { myemp.styleUn = true; this.cardA_ActivationUn = true; setTimeout(()=>{ this.cardA_ActivationUn = false; myemp.styleUn = false; this.cdRef.detectChanges();},500)} break;
         case 'Entrance B': { myemp.styleUn = true; this.cardB_ActivationUn = true; setTimeout(()=>{ this.cardB_ActivationUn = false; myemp.styleUn = false; this.cdRef.detectChanges();},500)} break;

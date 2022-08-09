@@ -23,7 +23,7 @@ export class AccessCardsEditComponent implements OnInit {
 
   resetCard(){
     this.infService.sendActivation(false)
-    this.unsafePublish('esp32/admin', 'false')
+    this.unsafePublish('esp32/toggle', 'false')
   }
 
   public unsafePublish(topic: string, message: string): void {

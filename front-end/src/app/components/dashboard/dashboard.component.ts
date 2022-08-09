@@ -136,10 +136,11 @@ export class DashboardComponent implements OnInit {
       dataset: {
         source: [
           ['','6:00 AM - 10:00 AM', '10:00 AM - 4:00 PM', '4:00 PM - 8:00 PM'],
-          this.hourlyDataSet[0],
-          this.hourlyDataSet[1],
-          this.hourlyDataSet[2],
-          this.hourlyDataSet[3],
+          ...this.hourlyDataSet
+          // this.hourlyDataSet[0],
+          // this.hourlyDataSet[1],
+          // this.hourlyDataSet[2],
+          // this.hourlyDataSet[3],
         ]
       },
       xAxis: { type: 'category' },
