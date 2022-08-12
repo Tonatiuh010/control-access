@@ -101,6 +101,10 @@ export class EmployeeEditComponent implements OnInit, OnDestroy {
         if (this.form.get(field)!.hasError('required')) {
         return 'You must enter a value';
       }
+        if (this.form.get(field)!.hasError('pattern')) {
+        return 'Field must only contain letters';
+       }
+
         return this.form.get(field)!.hasError('minlength') ? 'Name must be longer than 2 characters' : ''
     };
 

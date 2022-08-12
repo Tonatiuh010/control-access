@@ -87,8 +87,8 @@ export class HistoryComponent implements OnInit {
     switch(device){
       case 'Office': return 'OFFICE'
       case 'Warehouse': return 'WAREHOUSE'
-      case 'Entrance A': return 'LUNCH'
-      case 'Entrance B': return 'LUNCH'
+      case 'Entrance A': return 'ACCESS'
+      case 'Entrance B': return 'ACCESS'
       default: return 'UNKNOWN'
     }
   }
